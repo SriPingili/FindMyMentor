@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Find My Mentor</string>
+
+    <string name="email_address">Email</string>
+    <string name="passsword">Password</string>
+    <string name="login">Login</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="looking_for_a_mentor">Looking for a Mentor</string>
+    <string name="looking_to_mentor">Looking to Mentor</string>
+</resources>

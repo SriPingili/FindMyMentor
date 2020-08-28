@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "99646517036",
+    "firebase_url": "https://find-my-guru.firebaseio.com",
+    "project_id": "find-my-guru",
+    "storage_bucket": "find-my-guru.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:99646517036:android:78175d87d45e6fd4e50689",
+        "android_client_info": {
+          "package_name": "sp.android.findmymentor.play"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "99646517036-4mc0o0krptf4jsaq0oe59n9q0nt9j5g4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFC-3U_cERY4JBkCSLuyKg0HfneoU2OL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "99646517036-4mc0o0krptf4jsaq0oe59n9q0nt9j5g4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
