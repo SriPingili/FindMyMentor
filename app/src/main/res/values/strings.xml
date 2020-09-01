@@ -1,10 +1,100 @@
 <resources>
     <string name="app_name">Find My Mentor</string>
 
+
+    <string name="title_activity_mentor_home">MentorHomeActivity</string>
+
+    <string name="registration_failed">Registration failed. Please try again</string>
+    <string name="registration_success">You are successfully registered</string>
+    <string name="edit_profile_success">Your changes are successfully saved</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="welcome">Welcome</string>
+
+    <!--Login activity strings-->
+    <string name="login_failed">Login failed. Please try again.</string>
+
+    <!--FoldingCellListAdapter strings-->
+    <string name="available">Available</string>
+    <string name="go_to_messages">Go to Messages</string>
+    <string name="requested">Requested</string>
+    <string name="welcome_to_chat">Welcome to your chat! Use this to find a time to talk, plan a meeting, or get to know each other and the goals you want to set in these meetings.</string>
+
+    <!--MenteeRegistrationActivity strings-->
+    <string name="mentee_registration">Mentee Registration</string>
+
+    <!--MentorRegistrationActivity strings-->
+    <string name="mentor_registration">Mentor Registration</string>
+
+    <!--MessagesListActivity strings-->
+    <string name="messages">Messages</string>
+
+    <!--MulitChoiceListDialogFragment-->
+    <string name="select_group">Select Group</string>
+    <string name="ok">OK</string>
+
+
+    <!--layout files-->
     <string name="email_address">Email</string>
     <string name="passsword">Password</string>
     <string name="login">Login</string>
     <string name="reset_password">Reset Password</string>
     <string name="looking_for_a_mentor">Looking for a Mentor</string>
     <string name="looking_to_mentor">Looking to Mentor</string>
+    <string name="already_have_an_account_sign_in">Already have an account? Sign In</string>
+    <string name="your_name">YOUR NAME</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="cerner_info">CERNER INFO</string>
+    <string name="cerner_id">Cerner ID</string>
+    <string name="cerner_email">Cerner Email</string>
+    <string name="tell_us_about_yourself">TELL US ABOUT YOURSELF!</string>
+    <string name="about_yourself">Tell us about yourself.Your interests, hobbies etc</string>
+    <string name="where_are_you_located">Where are you located?</string>
+    <string name="what_are_you_interested_in">WHAT ARE YOU INTERESTED IN?</string>
+    <string name="groups">Groups</string>
+    <string name="password">PASSWORD</string>
+    <string name="password_entry">Password</string>
+    <string name="submit">submit</string>
+    <string name="max_number_of_mentees">Max Number of Mentees</string>
+    <string name="this_is_not_your_cerner_password">THIS IS NOT YOUR CERNER PASSWORD</string>
+    <string name="no_messages_this_time">You have no messages this time. Try Again</string>
+    <string name="send">Send</string>
+    <string name="description">DESCRIPTION</string>
+    <string name="organization_caps">ORGANIZATION</string>
+    <string name="availability">AVAILABILITY</string>
+    <string name="request">REQUEST</string>
+    <string name="click_here_to_select">click here to select</string>
+    <string name="check_your_email_adrress">Please enter valid email address</string>
+    <string name="check_your_inputs">Please check your inputs and try again</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="click_here_for_messages">Click here for messages</string>
+    <string name="your_first_name">Your First Name</string>
+    <string name="your_last_name">Your Last Name</string>
+    <string name="your_cerner_id">Your Cerner ID</string>
+    <string name="select_your_campus_location">Please select your campus location from this drop down</string>
+    <string name="your_cerner_email">Your Cerner Email</string>
+    <string name="your_organization">Your Organization</string>
+    <string name="your_job_title">Your Job Title</string>
+    <string name="max_mentees">Max Mentees</string>
+    <string name="your_password">Your Password</string>
+    <string name="type_your_message_here">Type your message here</string>
+    <string name="click_to_send">click to send</string>
+    <string name="image_of_the_mentor">image of the mentor</string>
+    <string name="view_separator">view separator</string>
+    <string name="logo_of_the_mentoring_app">logo of the mentoring app</string>
+    <string name="invalid_email_pasword">Please enter a valid email address and password</string>
+    <string name="invalid_password">password should contain atleast one small letter, capital letter and a number</string>
+    <string name="organization">Organization</string>
+    <string name="role">Title</string>
+    <string name="logout">Logout</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="welcome__default">Welcome</string>
+    <string name="please_login_to_mentoring_app">Please login to Mentoring App</string>
+    <string name="mentee_welcome_message">You have %1$s mentors profiles to browse.Click here to check them out</string>
+    <string name="mentor_welcome_message">You have %1$s messages now. Click here to check them</string>
+    <string name="welcome_name">Welcome %1$s</string>
+    <string name="grous_message">%1$s and %2$s more</string>
+    <string name="spots_left">%1$s spots left</string>
+    <string name="save_button">save</string>
 </resources>

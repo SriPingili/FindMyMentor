@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="interests_choice">
+        <item>C</item>
+        <item>Java</item>
+        <item>Kotlin</item>
+        <item>Android</item>
+        <item>Java Script</item>
+
+    </string-array>
+</resources>
