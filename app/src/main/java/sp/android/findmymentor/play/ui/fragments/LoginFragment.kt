@@ -58,7 +58,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         putSerializable("mentorArg", viewModel.loggedInMentor)
                     }
                     findNavController().navigate(
-                            R.id.action_loginFragment_to_mentorHomeFragment,
+                            R.id.action_loginFragment_to_messagesListFragment,
                             bundle
                     )
                 } else {

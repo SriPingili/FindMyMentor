@@ -102,7 +102,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                                 )
                             }
 
-                            findNavController().navigate(R.id.action_userProfileFormFragment_to_mentorHomeFragment, bundle)
+                            findNavController().navigate(R.id.action_userProfileFormFragment_to_messagesListFragment, bundle)
                         }
                     } else {
                         if (!input_fullname.text.toString().isNullOrEmpty()) {
@@ -133,7 +133,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                                     viewModel.loggedInMentor
                             )
                         }
-                        findNavController().navigate(R.id.action_userProfileFormFragment_to_mentorHomeFragment, bundle)
+                        findNavController().navigate(R.id.action_userProfileFormFragment_to_messagesListFragment, bundle)
                     } else {
                         val bundle = Bundle().apply {
                             putSerializable(

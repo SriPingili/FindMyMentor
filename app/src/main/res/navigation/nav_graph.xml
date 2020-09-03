@@ -15,14 +15,13 @@
             android:id="@+id/action_loginFragment_to_menteeHomeFragment"
             app:destination="@id/menteeHomeFragment"
             app:launchSingleTop="true" />
-        <action
-            android:id="@+id/action_loginFragment_to_mentorHomeFragment"
-            app:destination="@id/mentorHomeFragment"
-            app:launchSingleTop="true" />
         <argument
             android:name="dummy"
             android:defaultValue="false"
             app:argType="boolean" />
+        <action
+            android:id="@+id/action_loginFragment_to_messagesListFragment"
+            app:destination="@id/messagesListFragment" />
     </fragment>
     <fragment
         android:id="@+id/userProfileFormFragment"
@@ -32,14 +31,13 @@
             android:id="@+id/action_userProfileFormFragment_to_menteeHomeFragment"
             app:destination="@id/menteeHomeFragment"
             app:launchSingleTop="true" />
-        <action
-            android:id="@+id/action_userProfileFormFragment_to_mentorHomeFragment"
-            app:destination="@id/mentorHomeFragment"
-            app:launchSingleTop="true" />
         <argument
             android:name="isMentor"
             android:defaultValue="false"
             app:argType="boolean" />
+        <action
+            android:id="@+id/action_userProfileFormFragment_to_messagesListFragment"
+            app:destination="@id/messagesListFragment" />
     </fragment>
     <fragment
         android:id="@+id/menteeHomeFragment"
@@ -54,15 +52,16 @@
             app:argType="sp.android.findmymentor.play.models.Mentee" />
     </fragment>
     <fragment
-        android:id="@+id/mentorHomeFragment"
-        android:name="sp.android.findmymentor.play.ui.fragments.MentorHomeFragment"
-        android:label="MentorHomeFragment">
+        android:id="@+id/messagesListFragment"
+        android:name="sp.android.findmymentor.play.ui.fragments.MessagesListFragment"
+        android:label="MessagesListFragment" >
         <action
-            android:id="@+id/action_mentorHomeFragment_to_userProfileFormFragment"
-            app:destination="@id/userProfileFormFragment"
-            app:launchSingleTop="true" />
+            android:id="@+id/action_messagesListFragment_to_userProfileFormFragment"
+            app:destination="@id/userProfileFormFragment" />
         <argument
             android:name="mentorArg"
-            app:argType="sp.android.findmymentor.play.models.Mentor" />
+            app:argType="sp.android.findmymentor.play.models.Mentor"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>

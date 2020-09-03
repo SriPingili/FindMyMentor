@@ -16,7 +16,6 @@ import sp.android.findmymentor.R
 import sp.android.findmymentor.play.MainActivity
 import sp.android.findmymentor.play.adapter.MentorsAdapter
 import sp.android.findmymentor.play.models.Mentee
-import sp.android.findmymentor.play.models.Mentor
 import sp.android.findmymentor.play.ui.viewmodels.MainViewModel
 
 class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
@@ -31,12 +30,10 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
         mentee = args.menteeArg
         viewModel = (activity as MainActivity).viewModel
 
-        /*todo move this to a better place*/
+        /*todo move this to a better place, after login success*/
         viewModel.getUsersFromFirebase()
 
-        mentorsAdapter = MentorsAdapter()
-        mainListView.adapter = mentorsAdapter
-        mainListView.layoutManager = LinearLayoutManager(activity)
+        setUpRecyclerView()
 
         mentorsAdapter.setOnItemClickListener { view, position ->
             // toggle clicked cell state
@@ -44,7 +41,17 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
             mentorsAdapter.registerToggle(position)
         }
 
+        mentorsAdapter.setOnRequestMentorClickListener {
+            viewModel.requestSelectedMentor(it)
+        }
+
         addObservers()
+    }
+
+    private fun setUpRecyclerView() {
+        mentorsAdapter = MentorsAdapter()
+        mentorsRecyclerView.adapter = mentorsAdapter
+        mentorsRecyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
     private fun addObservers() {

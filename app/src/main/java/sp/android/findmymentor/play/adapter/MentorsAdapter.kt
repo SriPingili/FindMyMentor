@@ -16,11 +16,12 @@ import java.util.HashSet
 /*
 Adapter class for the recycler view
 * */
-class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.ArticleViewHolder>() {
+class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
     private var unfoldedIndexes = HashSet<Int>()
     private var onItemClickListener: ((View, Int) -> Unit)? = null
+    private var onRequestMentorClickListener: ((Mentor) -> Unit)? = null
 
-    inner class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class MentorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private val differCallback = object : DiffUtil.ItemCallback<Mentor>() {
         override fun areItemsTheSame(oldItem: Mentor, newItem: Mentor): Boolean {
@@ -37,8 +38,8 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.ArticleViewHolder>() 
     override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
-    ): MentorsAdapter.ArticleViewHolder {
-        return ArticleViewHolder(
+    ): MentorViewHolder {
+        return MentorViewHolder(
                 LayoutInflater.from(parent.context).inflate(
                         R.layout.cell,
                         parent,
@@ -51,7 +52,7 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.ArticleViewHolder>() 
         return differ.currentList.size
     }
 
-    override fun onBindViewHolder(holder: MentorsAdapter.ArticleViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MentorsAdapter.MentorViewHolder, position: Int) {
         val mentor = differ.currentList[position]
 
         holder.itemView.apply {
@@ -76,6 +77,13 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.ArticleViewHolder>() 
             availableSpotsTextView.setText(mentor.availability.toString())
             locationTextViewUnfolded.setText(mentor.location)
             availabilityStatusTVUnfolded.setText("Available")//todo
+
+            requestUserButton.setOnClickListener {
+                requestUserButton.setText("Requested")
+                onRequestMentorClickListener?.let {
+                    it(mentor)
+                }
+            }
 
             // for existing cell set valid valid state(without animation todo revisit this logic
             /*if (unfoldedIndexes.contains(position)) {
@@ -112,9 +120,9 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.ArticleViewHolder>() 
         onItemClickListener = listener
     }
 
-//    fun setOnButtonClickListener(listener: (HackerStory) -> Unit) {
-//
-//    }
+    fun setOnRequestMentorClickListener(listener: (Mentor) -> Unit) {
+        onRequestMentorClickListener = listener
+    }
 
     /*
     submits the hacker news response to the differ util, also saves

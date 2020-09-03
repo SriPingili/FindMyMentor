@@ -5,11 +5,16 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import sp.android.findmymentor.play.util.Constants.Companion.CHATS
 
 class FirebaseSource {
+
+    /*
+    https://stackoverflow.com/questions/38304258/how-to-encrypt-user-data-in-firebase
+    * */
     private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val firebaseUsersReference: DatabaseReference by lazy { FirebaseDatabase.getInstance().reference.child("Users") }
-    private val firebaseChatsReference: DatabaseReference by lazy { FirebaseDatabase.getInstance().reference.child("Chats") }
+    private val firebaseChatsReference: DatabaseReference by lazy { FirebaseDatabase.getInstance().reference.child(CHATS) }
     private val firebaseMessagesReference: DatabaseReference by lazy { FirebaseDatabase.getInstance().reference.child("Messages") }
 
     fun getFirebaseAuthInstance() = firebaseAuth
