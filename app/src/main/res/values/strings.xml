@@ -59,9 +59,8 @@
     <string name="this_is_not_your_cerner_password">THIS IS NOT YOUR CERNER PASSWORD</string>
     <string name="no_messages_this_time">You have no messages this time. Try Again</string>
     <string name="send">Send</string>
-    <string name="description">DESCRIPTION</string>
-    <string name="organization_caps">ORGANIZATION</string>
-    <string name="availability">AVAILABILITY</string>
+    <string name="description">About %s</string>
+    <string name="availability">Availability</string>
     <string name="request">REQUEST</string>
     <string name="click_here_to_select">click here to select</string>
     <string name="check_your_email_adrress">Please enter valid email address</string>
@@ -97,4 +96,5 @@
     <string name="grous_message">%1$s and %2$s more</string>
     <string name="spots_left">%1$s spots left</string>
     <string name="save_button">save</string>
+    <string name="choose_interests"><u>choose your interests</u></string>
 </resources>

@@ -104,4 +104,17 @@
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/colorAccent</item>
     </style>
+
+
+
+    <!--https://stackoverflow.com/questions/27965662/how-can-i-change-default-dialog-button-text-color-in-android-5-->
+<!--    <style name="TitleBadgeText" parent="AppTheme">-->
+<!--        <item name="android:textColor">#adafb1</item>-->
+<!--        <item name="android:textSize">20dp</item>-->
+<!--    </style>-->
+
+<!--    <style name="TitleBadgeTitle" parent="AppTheme">-->
+<!--        <item name="android:textColor">#adafb1</item>-->
+<!--        <item name="android:textSize">12dp</item>-->
+<!--    </style>-->
 </resources>

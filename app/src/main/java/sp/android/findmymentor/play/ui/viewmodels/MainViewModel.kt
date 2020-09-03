@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -22,7 +23,10 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     val registerResult: MutableLiveData<Event<Task<AuthResult>>> = MutableLiveData()
     val loggedInUserIsMentor: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val loginResult: MutableLiveData<Event<Task<AuthResult>>> = MutableLiveData()
-
+    val mentorsLiveData: MutableLiveData<MutableList<Mentor>> = MutableLiveData()
+    val menteeLiveData: MutableLiveData<MutableList<Mentee>> = MutableLiveData()
+    val firbaseMentorResponse: HashMap<String, Mentor> = hashMapOf()
+    val firbaseMenteeResponse: HashMap<String, Mentee> = hashMapOf()
 
     fun login(email: String, password: String) = viewModelScope.launch {
         repository.login(email, password).addOnCompleteListener {
@@ -81,6 +85,62 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
             }
         }
     }
+
+
+    val listener = object : ChildEventListener {
+        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+            val usersTableHashMap = snapshot.value as HashMap<String, Object>
+            val keySet = usersTableHashMap.keys
+
+            if (keySet.contains("mentor")) {
+                val mentor = snapshot.getValue(Mentor::class.java)
+                mentor?.let {
+                    snapshot.key?.let { key -> firbaseMentorResponse.put(key, it) }
+                    val list = ArrayList<Mentor>(firbaseMentorResponse.values)
+                    mentorsLiveData.postValue(list)
+                }
+            } else {
+                val mentee = snapshot.getValue(Mentee::class.java)
+                mentee?.let {
+                    //todo think about array list for this case, below line possess high time complexity, looping through collection for every time
+                    snapshot.key?.let { key -> firbaseMenteeResponse.put(key, it) }
+                    menteeLiveData.postValue(ArrayList(firbaseMenteeResponse.values))
+                }
+            }
+        }
+
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            val usersTableHashMap = snapshot.value as HashMap<String, Object>
+            val keySet = usersTableHashMap.keys
+
+            if (keySet.contains("mentor")) {
+                val mentor = snapshot.getValue(Mentor::class.java)
+                mentor?.let {
+
+                    snapshot.key?.let { key -> firbaseMentorResponse.put(key, it) }
+                    mentorsLiveData.postValue(ArrayList(firbaseMentorResponse.values))
+                }
+            } else {
+                val mentee = snapshot.getValue(Mentee::class.java)
+                mentee?.let {
+                    snapshot.key?.let { key -> firbaseMenteeResponse.put(key, it) }
+                    menteeLiveData.postValue(ArrayList(firbaseMenteeResponse.values))
+                }
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+        }
+
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+        }
+
+        override fun onChildRemoved(snapshot: DataSnapshot) {
+        }
+    }
+
+    fun getUsersFromFirebase() = repository.getFirebaseUsersDBReference().addChildEventListener(listener)
+
 
     fun logout() = repository.logout()
 

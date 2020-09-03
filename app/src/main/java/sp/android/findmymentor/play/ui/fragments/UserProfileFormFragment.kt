@@ -24,7 +24,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     var location: String? = ""
     lateinit var viewModel: MainViewModel
 
-    // Initialize a new array with elements
+    // Initialize a new array with elements todo add more
     val countries = arrayOf("USA", "India", "Australia", "Canada", "SriLanka")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,8 +40,10 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     private fun initializeUI() {
         if (args.isMentor) {
             availableSpotsLayout.visibility = View.VISIBLE
+            totalSpotsLayout.visibility = View.VISIBLE
         } else {
             availableSpotsLayout.visibility = View.GONE
+            totalSpotsLayout.visibility = View.GONE
         }
 
         val adapter = ArrayAdapter(requireContext(),
@@ -90,7 +92,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                 if (it.isSuccessful) {
                     if (args.isMentor) {
                         if (!input_fullname.text.toString().isNullOrEmpty()) {
-                            val mentor = Mentor(input_fullname.text.toString(), input_email.text.toString(), location, input_about_yourself.text.toString(), listOfGroups as ArrayList<String>, input_available_spots.text.toString().toInt(), true)
+                            val mentor = Mentor(input_fullname.text.toString(), input_email.text.toString(), location, input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups as ArrayList<String>, input_available_spots.text.toString().toInt(), input_total_spots.text.toString().toInt(), true)
                             viewModel.createUser(null, mentor)
 
                             val bundle = Bundle().apply {
@@ -104,7 +106,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                         }
                     } else {
                         if (!input_fullname.text.toString().isNullOrEmpty()) {
-                            val mentee = Mentee(input_fullname.text.toString(), input_email.text.toString(), location, input_about_yourself.text.toString(), listOfGroups as ArrayList<String>)
+                            val mentee = Mentee(input_fullname.text.toString(), input_email.text.toString(), location, input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups as ArrayList<String>)
                             viewModel.createUser(mentee)
 
                             val bundle = Bundle().apply {
@@ -120,7 +122,6 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                 }
             }
         })
-
 
         viewModel.updateProfileStatus.observe(viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let {
@@ -171,6 +172,12 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             val aboutYourself = mentee?.aboutYourself ?: mentor?.aboutYourself
             input_about_yourself.setText(aboutYourself)
 
+            val organization = mentee?.organization ?: mentor?.organization
+            input_organization.setText(organization)
+
+            val role = mentee?.role ?: mentor?.role
+            input_role.setText(role)
+
             //interests
             val interests = resources.getStringArray(R.array.interests_choice)
             val selectedInterests = mentee?.interests ?: mentor?.interests
@@ -188,6 +195,9 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             val availability = mentor?.availability
             input_available_spots.setText(availability.toString())
 
+            val totalSpots = mentor?.totalSpots
+            input_total_spots.setText(totalSpots.toString())
+
             button.setText("Save Changes")
             button.setOnClickListener {
                 submitUpdates()
@@ -197,22 +207,27 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
 
     private fun submitUpdates() {
         if (args.isMentor) {
-            val mentor = Mentor(input_fullname.text.toString(), input_email.text.toString(), locationSpinner.selectedItem.toString(), input_about_yourself.text.toString(), listOfGroups, input_available_spots.text.toString().toInt(), true)
+            val mentor = Mentor(input_fullname.text.toString(), input_email.text.toString(), locationSpinner.selectedItem.toString(), input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups, input_available_spots.text.toString().toInt(), input_total_spots.text.toString().toInt(), true)
             val hashMap = HashMap<String, Any>()
             hashMap["full_name"] = mentor.full_name
             hashMap["email_address"] = mentor.email_address
             hashMap["availability"] = mentor.availability
+            hashMap["totalSpots"] = mentor.totalSpots
             hashMap["aboutYourself"] = mentor.aboutYourself ?: ""
+            hashMap["organization"] = mentor.organization ?: ""
+            hashMap["role"] = mentor.role ?: ""
             hashMap["interests"] = listOfGroups
             hashMap["location"] = mentor.location ?: ""
             hashMap["mentor"] = true
             viewModel.updateProfile(hashMap, null, mentor)
         } else {
-            val mentee = Mentee(input_fullname.text.toString(), input_email.text.toString(), locationSpinner.selectedItem.toString(), input_about_yourself.text.toString(), listOfGroups)
+            val mentee = Mentee(input_fullname.text.toString(), input_email.text.toString(), locationSpinner.selectedItem.toString(), input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups)
             val hashMap = HashMap<String, Any>()
             hashMap["full_name"] = mentee.full_name
             hashMap["email_address"] = mentee.email_address
             hashMap["aboutYourself"] = mentee.aboutYourself ?: ""
+            hashMap["organization"] = mentee.organization ?: ""
+            hashMap["role"] = mentee.role ?: ""
             hashMap["interests"] = listOfGroups
             hashMap["location"] = mentee.location ?: ""
             viewModel.updateProfile(hashMap, mentee)

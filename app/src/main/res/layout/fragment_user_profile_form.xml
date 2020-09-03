@@ -71,7 +71,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/locationTextLabel">
+            app:layout_constraintTop_toBottomOf="@+id/roleLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_about_yourself"
@@ -99,6 +99,42 @@
             app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
 
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/organizationLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/locationTextLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_organization"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Your organization"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/roleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/organizationLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_role"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Your current role"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
         <Spinner
             android:id="@+id/locationSpinner"
             android:layout_width="0dp"
@@ -115,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="click here to choose your interests "
+            android:text="@string/choose_interests"
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -140,6 +176,24 @@
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/totalSpotsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/availableSpotsLayout">
+
+            <EditText
+                android:id="@+id/input_total_spots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Total spots"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
@@ -150,11 +204,10 @@
             android:text="Save  Profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/availableSpotsLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/totalSpotsLayout" />
 
+        <!--todo add save option instead of button-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 </ScrollView>

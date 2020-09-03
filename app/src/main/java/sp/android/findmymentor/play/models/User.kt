@@ -7,6 +7,8 @@ data class Mentee(
         var email_address: String = "",
         var location: String? = "",
         val aboutYourself: String? = "",
+        val organization: String? = "",
+        val role: String = "",
         val interests: MutableList<String> = mutableListOf()) : Serializable
 
 data class Mentor(
@@ -14,6 +16,9 @@ data class Mentor(
         var email_address: String = "",
         var location: String? = "",
         val aboutYourself: String? = "",
+        val organization: String? = "",
+        val role: String = "",
         val interests: MutableList<String> = mutableListOf(),
         val availability: Int = 0,
+        val totalSpots: Int = 0,
         val isMentor: Boolean = false) : Serializable
