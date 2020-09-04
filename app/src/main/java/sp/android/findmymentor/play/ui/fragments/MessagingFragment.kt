@@ -119,7 +119,7 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
     override fun onStop() {
         super.onStop()
         viewModel.messagesResponse.clear()
-
+    }
     
 
 }
