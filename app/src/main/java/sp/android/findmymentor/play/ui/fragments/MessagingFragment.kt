@@ -27,35 +27,19 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
     lateinit var mainViewModel: MainViewModel
     lateinit var messagingAdapter: MessagingAdapter
     var message: Message = Message()
-    var previousRespone = mutableListOf<Message>()
     lateinit var observer: Observer<MutableList<Message>>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mainViewModel = (activity as MainActivity).viewModel
-        val mainRepository = MainRepository(FirebaseSource())
-        message = args.messageArg
-
-        viewModel = ViewModelProvider(this, MessagingViewModelFactory(mainRepository, message.chatKeyValue.toString())).get(MessagingViewModel::class.java)
-
-
-        //todo seprateview model for this fragment? how about passing keyvalue 1)constructor 2)by property
-//        message.chatKeyValue?.let {
-//            viewModel.getMessagesForTheUserChat(it)
-//        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        message = args.messageArg
+        val mainRepository = MainRepository(FirebaseSource())
+        mainViewModel =  (activity as MainActivity).viewModel
         setUpRecylcerView()
+        viewModel = ViewModelProvider(this, MessagingViewModelFactory(mainRepository, message.chatKeyValue.toString())).get(MessagingViewModel::class.java)
 
         observer = Observer {
             messagingAdapter.submitList(it)
-//            messagingAdapter.notifyDataSetChanged()
-//
-//            messagingAdapter.notifyItemInserted(messagingAdapter.differ.currentList.size - 1)
             messagesRecyclerView.scrollToPosition(messagingAdapter.currentList.size - 1)
-
         }
 
 
@@ -77,7 +61,7 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
 
         sendMessageImageView.setOnClickListener {
 
-            val message = Message(mainViewModel.loggedInMentor?.email_address, mainViewModel.loggedInMentor?.full_name!!, typeMessageEditText.text.toString(), System.currentTimeMillis())
+            val message = Message(mainViewModel.getLoggedInEmailAddress()!!, mainViewModel.getLoggedInUserName()!!, typeMessageEditText.text.toString(), System.currentTimeMillis())
 
             this.message.chatKeyValue?.let { chatKeyValue -> viewModel.sendMessage(message, chatKeyValue) }
 
@@ -90,15 +74,17 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
     private fun setUpRecylcerView() {
         messagingAdapter = MessagingAdapter()
 
-        if (mainViewModel.isLoggedInUserMentor) {
-            mainViewModel.loggedInMentor?.let {
-                loggedInUserName = it.full_name
-            }
-        } else {
-            mainViewModel.loggedInMentee?.let {
-                loggedInUserName = it.full_name
-            }
-        }
+        loggedInUserName = mainViewModel.getLoggedInUserName()!!
+
+//        if (mainViewModel.isLoggedInUserMentor) {
+//            mainViewModel.loggedInMentor?.let {
+//                loggedInUserName = it.full_name
+//            }
+//        } else {
+//            mainViewModel.loggedInMentee?.let {
+//                loggedInUserName = it.full_name
+//            }
+//        }
 
         messagesRecyclerView.adapter = messagingAdapter
 
@@ -116,10 +102,5 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
 //        (messagesRecyclerView.layoutManager as LinearLayoutManager?)!!.stackFromEnd = true
     }
 
-    override fun onStop() {
-        super.onStop()
-        viewModel.messagesResponse.clear()
-    }
-    
 
 }

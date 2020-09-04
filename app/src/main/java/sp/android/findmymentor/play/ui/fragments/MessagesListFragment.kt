@@ -11,19 +11,16 @@ import kotlinx.android.synthetic.main.fragment_messages_list.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.MainActivity
 import sp.android.findmymentor.play.adapters.MessagesListAdapter
+import sp.android.findmymentor.play.models.Mentee
 import sp.android.findmymentor.play.models.Mentor
 import sp.android.findmymentor.play.ui.viewmodels.MainViewModel
 
 class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
-
-    val args: MessagesListFragmentArgs by navArgs()
     lateinit var viewModel: MainViewModel
     lateinit var messagesListAdapter: MessagesListAdapter
-    var mentor: Mentor? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mentor = args.mentorArg
         viewModel = (activity as MainActivity).viewModel
         setUpRecyclerView()
 
@@ -39,15 +36,15 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
 
         viewModel.messageSendersLiveData.observe(viewLifecycleOwner, Observer {
 
-                if (it.size > 0) {
-                    messagesListRecyclerView.visibility = View.VISIBLE
-                    no_messages_text_view.visibility = View.GONE
-                } else {
-                    messagesListRecyclerView.visibility = View.GONE
-                    no_messages_text_view.visibility = View.VISIBLE
-                }
-                messagesListAdapter.differ.submitList(it)
-                messagesListAdapter.notifyDataSetChanged()
+            if (it.size > 0) {
+                messagesListRecyclerView.visibility = View.VISIBLE
+                no_messages_text_view.visibility = View.GONE
+            } else {
+                messagesListRecyclerView.visibility = View.GONE
+                no_messages_text_view.visibility = View.VISIBLE
+            }
+            messagesListAdapter.differ.submitList(it)
+            messagesListAdapter.notifyDataSetChanged()//todo replace the adapter-refactor
 
 
         })

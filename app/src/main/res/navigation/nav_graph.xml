@@ -50,6 +50,9 @@
         <argument
             android:name="menteeArg"
             app:argType="sp.android.findmymentor.play.models.Mentee" />
+        <action
+            android:id="@+id/action_menteeHomeFragment_to_messagesListFragment"
+            app:destination="@id/messagesListFragment" />
     </fragment>
     <fragment
         android:id="@+id/messagesListFragment"

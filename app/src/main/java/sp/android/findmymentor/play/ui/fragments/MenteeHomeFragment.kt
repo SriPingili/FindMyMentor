@@ -45,6 +45,11 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
             viewModel.requestSelectedMentor(it)
         }
 
+        messagesFab.setOnClickListener {
+            viewModel.getMessagesFromDifferentSenders()
+            findNavController().navigate(R.id.action_menteeHomeFragment_to_messagesListFragment)
+        }
+
         addObservers()
     }
 

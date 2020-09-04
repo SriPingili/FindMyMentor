@@ -11,23 +11,18 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.launch
-import sp.android.findmymentor.R
 import sp.android.findmymentor.play.models.Mentee
 import sp.android.findmymentor.play.models.Mentor
 import sp.android.findmymentor.play.models.Message
 import sp.android.findmymentor.play.repository.MainRepository
-import sp.android.findmymentor.play.util.Constants
 import sp.android.findmymentor.play.util.Constants.Companion.ADMIN_ID
 import sp.android.findmymentor.play.util.Constants.Companion.ADMIN_NAME
-import sp.android.findmymentor.play.util.Constants.Companion.CHATS
 import sp.android.findmymentor.play.util.Constants.Companion.MESSAGES_KEY
 import sp.android.findmymentor.play.util.Constants.Companion.PARTICIPANTS_KEY
 import sp.android.findmymentor.play.util.Constants.Companion.SENDER_ID
 import sp.android.findmymentor.play.util.Constants.Companion.SENDER_NAME
 import sp.android.findmymentor.play.util.Constants.Companion.TEXT
 import sp.android.findmymentor.play.util.Event
-import java.util.Arrays
-import java.util.Objects
 import java.util.UUID
 
 class MainViewModel(private val repository: MainRepository) : ViewModel() {
@@ -209,9 +204,6 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
                                         }
 
                                         override fun onDataChange(snapshot: DataSnapshot) {
-                                            val count = snapshot.childrenCount
-                                            Log.v("zzzzzzzzz", "count = $count")
-
                                             for (dataSnapshot in snapshot.children) {
                                                 val messageTemp = dataSnapshot.getValue(Message::class.java)
                                                 messageTemp?.let {
