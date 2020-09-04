@@ -120,10 +120,6 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
         super.onStop()
         viewModel.messagesResponse.clear()
 
-//        if (viewModel != null && viewModel.messagesLiveData.hasObservers()) {
-//            viewModel.messagesLiveData.removeObservers(this);
-//        }
-    }
-
+    
 
 }

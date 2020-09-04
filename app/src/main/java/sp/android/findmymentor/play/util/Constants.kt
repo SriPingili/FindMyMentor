@@ -1,8 +1,5 @@
 package sp.android.findmymentor.play.util
 
-import sp.android.findmymentor.play.models.Mentee
-import sp.android.findmymentor.play.models.Mentor
-
 class Constants {
 
     companion object {
@@ -17,10 +14,5 @@ class Constants {
         const val ADMIN_NAME = "Admin"
         const val ADMIN_ID = "admin"
         var loggedInUserName = ""
-
-
-//        lateinit var mentee: Mentee
-//        lateinit var mentor: Mentor
-//        var isLoggedInUserMentor = false
     }
 }

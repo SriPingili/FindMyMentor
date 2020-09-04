@@ -65,15 +65,11 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
                 val map = snapshot.value as HashMap<String, String>?
                 if (map?.containsKey("mentor")!!) {
                     loggedInMentor = snapshot.getValue(Mentor::class.java)
-//                    Constants.mentor = loggedInMentor!!
                     isLoggedInUserMentor = true
-//                    Constants.isLoggedInUserMentor = true
                     loggedInUserIsMentor.postValue(Event(true))
                 } else {
                     loggedInMentee = snapshot.getValue(Mentee::class.java)
-//                    Constants.mentee = loggedInMentee!!
                     isLoggedInUserMentor = false
-//                    Constants.isLoggedInUserMentor = false
                     loggedInUserIsMentor.postValue(Event(false))
                 }
             }
@@ -89,15 +85,11 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     fun createUser(mentee: Mentee? = null, mentor: Mentor? = null) {
         if (mentee != null) {
             isLoggedInUserMentor = false
-//            Constants.isLoggedInUserMentor = false
             loggedInMentee = mentee
-//            Constants.mentee = mentee
             repository.getChildUserReference()?.setValue(mentee)
         } else if (mentor != null) {
             isLoggedInUserMentor = true
-//            Constants.isLoggedInUserMentor = true
             loggedInMentor = mentor
-//            Constants.mentor = mentor
             repository.getChildUserReference()?.setValue(mentor)
         }
     }
@@ -106,14 +98,8 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     fun updateProfile(map: HashMap<String, Any>, mentee: Mentee?, mentor: Mentor? = null) {
         repository.getChildUserReference()?.updateChildren(map) { error, _ ->
             if (error == null) {
-                if (mentee != null) {
-                    loggedInMentee = mentee
-//                    Constants.mentee = mentee
-                }
-                if (mentor != null) {
-                    loggedInMentor = mentor
-//                    Constants.mentor = mentor
-                }
+                if (mentee != null) loggedInMentee = mentee
+                if (mentor != null) loggedInMentor = mentor
                 updateProfileStatus.postValue(Event(true))
             } else {
                 updateProfileStatus.postValue(Event(false))
@@ -204,7 +190,7 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     }
 
     fun getMessagesFromDifferentSenders() {
-        //todo improve this, may be refactor data model for message
+
         //chats
         repository.getFirebaseChatsDBReference().addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
@@ -253,10 +239,6 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
                                                 val participantName = dataSnapshot.value.toString()
                                                 if (!participantName.equals(mentor.full_name)) {
                                                     message.sender_name = participantName
-
-//                                                    if(messageSendersResponse.contains(message)){
-//                                                        return
-//                                                    }
                                                     messageSendersResponse.add(message)
                                                     messageSendersLiveData.postValue(messageSendersResponse)
                                                 }
@@ -264,7 +246,6 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
                                         }
                                     }
 
-                                    //todo this may go inside the above call
                                     repository.getFirebaseMessagesDBReference()
                                             .child(value.toString())
                                             .child(PARTICIPANTS_KEY)
@@ -285,44 +266,9 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
             override fun onChildRemoved(snapshot: DataSnapshot) {}
         })
+
+
     }
-
-
-    fun getMessagesForTheUserChat(chatKeyValue: String) {
-//        if (!hasCalledGetMessages) {
-//            hasCalledGetMessages = true
-            repository.getFirebaseMessagesDBReference().child(chatKeyValue).child(MESSAGES_KEY).addChildEventListener(object : ChildEventListener {
-                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    snapshot.value?.let { it ->
-                        val message = snapshot.getValue(Message::class.java)
-
-                        message?.let {
-                            if(messagesResponse.contains(it)){
-                                return@let
-                            }
-                            messagesResponse.add(it)
-                            messagesLiveData.postValue(messagesResponse)
-                        }
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-
-                }
-
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                }
-
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                }
-
-                override fun onChildRemoved(snapshot: DataSnapshot) {
-                }
-
-            })
-//        }
-    }
-
 
 
     fun logout() = repository.logout()
