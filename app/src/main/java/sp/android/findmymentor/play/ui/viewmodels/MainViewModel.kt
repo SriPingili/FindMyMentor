@@ -262,6 +262,27 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
     }
 
+    fun getCommonInterests(mentor: Mentor): String {
+        val menteeInterests = loggedInMentee?.interests?.toMutableList() //creates a copy
+        val mentorInterests = mentor.interests
+
+        menteeInterests?.let {
+            it.retainAll(mentorInterests)
+
+            var placeholder = "0"
+
+            if(!it.isEmpty()){
+                placeholder = it.toString().replace("[", "").replace("]", "")
+            }
+
+            val message = "You have ${placeholder} interests in common with this mentor"
+
+            return message
+        }
+
+        return "you don't have any common groups";
+    }
+
 
     fun logout() = repository.logout()
 

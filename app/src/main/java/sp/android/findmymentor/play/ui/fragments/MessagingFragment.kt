@@ -76,16 +76,6 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
 
         loggedInUserName = mainViewModel.getLoggedInUserName()!!
 
-//        if (mainViewModel.isLoggedInUserMentor) {
-//            mainViewModel.loggedInMentor?.let {
-//                loggedInUserName = it.full_name
-//            }
-//        } else {
-//            mainViewModel.loggedInMentee?.let {
-//                loggedInUserName = it.full_name
-//            }
-//        }
-
         messagesRecyclerView.adapter = messagingAdapter
 
         val layoutManager = LinearLayoutManager(activity)

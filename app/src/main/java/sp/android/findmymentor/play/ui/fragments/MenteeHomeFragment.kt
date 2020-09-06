@@ -1,15 +1,18 @@
 package sp.android.findmymentor.play.ui.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ramotion.foldingcell.FoldingCell
 import kotlinx.android.synthetic.main.fragment_mentee_home.*
 import sp.android.findmymentor.R
@@ -27,6 +30,8 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+
+
         mentee = args.menteeArg
         viewModel = (activity as MainActivity).viewModel
 
@@ -43,6 +48,18 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
 
         mentorsAdapter.setOnRequestMentorClickListener {
             viewModel.requestSelectedMentor(it)
+        }
+
+        mentorsAdapter.setCommonGroupsClickListener {
+            val commonInterestsMessage = viewModel.getCommonInterests(it)
+
+
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
+                    .setTitle(String.format(getString(R.string.dear_user), viewModel.getLoggedInUserName()))
+                    .setMessage(commonInterestsMessage)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create()
+                    .show()
         }
 
         messagesFab.setOnClickListener {
@@ -65,6 +82,7 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
         })
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
     }
@@ -82,6 +100,6 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
             return true
         }
 
-        return super.onOptionsItemSelected(item)
+        return false
     }
 }

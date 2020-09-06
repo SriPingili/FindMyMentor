@@ -5,6 +5,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import sp.android.findmymentor.R
@@ -23,5 +26,31 @@ class MainActivity : AppCompatActivity() {
         val mainRepository = MainRepository(FirebaseSource())
 
         viewModel = ViewModelProvider(this, MainViewModelFactory(mainRepository)).get(MainViewModel::class.java)
+
+        val navController = findNavController(R.id.navHostFragmentId)
+
+
+        val appBarConfiguration = AppBarConfiguration
+                .Builder(
+                        R.id.loginFragment,
+                        R.id.menteeHomeFragment,
+                        R.id.messagesListFragment)
+                .build()
+
+
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+
+
+        //todo refactor code (view models)
+        //todo option for mentor to view mentee profile
+        //todo view groups in common
+        //todo consistent "requested" after requesting mentor (even after logout and login)
+        //todo interests chooser dialog
+        //todo refactor interests logic, add more interests
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = this.findNavController(R.id.navHostFragmentId)
+        return navController.navigateUp()
     }
 }

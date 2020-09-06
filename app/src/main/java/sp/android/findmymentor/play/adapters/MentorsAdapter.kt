@@ -20,6 +20,7 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
     private var unfoldedIndexes = HashSet<Int>()
     private var onItemClickListener: ((View, Int) -> Unit)? = null
     private var onRequestMentorClickListener: ((Mentor) -> Unit)? = null
+    private var onCommonGroupsClickListener: ((Mentor) -> Unit)? = null
 
     inner class MentorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -85,6 +86,12 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
                 }
             }
 
+            commonInterestsImageView.setOnClickListener {
+
+                onCommonGroupsClickListener?.let {
+                    it(mentor)
+                }
+            }
             // for existing cell set valid valid state(without animation todo revisit this logic
             /*if (unfoldedIndexes.contains(position)) {
                 cell.unfold(true)
@@ -122,6 +129,10 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
 
     fun setOnRequestMentorClickListener(listener: (Mentor) -> Unit) {
         onRequestMentorClickListener = listener
+    }
+
+    fun setCommonGroupsClickListener(listener: (Mentor) -> Unit) {
+        onCommonGroupsClickListener = listener
     }
 
     /*

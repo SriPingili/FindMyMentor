@@ -1,14 +1,17 @@
 package sp.android.findmymentor.play.ui.fragments
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.fragment_user_profile_form.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.MainActivity
@@ -24,11 +27,13 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     var location: String? = ""
     lateinit var viewModel: MainViewModel
 
-    // Initialize a new array with elements todo add more
-    val countries = arrayOf("USA", "India", "Australia", "Canada", "SriLanka")
+    // Initialize a new array with elements
+    val countries = arrayOf("India")//resources.getStringArray(R.array.countries_array)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+
         viewModel = (activity as MainActivity).viewModel
         initializeUI()
 
@@ -36,6 +41,15 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
 
         prepareEditProfileIfNeeded()
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean
+    {
+        // handle the up button here
+        return NavigationUI.onNavDestinationSelected(item!!,
+                view!!.findNavController())
+                || super.onOptionsItemSelected(item)
+    }
+
 
     private fun initializeUI() {
         if (args.isMentor) {
@@ -77,11 +91,11 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     private fun updateInterests(pos: Int, bool: Boolean) {
         val interest = resources.getStringArray(R.array.interests_choice)?.get(pos).toString()
         if (bool) {
-            InterestsChooserDialog.checkedItems[pos] = true
+            InterestsChooserDialog.checkedItems?.set(pos, true)
             if (!listOfGroups.contains(interest))
                 listOfGroups.add(interest)
         } else {
-            InterestsChooserDialog.checkedItems[pos] = false
+            InterestsChooserDialog.checkedItems?.set(pos, false)
             listOfGroups.remove(interest)
         }
     }
@@ -179,17 +193,19 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             input_role.setText(role)
 
             //interests
-            val interests = resources.getStringArray(R.array.interests_choice)
+            val interests =  InterestsChooserDialog.list
             val selectedInterests = mentee?.interests ?: mentor?.interests
             listOfGroups.clear()
             if (selectedInterests != null) {
                 listOfGroups.addAll(selectedInterests)
             }
 
-            for (interest in interests) {
-                if (selectedInterests?.contains(interest)!!) {
-                    InterestsChooserDialog.checkedItems[interests.indexOf(interest)] = true
+            for (interest in interests!!) {
+
+                selectedInterests?.let {
+                    InterestsChooserDialog.checkedItems?.set(interests.indexOf(interest), it.contains(interest))
                 }
+
             }
 
             val availability = mentor?.availability

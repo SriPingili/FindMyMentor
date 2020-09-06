@@ -24,6 +24,12 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
         viewModel = (activity as MainActivity).viewModel
         setUpRecyclerView()
 
+        if (viewModel.loggedInMentor == null) {
+            setHasOptionsMenu(true)
+            (activity as MainActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+            (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+
         messagesListAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
                 putSerializable("messageArg", it)
