@@ -1,4 +1,4 @@
-package sp.android.findmymentor.play.adapter
+package sp.android.findmymentor.play.adapters
 
 import android.view.LayoutInflater
 import android.view.View

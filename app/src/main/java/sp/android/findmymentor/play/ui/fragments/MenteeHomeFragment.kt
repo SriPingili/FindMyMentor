@@ -14,7 +14,7 @@ import com.ramotion.foldingcell.FoldingCell
 import kotlinx.android.synthetic.main.fragment_mentee_home.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.MainActivity
-import sp.android.findmymentor.play.adapter.MentorsAdapter
+import sp.android.findmymentor.play.adapters.MentorsAdapter
 import sp.android.findmymentor.play.models.Mentee
 import sp.android.findmymentor.play.ui.viewmodels.MainViewModel
 

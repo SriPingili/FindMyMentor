@@ -57,6 +57,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     val bundle = Bundle().apply {
                         putSerializable("mentorArg", viewModel.loggedInMentor)
                     }
+                    viewModel.getMessagesFromDifferentSenders()
+
                     findNavController().navigate(
                             R.id.action_loginFragment_to_messagesListFragment,
                             bundle
