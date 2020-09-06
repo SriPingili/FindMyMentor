@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     folding-cell:additionalFlipsCount="2"
-    folding-cell:animationDuration="1000"
+    folding-cell:animationDuration="800"
     folding-cell:backSideColor="#f4f0ff"
     folding-cell:cameraHeight="30"
     android:layout_margin="8dp">

@@ -42,7 +42,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         val loginObserver = Observer<Event<Task<AuthResult>>> { event ->
             event.getContentIfNotHandled()?.let {
-                if (it.isSuccessful) {
+                if (it.isSuccessful)
+                {
+                    viewModel.getChatKeysFromFirebase()
                     viewModel.routeToUsersTimeline()
                 } else {
                     Toast.makeText(requireContext(), "Login failed!!", Toast.LENGTH_LONG).show()
@@ -68,6 +70,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     val bundle = Bundle().apply {
                         putSerializable("menteeArg", viewModel.loggedInMentee)
                     }
+
                     findNavController().navigate(
                             R.id.action_loginFragment_to_menteeHomeFragment,
                             bundle

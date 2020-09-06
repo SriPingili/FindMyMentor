@@ -3,6 +3,7 @@ package sp.android.findmymentor.play.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,7 @@ import kotlinx.android.synthetic.main.cell_folded_layout.view.*
 import kotlinx.android.synthetic.main.cell_unfolded_layout.view.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.models.Mentor
+import sp.android.findmymentor.play.util.Constants
 import java.util.HashSet
 
 /*
@@ -21,6 +23,8 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
     private var onItemClickListener: ((View, Int) -> Unit)? = null
     private var onRequestMentorClickListener: ((Mentor) -> Unit)? = null
     private var onCommonGroupsClickListener: ((Mentor) -> Unit)? = null
+    private var chatKeys = mutableSetOf<String>()
+    private var loggedInUserEmail: String = ""
 
     inner class MentorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -80,10 +84,16 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
             availabilityStatusTVUnfolded.setText("Available")//todo
 
             requestUserButton.setOnClickListener {
-                requestUserButton.setText("Requested")
+                requestUser(requestUserButton)
                 onRequestMentorClickListener?.let {
                     it(mentor)
                 }
+            }
+
+            val chatKey = Constants.getKey(loggedInUserEmail, mentor.email_address)
+
+            if (chatKeys.contains(chatKey)) {
+                requestUser(requestUserButton)
             }
 
             commonInterestsImageView.setOnClickListener {
@@ -107,6 +117,12 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
         }
     }
 
+    fun requestUser(requestUserButton : TextView){
+        requestUserButton.setText("Requested")
+        requestUserButton.alpha=0.5f
+        requestUserButton.isEnabled= false
+    }
+
     // simple methods for register cell state changes
     fun registerToggle(position: Int) {
         if (unfoldedIndexes.contains(position)) registerFold(position) else registerUnfold(position)
@@ -118,6 +134,11 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
 
     fun registerUnfold(position: Int) {
         unfoldedIndexes.add(position)
+    }
+
+    fun setKeysAndLoggedInUserEmail(keys: MutableSet<String>, email: String) {
+        chatKeys = keys
+        loggedInUserEmail = email
     }
 
     /*

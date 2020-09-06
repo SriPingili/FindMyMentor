@@ -43,10 +43,12 @@ class MainActivity : AppCompatActivity() {
 
         //todo refactor code (view models)
         //todo option for mentor to view mentee profile
-        //todo view groups in common
-        //todo consistent "requested" after requesting mentor (even after logout and login)
-        //todo interests chooser dialog
-        //todo refactor interests logic, add more interests
+
+
+        //todo fix messgaes list fragment bug (still exists)
+        //todo add logout
+        //todo fix back button, popup login fragment
+        //todo add edit profile to mentor
     }
 
     override fun onSupportNavigateUp(): Boolean {

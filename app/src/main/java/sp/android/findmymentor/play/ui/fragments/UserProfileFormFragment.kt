@@ -106,6 +106,8 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                 if (it.isSuccessful) {
                     if (args.isMentor) {
                         if (!input_fullname.text.toString().isNullOrEmpty()) {
+                            viewModel.getMessagesFromDifferentSenders()
+
                             val mentor = Mentor(input_fullname.text.toString(), input_email.text.toString(), location, input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups as ArrayList<String>, input_available_spots.text.toString().toInt(), input_total_spots.text.toString().toInt(), true)
                             viewModel.createUser(null, mentor)
 
@@ -115,11 +117,12 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                                         viewModel.loggedInMentor
                                 )
                             }
-
                             findNavController().navigate(R.id.action_userProfileFormFragment_to_messagesListFragment, bundle)
                         }
                     } else {
                         if (!input_fullname.text.toString().isNullOrEmpty()) {
+                            viewModel.getChatKeysFromFirebase()
+
                             val mentee = Mentee(input_fullname.text.toString(), input_email.text.toString(), location, input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups as ArrayList<String>)
                             viewModel.createUser(mentee)
 
@@ -129,7 +132,6 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                                         viewModel.loggedInMentee
                                 )
                             }
-
                             findNavController().navigate(R.id.action_userProfileFormFragment_to_menteeHomeFragment, bundle)
                         }
                     }

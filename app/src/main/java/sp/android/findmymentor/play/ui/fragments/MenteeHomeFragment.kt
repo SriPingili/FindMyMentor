@@ -72,6 +72,7 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
 
     private fun setUpRecyclerView() {
         mentorsAdapter = MentorsAdapter()
+        mentorsAdapter.setKeysAndLoggedInUserEmail(viewModel.chatsKey, viewModel.getLoggedInEmailAddress().toString())
         mentorsRecyclerView.adapter = mentorsAdapter
         mentorsRecyclerView.layoutManager = LinearLayoutManager(activity)
     }

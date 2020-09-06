@@ -15,6 +15,7 @@ import sp.android.findmymentor.play.models.Mentee
 import sp.android.findmymentor.play.models.Mentor
 import sp.android.findmymentor.play.models.Message
 import sp.android.findmymentor.play.repository.MainRepository
+import sp.android.findmymentor.play.util.Constants
 import sp.android.findmymentor.play.util.Constants.Companion.ADMIN_ID
 import sp.android.findmymentor.play.util.Constants.Companion.ADMIN_NAME
 import sp.android.findmymentor.play.util.Constants.Companion.MESSAGES_KEY
@@ -36,13 +37,10 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     val mentorsLiveData: MutableLiveData<MutableList<Mentor>> = MutableLiveData()
     val menteeLiveData: MutableLiveData<MutableList<Mentee>> = MutableLiveData()
     val messageSendersLiveData: MutableLiveData<MutableList<Message>> = MutableLiveData()
-    val messagesLiveData: MutableLiveData<MutableList<Message>> = MutableLiveData()
     val firbaseMentorResponse: HashMap<String, Mentor> = hashMapOf()
     val firbaseMenteeResponse: HashMap<String, Mentee> = hashMapOf()
     val messageSendersResponse = mutableListOf<Message>()
-    val messagesResponse = mutableListOf<Message>()
-
-    var hasCalledGetMessages = false
+    var chatsKey: MutableSet<String> = mutableSetOf()
 
     fun login(email: String, password: String) = viewModelScope.launch {
         repository.login(email, password).addOnCompleteListener {
@@ -161,10 +159,7 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     fun requestSelectedMentor(mentor: Mentor) {
         loggedInMentee?.let {
             val uuid = UUID.randomUUID().toString()
-            val menteeEmail = it.email_address.replace("""[$#.\[\]]""".toRegex(), "")
-            val mentorEmail = mentor.email_address.replace("""[$#.\[\]]""".toRegex(), "")
-
-            val chatKey = "$menteeEmail:$mentorEmail"
+            val chatKey = Constants.getKey(it.email_address, mentor.email_address)
 
             repository.getFirebaseChatsDBReference().child(chatKey).setValue(uuid)
 
@@ -193,8 +188,8 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
                 snapshot?.let { dataSnapshot ->
                     dataSnapshot.key?.let { key ->
                         dataSnapshot.value?.let { value ->
-                            loggedInMentor?.let { mentor ->
-                                if (key.contains(mentor.email_address.replace("""[$#.\[\]]""".toRegex(), ""))) {
+                            getLoggedInEmailAddress()?.let { emailAddress ->
+                                if (key.contains(emailAddress.replace("""[$#.\[\]]""".toRegex(), ""))) {
                                     val message = Message()
                                     message.chatKey = key
                                     message.chatKeyValue = value.toString()
@@ -229,7 +224,7 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
                                         override fun onDataChange(snapshot: DataSnapshot) {
                                             for (dataSnapshot in snapshot.children) {
                                                 val participantName = dataSnapshot.value.toString()
-                                                if (!participantName.equals(mentor.full_name)) {
+                                                if (!participantName.equals(getLoggedInUserName())) {
                                                     message.sender_name = participantName
                                                     messageSendersResponse.add(message)
                                                     messageSendersLiveData.postValue(messageSendersResponse)
@@ -258,8 +253,23 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
             override fun onChildRemoved(snapshot: DataSnapshot) {}
         })
+    }
 
 
+    fun getLoggedInUserName(): String? {
+        return when {
+            loggedInMentee != null -> loggedInMentee?.full_name
+            loggedInMentor != null -> loggedInMentor?.full_name
+            else -> null
+        }
+    }
+
+    fun getLoggedInEmailAddress(): String? {
+        return when {
+            loggedInMentee != null -> loggedInMentee?.email_address
+            loggedInMentor != null -> loggedInMentor?.email_address
+            else -> null
+        }
     }
 
     fun getCommonInterests(mentor: Mentor): String {
@@ -271,7 +281,7 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
             var placeholder = "0"
 
-            if(!it.isEmpty()){
+            if (!it.isEmpty()) {
                 placeholder = it.toString().replace("[", "").replace("]", "")
             }
 
@@ -283,6 +293,28 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
         return "you don't have any common groups";
     }
 
+
+    fun getChatKeysFromFirebase() {
+
+        repository.getFirebaseChatsDBReference().addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                snapshot.value?.let {
+                    val hashMap = it as HashMap<String, String>
+
+                    chatsKey = hashMap.keys
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+
+        })
+
+
+    }
 
     fun logout() = repository.logout()
 

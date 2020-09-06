@@ -14,5 +14,12 @@ class Constants {
         const val ADMIN_NAME = "Admin"
         const val ADMIN_ID = "admin"
         var loggedInUserName = ""
+
+        fun getKey(menteeEmail: String, mentorEmail: String): String {
+            val menteeEmail = menteeEmail.replace("""[$#.\[\]]""".toRegex(), "")
+            val mentorEmail = mentorEmail.replace("""[$#.\[\]]""".toRegex(), "")
+
+            return "$menteeEmail:$mentorEmail"
+        }
     }
 }
