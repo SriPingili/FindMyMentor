@@ -38,6 +38,9 @@
             android:name="dummy"
             android:defaultValue="false"
             app:argType="boolean" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/userProfileFormFragment"
@@ -160,6 +163,14 @@
         <argument
             android:name="title"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="sp.android.findmymentor.play.ui.fragments.ForgotPasswordFragment"
+        android:label="@string/app_name" >
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 
 </navigation>

@@ -311,11 +311,11 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
             override fun onCancelled(error: DatabaseError) {
             }
-
-
         })
+    }
 
-
+    fun performPasswordReset(email: String) {
+        repository.getFirebaseAuthInstance().sendPasswordResetEmail(email)
     }
 
     fun logout() = repository.logout()

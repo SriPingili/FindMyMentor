@@ -49,12 +49,12 @@ class MainActivity : AppCompatActivity() {
 
         //todo refactor code (view models)
         //todo fix messgaes list fragment bug (still exists)//gets called multiple times
-        //todo animations for fragments @nav graph
 
 
         //todo forgot password
         //totdo fix notify dataset changed in messageslist fragment
         //****validations
+        //todo rethink actions for up button
 
     }
 

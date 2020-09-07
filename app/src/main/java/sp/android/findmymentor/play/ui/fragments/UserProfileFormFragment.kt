@@ -94,7 +94,12 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.save_profile_changes) {
-            submitUpdates()
+            if (viewModel.loggedInMentee == null && viewModel.loggedInMentor == null) {
+                viewModel.registerUser(input_email.text.toString(), input_password.text.toString())
+            } else {
+                submitUpdates()
+            }
+
             return true
         }
 

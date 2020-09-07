@@ -36,6 +36,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         sign_in_button_id.setOnClickListener {
             viewModel.login(input_email.text.toString(), input_password.text.toString())
         }
+
+        forgotPasswordLabel.setOnClickListener {
+            findNavController().navigate(
+                    R.id.action_loginFragment_to_forgotPasswordFragment
+            )
+        }
     }
 
     private fun addObservers() {
@@ -60,7 +66,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                     val bundle = Bundle().apply {
                         putSerializable("mentorArg", viewModel.loggedInMentor)
-                        putString("title","Hello ${viewModel.loggedInMentor?.full_name}, your inbox")
+                        putString("title", "Hello ${viewModel.loggedInMentor?.full_name}, your inbox")
                     }
 
                     findNavController().navigate(
@@ -72,7 +78,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                     val bundle = Bundle().apply {
                         putSerializable("menteeArg", viewModel.loggedInMentee)
-                        putString("title","Hello ${viewModel.loggedInMentee?.full_name}")
+                        putString("title", "Hello ${viewModel.loggedInMentee?.full_name}")
                     }
 
                     findNavController().navigate(
