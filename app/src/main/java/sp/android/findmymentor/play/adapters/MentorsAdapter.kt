@@ -64,27 +64,32 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
             val cell = this as FoldingCell
 
             //folded scenario
-            roundedTextViewFolded.setText(mentor.full_name.subSequence(0, 1))
-            availabilityTextViewFolded.setText("${mentor.availability}/${mentor.totalSpots}")
-            userNameTextViewFolded.setText(mentor.full_name)
-            userRoleTextViewFolded.setText(mentor.role)
-            organizationNameTextViewFolded.setText(mentor.organization)
-            locationTextViewFolded.setText(mentor.location)
+            roundedTextViewFolded.text = mentor.full_name.subSequence(0, 1)
+            availabilityTextViewFolded.text = "${mentor.availability}/${mentor.totalSpots}"
+            userNameTextViewFolded.text = mentor.full_name
+            userRoleTextViewFolded.text = mentor.role
+            organizationNameTextViewFolded.text = mentor.organization
+            locationTextViewFolded.text = mentor.location
 
             //unfolded scenario
-            roundedTextViewUnfolded.setText(mentor.full_name.subSequence(0, 1))
-            userNameTextViewUnfolded.setText(mentor.full_name)
-            userRoleTextViewUnfolded.setText(mentor.role)
-            aboutUserLabelTextView.setText(String.format(context.getString(R.string.description), mentor.full_name.substringBefore(' ')))
-            aboutUserDescriptionTextView.setText(mentor.aboutYourself)
-            availabilityTextViewUnfolded.setText(mentor.availability.toString())
-            organizationNameTextViewUnfolded.setText(mentor.organization)
-            availableSpotsTextView.setText(mentor.availability.toString())
-            locationTextViewUnfolded.setText(mentor.location)
-            availabilityStatusTVUnfolded.setText("Available")//todo
+            roundedTextViewUnfolded.text = mentor.full_name.subSequence(0, 1)
+            userNameTextViewUnfolded.text = mentor.full_name
+            userRoleTextViewUnfolded.text = mentor.role
+            aboutUserLabelTextView.text = String.format(context.getString(R.string.description), mentor.full_name.substringBefore(' '))
+            aboutUserDescriptionTextView.text = mentor.aboutYourself
+            availabilityTextViewUnfolded.text = mentor.availability.toString()
+            organizationNameTextViewUnfolded.text = mentor.organization
+            availableSpotsTextView.text = mentor.availability.toString()
+            locationTextViewUnfolded.text = mentor.location
+
+            if (mentor.availability < 1) {
+                availabilityStatusTVUnfolded.text = "Unavailable"
+            } else {
+                availabilityStatusTVUnfolded.text = "Available"
+            }
 
             requestUserButton.setOnClickListener {
-                requestUser(requestUserButton)
+                requestUser(requestUserButton, availabilityStatusTVUnfolded)
                 onRequestMentorClickListener?.let {
                     it(mentor)
                 }
@@ -93,7 +98,7 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
             val chatKey = Constants.getKey(loggedInUserEmail, mentor.email_address)
 
             if (chatKeys.contains(chatKey)) {
-                requestUser(requestUserButton)
+                requestUser(requestUserButton, availabilityStatusTVUnfolded)
             }
 
             commonInterestsImageView.setOnClickListener {
@@ -117,10 +122,12 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
         }
     }
 
-    fun requestUser(requestUserButton : TextView){
-        requestUserButton.setText("Requested")
-        requestUserButton.alpha=0.5f
-        requestUserButton.isEnabled= false
+    private fun requestUser(requestUserButton: TextView, availabilityStatusTVUnfolded: TextView) {
+        availabilityStatusTVUnfolded.text = "Requested"
+        requestUserButton.text = "Go to Messages"
+        requestUserButton.alpha = 0.5f
+        //TODO make it true and take to messages on click
+        requestUserButton.isEnabled = false
     }
 
     // simple methods for register cell state changes
@@ -162,6 +169,6 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
      */
     fun submitList(stores: List<Mentor>) {
         differ.submitList(stores)
-        notifyDataSetChanged()
+        notifyDataSetChanged()//todo fix this
     }
 }

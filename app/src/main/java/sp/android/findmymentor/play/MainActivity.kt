@@ -45,14 +45,13 @@ class MainActivity : AppCompatActivity() {
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
+        //todo option for mentor to view mentee profile
 
         //todo refactor code (view models)
-        //todo option for mentor to view mentee profile
         //todo fix messgaes list fragment bug (still exists)//gets called multiple times
         //todo animations for fragments @nav graph
         //todo forgot password
         //totdo fix notify dataset changed in messageslist fragment
-        //fix availability status
         //****validations
 
     }
