@@ -1,6 +1,8 @@
 package sp.android.findmymentor.play.ui.fragments
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
@@ -51,7 +53,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
 
         val adapter = countries?.let {
             ArrayAdapter(requireContext(),
-                R.layout.spinner_item, it)
+                    R.layout.spinner_item, it)
         }
         locationSpinner.adapter = adapter
 
@@ -73,10 +75,30 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                 }
             }.show(parentFragmentManager, "BMR_FRAGMENT_TAG")
         }
+    }
 
-        button.setOnClickListener {
-            viewModel.registerUser(input_email.text.toString(), input_password.text.toString())
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.findItem(R.id.save_profile_changes).isVisible = true
+        menu.findItem(R.id.edit_profile).isVisible = false
+
+
+        if (viewModel.loggedInMentor == null && viewModel.loggedInMentee == null) {
+            menu.findItem(R.id.logout).isVisible = false
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.save_profile_changes) {
+            submitUpdates()
+            return true
+        }
+
+        return false
     }
 
     private fun updateInterests(pos: Int, bool: Boolean) {
@@ -209,11 +231,6 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
 
             val totalSpots = mentor?.totalSpots
             input_total_spots.setText(totalSpots.toString())
-
-            button.setText("Save Changes")
-            button.setOnClickListener {
-                submitUpdates()
-            }
         }
     }
 
