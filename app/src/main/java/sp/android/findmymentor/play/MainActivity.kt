@@ -48,15 +48,13 @@ class MainActivity : AppCompatActivity() {
 
         //todo refactor code (view models)
         //todo option for mentor to view mentee profile
-
-
         //todo fix messgaes list fragment bug (still exists)//gets called multiple times
-        //fix countries selection broken currently
         //add save button to options
         //todo animations for fragments @nav graph
         //todo forgot password
         //totdo fix notify dataset changed in messageslist fragment
         //fix availability status
+        //****validations
 
     }
 

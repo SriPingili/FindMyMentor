@@ -15,6 +15,7 @@ import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.fragment_user_profile_form.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.MainActivity
+import sp.android.findmymentor.play.application.CustomApplication
 import sp.android.findmymentor.play.models.Mentee
 import sp.android.findmymentor.play.models.Mentor
 import sp.android.findmymentor.play.ui.viewmodels.MainViewModel
@@ -28,7 +29,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     lateinit var viewModel: MainViewModel
 
     // Initialize a new array with elements
-    val countries = arrayOf("India")//resources.getStringArray(R.array.countries_array)
+    val countries = CustomApplication.context?.resources?.getStringArray(R.array.countries_array)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,13 +40,6 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
         prepareEditProfileIfNeeded()
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        // handle the up button here
-//        return NavigationUI.onNavDestinationSelected(item!!,
-//                view!!.findNavController())
-//                || super.onOptionsItemSelected(item)
-//    }
-
     private fun initializeUI() {
         if (args.isMentor) {
             availableSpotsLayout.visibility = View.VISIBLE
@@ -55,8 +49,10 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             totalSpotsLayout.visibility = View.GONE
         }
 
-        val adapter = ArrayAdapter(requireContext(),
-                R.layout.spinner_item, countries)
+        val adapter = countries?.let {
+            ArrayAdapter(requireContext(),
+                R.layout.spinner_item, it)
+        }
         locationSpinner.adapter = adapter
 
         val listener = object : AdapterView.OnItemSelectedListener {
@@ -64,7 +60,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                location = adapter.getItem(position).toString()
+                location = adapter?.getItem(position).toString()
             }
         }
 
@@ -183,7 +179,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             input_email.setText(email)
 
             val locationSelected = mentee?.location ?: mentor?.location
-            locationSpinner.setSelection(countries.indexOf(locationSelected))
+            countries?.indexOf(locationSelected)?.let { locationSpinner.setSelection(it) }
 
             val aboutYourself = mentee?.aboutYourself ?: mentor?.aboutYourself
             input_about_yourself.setText(aboutYourself)
