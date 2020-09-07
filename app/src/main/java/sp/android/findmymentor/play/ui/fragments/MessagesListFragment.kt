@@ -1,6 +1,9 @@
 package sp.android.findmymentor.play.ui.fragments
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -23,6 +26,8 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as MainActivity).viewModel
         setUpRecyclerView()
+        setHasOptionsMenu(true)
+
 
         if (viewModel.loggedInMentor == null) {
             setHasOptionsMenu(true)
@@ -63,4 +68,39 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
         messagesListRecyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu, menu)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.edit_profile) {
+            val bundle = Bundle().apply {
+                putBoolean("isMentor", true)
+            }
+            findNavController().navigate(
+                    R.id.action_messagesListFragment_to_userProfileFormFragment,
+                    bundle
+            )
+
+            return true
+        }
+
+        if (item.itemId == R.id.logout) {
+            viewModel.isLoggedInUserMentor = false
+            viewModel.loggedInMentee = null
+            viewModel.loggedInMentor = null
+            viewModel.firbaseMentorResponse.clear()
+            viewModel.firbaseMenteeResponse.clear()
+            viewModel.messageSendersResponse.clear()
+            viewModel.chatsKey.clear()
+
+            findNavController().navigate(
+                    R.id.action_messagesListFragment_to_loginFragment
+            )
+            return true
+        }
+
+        return false
+    }
 }

@@ -35,6 +35,13 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
         setHasOptionsMenu(true)
 
         viewModel = (activity as MainActivity).viewModel
+
+        /*else{
+            (activity as MainActivity).supportActionBar?.title = "Register your profile"
+
+
+        }*/
+
         initializeUI()
 
         addObservers()
@@ -42,8 +49,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
         prepareEditProfileIfNeeded()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean
-    {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // handle the up button here
         return NavigationUI.onNavDestinationSelected(item!!,
                 view!!.findNavController())
@@ -195,7 +201,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             input_role.setText(role)
 
             //interests
-            val interests =  InterestsChooserDialog.list
+            val interests = InterestsChooserDialog.list
             val selectedInterests = mentee?.interests ?: mentor?.interests
             listOfGroups.clear()
             if (selectedInterests != null) {

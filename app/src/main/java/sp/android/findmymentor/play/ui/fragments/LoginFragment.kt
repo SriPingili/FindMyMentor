@@ -42,8 +42,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         val loginObserver = Observer<Event<Task<AuthResult>>> { event ->
             event.getContentIfNotHandled()?.let {
-                if (it.isSuccessful)
-                {
+                if (it.isSuccessful) {
                     viewModel.getChatKeysFromFirebase()
                     viewModel.routeToUsersTimeline()
                 } else {
@@ -86,6 +85,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun registerMentor() {
         val bundle = Bundle().apply {
             putBoolean("isMentor", true)
+            putString("title", "Register your profile")
         }
         findNavController().navigate(
                 R.id.action_loginFragment_to_userProfileFormFragment,
@@ -96,6 +96,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun registerMentee() {
         val bundle = Bundle().apply {
             putBoolean("isMentor", false)
+            putString("title", "Register your profile")
         }
         findNavController().navigate(
                 R.id.action_loginFragment_to_userProfileFormFragment,

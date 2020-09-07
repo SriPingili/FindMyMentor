@@ -1,12 +1,10 @@
 package sp.android.findmymentor.play.ui.fragments
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -31,9 +29,10 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-
         mentee = args.menteeArg
         viewModel = (activity as MainActivity).viewModel
+
+        (activity as MainActivity).supportActionBar?.title = "Welcome ${viewModel.loggedInMentee?.full_name}"
 
         /*todo move this to a better place, after login success*/
         viewModel.getUsersFromFirebase()
@@ -63,7 +62,7 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
         }
 
         messagesFab.setOnClickListener {
-            viewModel.getMessagesFromDifferentSenders()
+            viewModel.getMessagesFromDifferentSenders()//todo make this call once
             findNavController().navigate(R.id.action_menteeHomeFragment_to_messagesListFragment)
         }
 
@@ -92,12 +91,28 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
         if (item.itemId == R.id.edit_profile) {
             val bundle = Bundle().apply {
                 putBoolean("isMentor", false)
+                putString("title", "Your Profile")
             }
             findNavController().navigate(
                     R.id.action_menteeHomeFragment_to_userProfileFormFragment,
                     bundle
             )
 
+            return true
+        }
+
+        if (item.itemId == R.id.logout) {
+            viewModel.isLoggedInUserMentor = false
+            viewModel.loggedInMentee = null
+            viewModel.loggedInMentor = null
+            viewModel.firbaseMentorResponse.clear()
+            viewModel.firbaseMenteeResponse.clear()
+            viewModel.messageSendersResponse.clear()
+            viewModel.chatsKey.clear()
+
+            findNavController().navigate(
+                    R.id.action_menteeHomeFragment_to_loginFragment
+            )
             return true
         }
 

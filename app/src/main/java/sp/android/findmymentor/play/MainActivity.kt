@@ -1,11 +1,16 @@
 package sp.android.findmymentor.play
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,10 +50,14 @@ class MainActivity : AppCompatActivity() {
         //todo option for mentor to view mentee profile
 
 
-        //todo fix messgaes list fragment bug (still exists)
-        //todo add logout
+        //todo fix messgaes list fragment bug (still exists)//gets called multiple times
         //todo fix back button, popup login fragment
-        //todo add edit profile to mentor
+        //change title bar names
+        //fix countries selection broken currently
+        //add save button to options
+        //todo animations for fragments @nav graph
+        //todo forgot password
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
