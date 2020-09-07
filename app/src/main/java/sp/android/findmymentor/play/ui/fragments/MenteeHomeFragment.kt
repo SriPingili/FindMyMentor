@@ -34,9 +34,6 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
 
         (activity as MainActivity).supportActionBar?.title = "Welcome ${viewModel.loggedInMentee?.full_name}"
 
-        /*todo move this to a better place, after login success*/
-        viewModel.getUsersFromFirebase()
-
         setUpRecyclerView()
 
         mentorsAdapter.setOnItemClickListener { view, position ->
@@ -63,7 +60,12 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
 
         messagesFab.setOnClickListener {
             viewModel.getMessagesFromDifferentSenders()//todo make this call once
-            findNavController().navigate(R.id.action_menteeHomeFragment_to_messagesListFragment)
+
+            val bundle = Bundle().apply {
+                putString("title", "Inbox")
+            }
+
+            findNavController().navigate(R.id.action_menteeHomeFragment_to_messagesListFragment, bundle)
         }
 
         addObservers()
@@ -81,7 +83,6 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
             mentorsAdapter.submitList(it)
         })
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
@@ -110,9 +111,14 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
             viewModel.messageSendersResponse.clear()
             viewModel.chatsKey.clear()
 
+            val bundle = Bundle().apply {
+                putString("title", getString(R.string.app_name))
+            }
             findNavController().navigate(
-                    R.id.action_menteeHomeFragment_to_loginFragment
+                    R.id.action_menteeHomeFragment_to_loginFragment,
+                    bundle
             )
+
             return true
         }
 

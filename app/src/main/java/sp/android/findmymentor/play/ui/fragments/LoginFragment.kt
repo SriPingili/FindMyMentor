@@ -56,18 +56,23 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val loggedInUserObserver = Observer<Event<Boolean>> { event ->
             event.getContentIfNotHandled()?.let {
                 if (it) {
+                    viewModel.getMessagesFromDifferentSenders()
+
                     val bundle = Bundle().apply {
                         putSerializable("mentorArg", viewModel.loggedInMentor)
+                        putString("title","Hello ${viewModel.loggedInMentor?.full_name}, your inbox")
                     }
-                    viewModel.getMessagesFromDifferentSenders()
 
                     findNavController().navigate(
                             R.id.action_loginFragment_to_messagesListFragment,
                             bundle
                     )
                 } else {
+                    viewModel.getUsersFromFirebase()
+
                     val bundle = Bundle().apply {
                         putSerializable("menteeArg", viewModel.loggedInMentee)
+                        putString("title","Hello ${viewModel.loggedInMentee?.full_name}")
                     }
 
                     findNavController().navigate(

@@ -1,7 +1,6 @@
 package sp.android.findmymentor.play.ui.fragments
 
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
@@ -23,10 +22,6 @@ class InterestsChooserDialog() : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val list = context?.resources?.getStringArray(R.array.interests_choice)
-
-//        checkedItems = false
-
         return MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
                 .setTitle("Choose your Interests")
                 .setMultiChoiceItems(list, checkedItems) { dialogInterface: DialogInterface, position: Int, status: Boolean ->

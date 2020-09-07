@@ -33,7 +33,7 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
         super.onViewCreated(view, savedInstanceState)
         message = args.messageArg
         val mainRepository = MainRepository(FirebaseSource())
-        mainViewModel =  (activity as MainActivity).viewModel
+        mainViewModel = (activity as MainActivity).viewModel
         setUpRecylcerView()
         viewModel = ViewModelProvider(this, MessagingViewModelFactory(mainRepository, message.chatKeyValue.toString())).get(MessagingViewModel::class.java)
 
@@ -42,11 +42,9 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
             messagesRecyclerView.scrollToPosition(messagingAdapter.currentList.size - 1)
         }
 
-
         viewModel.messagesLiveData.observe(viewLifecycleOwner, observer)
 
         typeMessageEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 if (charSequence.toString().trim().length > 0) {
                     sendMessageImageView.setEnabled(true)
@@ -56,26 +54,19 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
             }
 
             override fun afterTextChanged(editable: Editable) {}
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
         })
 
-
         sendMessageImageView.setOnClickListener {
-
             val message = Message(mainViewModel.getLoggedInEmailAddress()!!, mainViewModel.getLoggedInUserName()!!, typeMessageEditText.text.toString(), System.currentTimeMillis())
-
             this.message.chatKeyValue?.let { chatKeyValue -> viewModel.sendMessage(message, chatKeyValue) }
-
-
-
             typeMessageEditText.setText("")
         }
     }
 
     private fun setUpRecylcerView() {
         messagingAdapter = MessagingAdapter()
-
         loggedInUserName = mainViewModel.getLoggedInUserName()!!
-
         messagesRecyclerView.adapter = messagingAdapter
 
         val layoutManager = LinearLayoutManager(activity)
@@ -85,12 +76,6 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
             override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
                 messagesRecyclerView.scrollToPosition(messagingAdapter.currentList.size - 1)
             }
-
         })
-
-        //https://stackoverflow.com/questions/31964027/android-recyclerview-not-resizing-when-softinput-keyboard-appears
-//        (messagesRecyclerView.layoutManager as LinearLayoutManager?)!!.stackFromEnd = true
     }
-
-
 }

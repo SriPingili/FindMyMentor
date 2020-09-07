@@ -40,6 +40,7 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     val firbaseMenteeResponse: HashMap<String, Mentee> = hashMapOf()
     val messageSendersResponse = mutableListOf<Message>()
     var chatsKey: MutableSet<String> = mutableSetOf()
+    var messageSender = ""
 
     fun login(email: String, password: String) = viewModelScope.launch {
         repository.login(email, password).addOnCompleteListener {
@@ -184,9 +185,8 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
         repository.getFirebaseChatsDBReference().addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 
-                snapshot?.let { dataSnapshot ->
-                    dataSnapshot.key?.let { key ->
-                        dataSnapshot.value?.let { value ->
+                snapshot.key?.let { key ->
+                    snapshot.value?.let { value ->
                             getLoggedInEmailAddress()?.let { emailAddress ->
                                 if (key.contains(emailAddress.replace("""[$#.\[\]]""".toRegex(), ""))) {
                                     val message = Message()
@@ -228,6 +228,9 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
                                                     messageSendersResponse.add(message)
                                                     messageSendersLiveData.postValue(messageSendersResponse)
                                                 }
+                                               /* else{
+                                                    messageSender = participantName
+                                                }*/
                                             }
                                         }
                                     }
@@ -240,7 +243,7 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
                             }
                         }
                     }
-                }
+
 
             }
 

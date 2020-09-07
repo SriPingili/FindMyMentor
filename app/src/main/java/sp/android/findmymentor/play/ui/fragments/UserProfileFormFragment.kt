@@ -33,29 +33,18 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-
         viewModel = (activity as MainActivity).viewModel
-
-        /*else{
-            (activity as MainActivity).supportActionBar?.title = "Register your profile"
-
-
-        }*/
-
         initializeUI()
-
         addObservers()
-
         prepareEditProfileIfNeeded()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // handle the up button here
-        return NavigationUI.onNavDestinationSelected(item!!,
-                view!!.findNavController())
-                || super.onOptionsItemSelected(item)
-    }
-
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        // handle the up button here
+//        return NavigationUI.onNavDestinationSelected(item!!,
+//                view!!.findNavController())
+//                || super.onOptionsItemSelected(item)
+//    }
 
     private fun initializeUI() {
         if (args.isMentor) {
@@ -68,7 +57,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
 
         val adapter = ArrayAdapter(requireContext(),
                 R.layout.spinner_item, countries)
-        locationSpinner.setAdapter(adapter)
+        locationSpinner.adapter = adapter
 
         val listener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -122,11 +111,13 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                                         "mentorArg",
                                         viewModel.loggedInMentor
                                 )
+                                putString("title", "Hello ${viewModel.loggedInMentor?.full_name}, your inbox")
                             }
                             findNavController().navigate(R.id.action_userProfileFormFragment_to_messagesListFragment, bundle)
                         }
                     } else {
                         if (!input_fullname.text.toString().isNullOrEmpty()) {
+                            viewModel.getUsersFromFirebase()
                             viewModel.getChatKeysFromFirebase()
 
                             val mentee = Mentee(input_fullname.text.toString(), input_email.text.toString(), location, input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups as ArrayList<String>)
@@ -137,6 +128,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                                         "menteeArg",
                                         viewModel.loggedInMentee
                                 )
+                                putString("title", "Hello ${viewModel.loggedInMentee?.full_name}")
                             }
                             findNavController().navigate(R.id.action_userProfileFormFragment_to_menteeHomeFragment, bundle)
                         }
@@ -154,6 +146,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                                     "mentorArg",
                                     viewModel.loggedInMentor
                             )
+                            putString("title", "Hello ${viewModel.loggedInMentor?.full_name}, your inbox")
                         }
                         findNavController().navigate(R.id.action_userProfileFormFragment_to_messagesListFragment, bundle)
                     } else {
@@ -162,6 +155,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                                     "menteeArg",
                                     viewModel.loggedInMentee
                             )
+                            putString("title", "Hello ${viewModel.loggedInMentee?.full_name}")
                         }
                         findNavController().navigate(R.id.action_userProfileFormFragment_to_menteeHomeFragment, bundle)
                     }
@@ -176,6 +170,9 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
 
     private fun prepareEditProfileIfNeeded() {
         if (viewModel.loggedInMentee != null || viewModel.loggedInMentor != null) {
+            passwordLayout.visibility = View.GONE
+            input_password.visibility = View.GONE
+
             val mentee = viewModel.loggedInMentee
             val mentor = viewModel.loggedInMentor
 
@@ -184,9 +181,6 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
 
             val email = mentee?.email_address ?: mentor?.email_address
             input_email.setText(email)
-
-            passwordLayout.visibility = View.GONE
-            input_password.visibility = View.GONE
 
             val locationSelected = mentee?.location ?: mentor?.location
             locationSpinner.setSelection(countries.indexOf(locationSelected))
@@ -209,11 +203,9 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             }
 
             for (interest in interests!!) {
-
                 selectedInterests?.let {
                     InterestsChooserDialog.checkedItems?.set(interests.indexOf(interest), it.contains(interest))
                 }
-
             }
 
             val availability = mentor?.availability

@@ -51,12 +51,12 @@ class MainActivity : AppCompatActivity() {
 
 
         //todo fix messgaes list fragment bug (still exists)//gets called multiple times
-        //todo fix back button, popup login fragment
-        //change title bar names
         //fix countries selection broken currently
         //add save button to options
         //todo animations for fragments @nav graph
         //todo forgot password
+        //totdo fix notify dataset changed in messageslist fragment
+        //fix availability status
 
     }
 

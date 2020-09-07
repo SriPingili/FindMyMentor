@@ -55,7 +55,7 @@
     <fragment
         android:id="@+id/menteeHomeFragment"
         android:name="sp.android.findmymentor.play.ui.fragments.MenteeHomeFragment"
-        android:label="MenteeHomeFragment">
+        android:label="{title}">
         <action
             android:id="@+id/action_menteeHomeFragment_to_userProfileFormFragment"
             app:destination="@id/userProfileFormFragment"
@@ -63,6 +63,9 @@
         <argument
             android:name="menteeArg"
             app:argType="sp.android.findmymentor.play.models.Mentee" />
+        <argument
+            android:name="title"
+            app:argType="string" />
         <action
             android:id="@+id/action_menteeHomeFragment_to_messagesListFragment"
             app:destination="@id/messagesListFragment" />
@@ -75,7 +78,7 @@
     <fragment
         android:id="@+id/messagesListFragment"
         android:name="sp.android.findmymentor.play.ui.fragments.MessagesListFragment"
-        android:label="MessagesListFragment" >
+        android:label="{title}" >
         <action
             android:id="@+id/action_messagesListFragment_to_userProfileFormFragment"
             app:destination="@id/userProfileFormFragment" />
@@ -84,6 +87,9 @@
             app:argType="sp.android.findmymentor.play.models.Mentor"
             app:nullable="true"
             android:defaultValue="@null" />
+        <argument
+            android:name="title"
+            app:argType="string" />
         <action
             android:id="@+id/action_messagesListFragment_to_messagingFragment"
             app:destination="@id/messagingFragment"
@@ -97,7 +103,7 @@
     <fragment
         android:id="@+id/messagingFragment"
         android:name="sp.android.findmymentor.play.ui.fragments.MessagingFragment"
-        android:label="MessagingFragment" >
+        android:label="{title}">
         <action
             android:id="@+id/action_messagingFragment_to_messagesListFragment"
             app:destination="@id/messagesListFragment"
@@ -105,6 +111,9 @@
         <argument
             android:name="messageArg"
             app:argType="sp.android.findmymentor.play.models.Message" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
 
 </navigation>

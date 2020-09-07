@@ -8,14 +8,11 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_messages_list.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.MainActivity
 import sp.android.findmymentor.play.adapters.MessagesListAdapter
-import sp.android.findmymentor.play.models.Mentee
-import sp.android.findmymentor.play.models.Mentor
 import sp.android.findmymentor.play.ui.viewmodels.MainViewModel
 
 class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
@@ -38,6 +35,7 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
         messagesListAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
                 putSerializable("messageArg", it)
+                putString("title", it.sender_name)
             }
             findNavController().navigate(
                     R.id.action_messagesListFragment_to_messagingFragment,
@@ -55,9 +53,7 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
                 no_messages_text_view.visibility = View.VISIBLE
             }
             messagesListAdapter.differ.submitList(it)
-            messagesListAdapter.notifyDataSetChanged()//todo replace the adapter-refactor
-
-
+            messagesListAdapter.notifyDataSetChanged()//todo replace the adapter - refactor
         })
 
     }
@@ -77,6 +73,7 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
         if (item.itemId == R.id.edit_profile) {
             val bundle = Bundle().apply {
                 putBoolean("isMentor", true)
+                putString("title", "Your Profile")
             }
             findNavController().navigate(
                     R.id.action_messagesListFragment_to_userProfileFormFragment,
@@ -95,8 +92,13 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
             viewModel.messageSendersResponse.clear()
             viewModel.chatsKey.clear()
 
+            val bundle = Bundle().apply {
+                putString("title", getString(R.string.app_name))
+            }
+
             findNavController().navigate(
-                    R.id.action_messagesListFragment_to_loginFragment
+                    R.id.action_messagesListFragment_to_loginFragment,
+                    bundle
             )
             return true
         }
