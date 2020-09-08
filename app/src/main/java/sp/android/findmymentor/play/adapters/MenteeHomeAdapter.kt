@@ -18,13 +18,13 @@ import java.util.HashSet
 /*
 Adapter class for the recycler view
 * */
-class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
+class MenteeHomeAdapter : RecyclerView.Adapter<MenteeHomeAdapter.MentorViewHolder>() {
     private var unfoldedIndexes = HashSet<Int>()
     private var onItemClickListener: ((View, Int) -> Unit)? = null
     private var onRequestMentorClickListener: ((Mentor) -> Unit)? = null
     private var onCommonGroupsClickListener: ((Mentor) -> Unit)? = null
-    private var chatKeys = mutableSetOf<String>()
     private var loggedInUserEmail: String = ""
+    var chatKeys = mutableSetOf<String>()
 
     inner class MentorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -57,7 +57,7 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
         return differ.currentList.size
     }
 
-    override fun onBindViewHolder(holder: MentorsAdapter.MentorViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MenteeHomeAdapter.MentorViewHolder, position: Int) {
         val mentor = differ.currentList[position]
 
         holder.itemView.apply {
@@ -143,8 +143,7 @@ class MentorsAdapter : RecyclerView.Adapter<MentorsAdapter.MentorViewHolder>() {
         unfoldedIndexes.add(position)
     }
 
-    fun setKeysAndLoggedInUserEmail(keys: MutableSet<String>, email: String) {
-        chatKeys = keys
+    fun setLoggedInUserEmail(email: String) {
         loggedInUserEmail = email
     }
 

@@ -13,8 +13,7 @@ import sp.android.findmymentor.play.models.Message
 import sp.android.findmymentor.play.util.Constants.Companion.loggedInUserName
 
 
-class MessagingAdapter : ListAdapter<Message, MessagingAdapter.ViewHolder>(TaskDiffCallback()) {
-
+class MessagingAdapter : ListAdapter<Message, MessagingAdapter.ViewHolder>(MessageDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -41,7 +40,7 @@ class MessagingAdapter : ListAdapter<Message, MessagingAdapter.ViewHolder>(TaskD
 }
 
 
-class TaskDiffCallback : DiffUtil.ItemCallback<Message>() {
+class MessageDiffCallback : DiffUtil.ItemCallback<Message>() {
     override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
         return oldItem.dateInMillis == newItem.dateInMillis && oldItem.sender_name.equals(newItem.sender_name)
     }
@@ -50,56 +49,3 @@ class TaskDiffCallback : DiffUtil.ItemCallback<Message>() {
         return oldItem == newItem
     }
 }
-
-
-//class MessagingAdapter : RecyclerView.Adapter<MessagingAdapter.MessagesViewHolder>() {
-//    private var loggedInUserName = ""
-//
-//    inner class MessagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-//
-//    private val differCallback = object : DiffUtil.ItemCallback<Message>() {
-//        override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
-//            return oldItem.dateInMillis == newItem.dateInMillis
-//        }
-//
-//        override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
-//            return oldItem.dateInMillis == newItem.dateInMillis && oldItem.sender_name.equals(newItem.sender_name) && oldItem.sender_id.equals(newItem.sender_id) &&oldItem.text.equals(newItem.text)
-//        }
-//    }
-//
-//    val differ = AsyncListDiffer(this, differCallback)
-//
-//
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessagesViewHolder {
-//        return MessagesViewHolder(
-//                LayoutInflater.from(parent.context).inflate(
-//                        R.layout.message_item,
-//                        parent,
-//                        false
-//                )
-//        )
-//    }
-//
-//    fun setLoggedInUserName(userName: String) {
-//        loggedInUserName = userName
-//    }
-//
-//    override fun getItemCount(): Int {
-//        return differ.currentList.size
-//    }
-//
-//    override fun onBindViewHolder(holder: MessagesViewHolder, position: Int) {
-//
-//        val message = differ.currentList[position]
-//
-//        holder.itemView.apply {
-//            if (message.sender_name.equals(loggedInUserName)) {
-//                messageTextView.gravity = Gravity.RIGHT
-//            } else {
-//                messageTextView.gravity = Gravity.LEFT
-//            }
-//
-//            messageTextView.text = message.text
-//        }
-//    }
-//}

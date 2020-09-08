@@ -7,26 +7,41 @@ import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_messages_list.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.MainActivity
 import sp.android.findmymentor.play.adapters.MessagesListAdapter
-import sp.android.findmymentor.play.ui.viewmodels.MainViewModel
+import sp.android.findmymentor.play.firebase.FirebaseSource
+import sp.android.findmymentor.play.repository.MainRepository
+import sp.android.findmymentor.play.ui.viewmodels.LoginViewModel
+import sp.android.findmymentor.play.ui.viewmodels.MessagesListViewModel
+import sp.android.findmymentor.play.ui.viewmodels.factories.MessagesListViewModelFactory
+
 
 class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
-    lateinit var viewModel: MainViewModel
+    lateinit var loginViewModel: LoginViewModel
+    lateinit var viewModel: MessagesListViewModel
     lateinit var messagesListAdapter: MessagesListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = (activity as MainActivity).viewModel
+        loginViewModel = (activity as MainActivity).viewModel
+
+        val mainRepository = MainRepository(FirebaseSource())
+
+        loginViewModel.getLoggedInEmailAddress()?.let { email ->
+            loginViewModel.getLoggedInUserName()?.let { userName ->
+                viewModel = ViewModelProvider(this, MessagesListViewModelFactory(mainRepository, email, userName)).get(MessagesListViewModel::class.java)
+            }
+        }
+
         setUpRecyclerView()
         setHasOptionsMenu(true)
 
-
-        if (viewModel.loggedInMentor == null) {
+        if (loginViewModel.loggedInMentor == null) {
             setHasOptionsMenu(true)
             (activity as MainActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
             (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -52,8 +67,8 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
                 messagesListRecyclerView.visibility = View.GONE
                 no_messages_text_view.visibility = View.VISIBLE
             }
-            messagesListAdapter.differ.submitList(it)
-            messagesListAdapter.notifyDataSetChanged()//todo replace the adapter - refactor
+            messagesListAdapter.submitList(it.toList()) //https://stackoverflow.com/questions/56881149/diffutil-is-not-updating-the-recyclerview
+//            messagesListAdapter.notifyDataSetChanged()//todo replace the adapter - refactor
         })
 
     }
@@ -66,7 +81,6 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -84,13 +98,12 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
         }
 
         if (item.itemId == R.id.logout) {
-            viewModel.isLoggedInUserMentor = false
-            viewModel.loggedInMentee = null
-            viewModel.loggedInMentor = null
-            viewModel.firbaseMentorResponse.clear()
-            viewModel.firbaseMenteeResponse.clear()
+            loginViewModel.isLoggedInUserMentor = false
+            loginViewModel.loggedInMentee = null
+            loginViewModel.loggedInMentor = null
             viewModel.messageSendersResponse.clear()
-            viewModel.chatsKey.clear()
+
+            loginViewModel.logout()
 
             val bundle = Bundle().apply {
                 putString("title", getString(R.string.app_name))

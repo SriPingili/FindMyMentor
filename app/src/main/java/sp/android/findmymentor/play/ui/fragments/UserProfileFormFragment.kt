@@ -10,17 +10,15 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.fragment_user_profile_form.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.MainActivity
 import sp.android.findmymentor.play.application.CustomApplication
 import sp.android.findmymentor.play.models.Mentee
 import sp.android.findmymentor.play.models.Mentor
-import sp.android.findmymentor.play.ui.viewmodels.MainViewModel
+import sp.android.findmymentor.play.ui.viewmodels.LoginViewModel
 import java.util.ArrayList
 import java.util.HashMap
 
@@ -28,7 +26,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     val args: UserProfileFormFragmentArgs by navArgs()
     var listOfGroups: MutableList<String> = mutableListOf()
     var location: String? = ""
-    lateinit var viewModel: MainViewModel
+    lateinit var viewModel: LoginViewModel
 
     // Initialize a new array with elements
     val countries = CustomApplication.context?.resources?.getStringArray(R.array.countries_array)
@@ -103,6 +101,20 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             return true
         }
 
+        if (item.itemId == R.id.logout) {
+            viewModel.isLoggedInUserMentor = false
+            viewModel.loggedInMentee = null
+            viewModel.loggedInMentor = null
+
+            viewModel.logout()
+
+            findNavController().navigate(
+                    R.id.action_global_to_loginFragment
+            )
+
+            return true
+        }
+
         return false
     }
 
@@ -124,8 +136,6 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                 if (it.isSuccessful) {
                     if (args.isMentor) {
                         if (!input_fullname.text.toString().isNullOrEmpty()) {
-                            viewModel.getMessagesFromDifferentSenders()
-
                             val mentor = Mentor(input_fullname.text.toString(), input_email.text.toString(), location, input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups as ArrayList<String>, input_available_spots.text.toString().toInt(), input_total_spots.text.toString().toInt(), true)
                             viewModel.createUser(null, mentor)
 
@@ -140,8 +150,8 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                         }
                     } else {
                         if (!input_fullname.text.toString().isNullOrEmpty()) {
-                            viewModel.getUsersFromFirebase()
-                            viewModel.getChatKeysFromFirebase()
+//                            viewModel.getUsersFromFirebase()
+//                            viewModel.getChatKeysFromFirebase()
 
                             val mentee = Mentee(input_fullname.text.toString(), input_email.text.toString(), location, input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups as ArrayList<String>)
                             viewModel.createUser(mentee)

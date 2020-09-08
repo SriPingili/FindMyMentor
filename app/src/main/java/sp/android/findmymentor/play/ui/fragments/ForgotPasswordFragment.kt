@@ -8,12 +8,11 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_forgot_password.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.MainActivity
-import sp.android.findmymentor.play.application.CustomApplication
-import sp.android.findmymentor.play.ui.viewmodels.MainViewModel
+import sp.android.findmymentor.play.ui.viewmodels.LoginViewModel
 
 
 class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
-    lateinit var viewModel: MainViewModel
+    lateinit var viewModel: LoginViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

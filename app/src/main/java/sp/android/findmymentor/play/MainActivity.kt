@@ -1,28 +1,19 @@
 package sp.android.findmymentor.play
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_login.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.firebase.FirebaseSource
 import sp.android.findmymentor.play.repository.MainRepository
-import sp.android.findmymentor.play.ui.viewmodels.MainViewModel
-import sp.android.findmymentor.play.ui.viewmodels.MainViewModelFactory
+import sp.android.findmymentor.play.ui.viewmodels.LoginViewModel
+import sp.android.findmymentor.play.ui.viewmodels.factories.LoginViewModelFactory
 
 class MainActivity : AppCompatActivity() {
-    lateinit var viewModel: MainViewModel
+    lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         val mainRepository = MainRepository(FirebaseSource())
 
-        viewModel = ViewModelProvider(this, MainViewModelFactory(mainRepository)).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, LoginViewModelFactory(mainRepository)).get(LoginViewModel::class.java)
 
         val navController = findNavController(R.id.navHostFragmentId)
 
@@ -47,14 +38,10 @@ class MainActivity : AppCompatActivity() {
 
         //todo option for mentor to view mentee profile
 
-        //todo refactor code (view models)
-        //todo fix messgaes list fragment bug (still exists)//gets called multiple times
 
-
-        //todo forgot password
-        //totdo fix notify dataset changed in messageslist fragment
-        //****validations
-        //todo rethink actions for up button
+        //todo fix notify dataset changed in messageslist fragment
+        //todo ****validations
+        //todo rethink actions (nav graph) for up button
 
     }
 

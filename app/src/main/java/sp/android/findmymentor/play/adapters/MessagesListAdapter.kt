@@ -3,29 +3,31 @@ package sp.android.findmymentor.play.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.message_list_layout_item.view.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.models.Message
 
-class MessagesListAdapter : RecyclerView.Adapter<MessagesListAdapter.MessagesViewHolder>() {
+class MessagesListAdapter : ListAdapter<Message, MessagesListAdapter.MessagesViewHolder>(MessageListDiffCallback()) {
     private var onItemClickListener: ((Message) -> Unit)? = null
 
-    inner class MessagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class MessagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(message: Message) {
+            itemView.apply {
+                roundedTextView.text = message.sender_name.toUpperCase().subSequence(0, 1)
+                senderNameTextView.text = message.sender_name
+                messageContentTextView.text = message.text
 
-    private val differCallback = object : DiffUtil.ItemCallback<Message>() {
-        override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
-            return oldItem.dateInMillis == newItem.dateInMillis
-        }
-
-        override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
-            return oldItem == newItem
+                setOnClickListener {
+                    onItemClickListener?.let {
+                        it(message)
+                    }
+                }
+            }
         }
     }
-
-    val differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessagesViewHolder {
         return MessagesViewHolder(
@@ -37,26 +39,8 @@ class MessagesListAdapter : RecyclerView.Adapter<MessagesListAdapter.MessagesVie
         )
     }
 
-    override fun getItemCount(): Int {
-        return differ.currentList.size
-    }
-
     override fun onBindViewHolder(holder: MessagesViewHolder, position: Int) {
-        val message = differ.currentList[position]
-
-        holder.itemView.apply {
-
-            roundedTextView.setText(message.sender_name?.toUpperCase()?.subSequence(0, 1))
-            senderNameTextView.setText(message.sender_name)
-            messageContentTextView.setText(message.text)
-
-
-            setOnClickListener {
-                onItemClickListener?.let {
-                    it(message)
-                }
-            }
-        }
+        holder.bind(getItem(position))
     }
 
     /*
@@ -64,5 +48,15 @@ class MessagesListAdapter : RecyclerView.Adapter<MessagesListAdapter.MessagesVie
     * */
     fun setOnItemClickListener(listener: (Message) -> Unit) {
         onItemClickListener = listener
+    }
+}
+
+class MessageListDiffCallback : DiffUtil.ItemCallback<Message>() {
+    override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
+        return oldItem.sender_name.equals(newItem.sender_name)
+    }
+
+    override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
+        return oldItem.dateInMillis == newItem.dateInMillis
     }
 }

@@ -16,15 +16,15 @@ import sp.android.findmymentor.play.adapters.MessagingAdapter
 import sp.android.findmymentor.play.firebase.FirebaseSource
 import sp.android.findmymentor.play.models.Message
 import sp.android.findmymentor.play.repository.MainRepository
-import sp.android.findmymentor.play.ui.viewmodels.MainViewModel
+import sp.android.findmymentor.play.ui.viewmodels.LoginViewModel
 import sp.android.findmymentor.play.ui.viewmodels.MessagingViewModel
-import sp.android.findmymentor.play.ui.viewmodels.MessagingViewModelFactory
+import sp.android.findmymentor.play.ui.viewmodels.factories.MessagingViewModelFactory
 import sp.android.findmymentor.play.util.Constants.Companion.loggedInUserName
 
 class MessagingFragment : Fragment(R.layout.fragment_messaging) {
     val args: MessagingFragmentArgs by navArgs()
     lateinit var viewModel: MessagingViewModel
-    lateinit var mainViewModel: MainViewModel
+    lateinit var loginViewModel: LoginViewModel
     lateinit var messagingAdapter: MessagingAdapter
     var message: Message = Message()
     lateinit var observer: Observer<MutableList<Message>>
@@ -33,7 +33,7 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
         super.onViewCreated(view, savedInstanceState)
         message = args.messageArg
         val mainRepository = MainRepository(FirebaseSource())
-        mainViewModel = (activity as MainActivity).viewModel
+        loginViewModel = (activity as MainActivity).viewModel
         setUpRecylcerView()
         viewModel = ViewModelProvider(this, MessagingViewModelFactory(mainRepository, message.chatKeyValue.toString())).get(MessagingViewModel::class.java)
 
@@ -58,7 +58,7 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
         })
 
         sendMessageImageView.setOnClickListener {
-            val message = Message(mainViewModel.getLoggedInEmailAddress()!!, mainViewModel.getLoggedInUserName()!!, typeMessageEditText.text.toString(), System.currentTimeMillis())
+            val message = Message(loginViewModel.getLoggedInEmailAddress()!!, loginViewModel.getLoggedInUserName()!!, typeMessageEditText.text.toString(), System.currentTimeMillis())
             this.message.chatKeyValue?.let { chatKeyValue -> viewModel.sendMessage(message, chatKeyValue) }
             typeMessageEditText.setText("")
         }
@@ -66,7 +66,7 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
 
     private fun setUpRecylcerView() {
         messagingAdapter = MessagingAdapter()
-        loggedInUserName = mainViewModel.getLoggedInUserName()!!
+        loggedInUserName = loginViewModel.getLoggedInUserName()!!
         messagesRecyclerView.adapter = messagingAdapter
 
         val layoutManager = LinearLayoutManager(activity)
