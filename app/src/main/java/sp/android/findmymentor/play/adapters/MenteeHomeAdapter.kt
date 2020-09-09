@@ -168,6 +168,5 @@ class MenteeHomeAdapter : RecyclerView.Adapter<MenteeHomeAdapter.MentorViewHolde
      */
     fun submitList(stores: List<Mentor>) {
         differ.submitList(stores)
-        notifyDataSetChanged()//todo fix this
     }
 }

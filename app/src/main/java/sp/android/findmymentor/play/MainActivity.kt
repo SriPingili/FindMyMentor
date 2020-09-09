@@ -36,13 +36,8 @@ class MainActivity : AppCompatActivity() {
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
-        //todo option for mentor to view mentee profile
-
-
-        //todo fix notify dataset changed in messageslist fragment
-        //todo ****validations
+        //todo option for mentor to view mentee pr
         //todo rethink actions (nav graph) for up button
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

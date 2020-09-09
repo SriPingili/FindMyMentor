@@ -1,5 +1,6 @@
 package sp.android.findmymentor.play.ui.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -7,11 +8,15 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_user_profile_form.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.MainActivity
@@ -19,22 +24,28 @@ import sp.android.findmymentor.play.application.CustomApplication
 import sp.android.findmymentor.play.models.Mentee
 import sp.android.findmymentor.play.models.Mentor
 import sp.android.findmymentor.play.ui.viewmodels.LoginViewModel
+import sp.android.findmymentor.play.util.UserInputValidator
 import java.util.ArrayList
 import java.util.HashMap
+import java.util.regex.Pattern
+
 
 class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     val args: UserProfileFormFragmentArgs by navArgs()
     var listOfGroups: MutableList<String> = mutableListOf()
-    var location: String? = ""
+    var location: String = ""
     lateinit var viewModel: LoginViewModel
+    lateinit var userInputValidator: UserInputValidator
 
     // Initialize a new array with elements
     val countries = CustomApplication.context?.resources?.getStringArray(R.array.countries_array)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         viewModel = (activity as MainActivity).viewModel
+        userInputValidator = UserInputValidator(requireContext())
         initializeUI()
         addObservers()
         prepareEditProfileIfNeeded()
@@ -49,6 +60,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             totalSpotsLayout.visibility = View.GONE
         }
 
+        //setup spinner
         val adapter = countries?.let {
             ArrayAdapter(requireContext(),
                     R.layout.spinner_item, it)
@@ -73,6 +85,10 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                 }
             }.show(parentFragmentManager, "BMR_FRAGMENT_TAG")
         }
+
+        input_password.doOnTextChanged {  _, _, _, _ ->
+            passwordLayout.isPasswordVisibilityToggleEnabled = true
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -90,10 +106,70 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
         }
     }
 
+    private fun showSnackBar() {
+        val parentLayout: View? = activity?.findViewById(android.R.id.content)
+
+        parentLayout?.let {
+            Snackbar.make(it, "Please choose your location", Snackbar.LENGTH_LONG)
+                    .show()
+        }
+    }
+
+    private fun areUserInputsValid(): Boolean {
+        var areInputsValid = true
+
+        if (!userInputValidator.isTextValid(input_fullname, Pattern.compile("[a-zA-Z ]+"), "only letters allowed")) {
+            areInputsValid = false
+        }
+        if (!userInputValidator.isEmailValid(input_email)) {
+            areInputsValid = false
+        }
+        if (!userInputValidator.isTextValid(input_password, Pattern.compile("[a-zA-Z0-9]+"), getString(R.string.invalid_password))) {
+            passwordLayout.isPasswordVisibilityToggleEnabled = false
+            areInputsValid = false
+        }
+
+        val defaultSelection = countries?.get(0)
+        if (location.equals(defaultSelection)) {
+            setSpinnerError(locationSpinner)
+            areInputsValid = false
+        }
+
+        if (!userInputValidator.isTextValid(input_organization, Pattern.compile("[a-zA-Z ]+"), "only letters allowed")) {
+            areInputsValid = false
+        }
+
+        if (!userInputValidator.isTextValid(input_role, Pattern.compile("[a-zA-Z ]+"), "only letters allowed")) {
+            areInputsValid = false
+        }
+
+        if (!userInputValidator.isTextValid(input_about_yourself, Pattern.compile("[a-zA-Z0-9\n ]+"), "only letters and numbers allowed")) {
+            areInputsValid = false
+        }
+
+        if (!userInputValidator.isTextValid(input_available_spots, Pattern.compile("[0-9]+"), "only numbers allowed")) {
+            areInputsValid = false
+        }
+
+        if (!userInputValidator.isTextValid(input_total_spots, Pattern.compile("[0-9]+"), "only numbers allowed")) {
+            areInputsValid = false
+        }
+
+        return areInputsValid
+    }
+
+    private fun setSpinnerError(spinner: Spinner) {
+        val selectedView = spinner.selectedView
+        if (selectedView != null && selectedView is TextView) {
+            spinner.requestFocus()
+            selectedView.setTextColor(Color.RED) //text color in which you want your error message to be displayed
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.save_profile_changes) {
             if (viewModel.loggedInMentee == null && viewModel.loggedInMentor == null) {
-                viewModel.registerUser(input_email.text.toString(), input_password.text.toString())
+                if (areUserInputsValid()) viewModel.registerUser(input_email.text.toString(), input_password.text.toString())
             } else {
                 submitUpdates()
             }
@@ -150,9 +226,6 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                         }
                     } else {
                         if (!input_fullname.text.toString().isNullOrEmpty()) {
-//                            viewModel.getUsersFromFirebase()
-//                            viewModel.getChatKeysFromFirebase()
-
                             val mentee = Mentee(input_fullname.text.toString(), input_email.text.toString(), location, input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups as ArrayList<String>)
                             viewModel.createUser(mentee)
 
@@ -211,6 +284,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
 
             val name = mentee?.full_name ?: mentor?.full_name
             input_fullname.setText(name)
+            input_email.isEnabled = false
 
             val email = mentee?.email_address ?: mentor?.email_address
             input_email.setText(email)

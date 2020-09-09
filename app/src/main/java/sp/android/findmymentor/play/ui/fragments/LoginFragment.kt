@@ -3,6 +3,7 @@ package sp.android.findmymentor.play.ui.fragments
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -13,14 +14,18 @@ import sp.android.findmymentor.R
 import sp.android.findmymentor.play.MainActivity
 import sp.android.findmymentor.play.ui.viewmodels.LoginViewModel
 import sp.android.findmymentor.play.util.Event
+import sp.android.findmymentor.play.util.UserInputValidator
+import java.util.regex.Pattern
 
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
     lateinit var viewModel: LoginViewModel
+    lateinit var userInputValidator: UserInputValidator
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as MainActivity).viewModel
+        userInputValidator = UserInputValidator(requireContext())
 
         addObservers()
 
@@ -33,13 +38,17 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
         sign_in_button_id.setOnClickListener {
-            viewModel.login(input_email.text.toString(), input_password.text.toString())
+            if (areUserInputsValid()) viewModel.login(input_email.text.toString(), input_password.text.toString())
         }
 
         forgotPasswordLabel.setOnClickListener {
             findNavController().navigate(
                     R.id.action_loginFragment_to_forgotPasswordFragment
             )
+        }
+
+        input_password.doOnTextChanged { _, _, _, _ ->
+            passwordLayout.isPasswordVisibilityToggleEnabled = true
         }
     }
 
@@ -48,7 +57,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val loginObserver = Observer<Event<Task<AuthResult>>> { event ->
             event.getContentIfNotHandled()?.let {
                 if (it.isSuccessful) {
-//                    viewModel.getChatKeysFromFirebase()
                     viewModel.routeToUsersTimeline()
                 } else {
                     Toast.makeText(requireContext(), "Login failed!!", Toast.LENGTH_LONG).show()
@@ -61,8 +69,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val loggedInUserObserver = Observer<Event<Boolean>> { event ->
             event.getContentIfNotHandled()?.let {
                 if (it) {
-//                    viewModel.getMessagesFromDifferentSenders()
-
                     val bundle = Bundle().apply {
                         putSerializable("mentorArg", viewModel.loggedInMentor)
                         putString("title", "Hello ${viewModel.loggedInMentor?.full_name}, your inbox")
@@ -73,8 +79,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             bundle
                     )
                 } else {
-//                    viewModel.getUsersFromFirebase()
-
                     val bundle = Bundle().apply {
                         putSerializable("menteeArg", viewModel.loggedInMentee)
                         putString("title", "Hello ${viewModel.loggedInMentee?.full_name}")
@@ -112,5 +116,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 R.id.action_loginFragment_to_userProfileFormFragment,
                 bundle
         )
+    }
+
+    private fun areUserInputsValid(): Boolean {
+        var areInputsValid = true
+
+        if (!userInputValidator.isEmailValid(input_email)) {
+            areInputsValid = false
+        }
+
+        if (!userInputValidator.isTextValid(input_password, Pattern.compile("[a-zA-Z0-9]+"), getString(R.string.invalid_password))) {
+            areInputsValid = false
+            passwordLayout.isPasswordVisibilityToggleEnabled = false
+        }
+
+        return areInputsValid
     }
 }

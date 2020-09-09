@@ -2,7 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/loginLayoutId"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
 
     <ImageView
         android:id="@+id/imageView"
@@ -69,10 +72,10 @@
         android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fullNameLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fullNameLayout"
+        android:id="@+id/passwordLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
@@ -84,9 +87,12 @@
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:background="@android:color/white"
             android:id="@+id/input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
             android:hint="@string/passsword"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -103,9 +109,12 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView">
 
         <EditText
+            android:background="@android:color/white"
             android:id="@+id/input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
             android:hint="@string/email_address"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>

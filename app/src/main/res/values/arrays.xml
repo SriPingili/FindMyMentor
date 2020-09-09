@@ -29,7 +29,7 @@
     </string-array>
 
     <string-array name="countries_array">
-        <item>your country</item>
+        <item>select country</item>
         <item>Afghanistan</item>
         <item>Albania</item>
         <item>Algeria</item>

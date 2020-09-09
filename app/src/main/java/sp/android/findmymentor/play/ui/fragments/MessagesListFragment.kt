@@ -68,7 +68,6 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
                 no_messages_text_view.visibility = View.VISIBLE
             }
             messagesListAdapter.submitList(it.toList()) //https://stackoverflow.com/questions/56881149/diffutil-is-not-updating-the-recyclerview
-//            messagesListAdapter.notifyDataSetChanged()//todo replace the adapter - refactor
         })
 
     }
