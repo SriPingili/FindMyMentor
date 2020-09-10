@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
         //todo option for mentor to view mentee pr
-        //todo rethink actions (nav graph) for up button
+        //todo consistent naming conventions for ids
     }
 
     override fun onSupportNavigateUp(): Boolean {

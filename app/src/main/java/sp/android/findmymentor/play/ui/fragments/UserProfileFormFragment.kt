@@ -31,7 +31,6 @@ import java.util.regex.Pattern
 
 
 class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
-    val args: UserProfileFormFragmentArgs by navArgs()
     var listOfGroups: MutableList<String> = mutableListOf()
     var location: String = ""
     lateinit var viewModel: LoginViewModel
@@ -52,7 +51,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     }
 
     private fun initializeUI() {
-        if (args.isMentor) {
+        if (viewModel.isLoggedInUserMentor) {
             availableSpotsLayout.visibility = View.VISIBLE
             totalSpotsLayout.visibility = View.VISIBLE
         } else {
@@ -210,7 +209,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
         viewModel.registerResult.observe(viewLifecycleOwner, Observer { event ->
             event.getContentIfNotHandled()?.let {
                 if (it.isSuccessful) {
-                    if (args.isMentor) {
+                    if (viewModel.isLoggedInUserMentor) {
                         if (!input_fullname.text.toString().isNullOrEmpty()) {
                             val mentor = Mentor(input_fullname.text.toString(), input_email.text.toString(), location, input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups as ArrayList<String>, input_available_spots.text.toString().toInt(), input_total_spots.text.toString().toInt(), true)
                             viewModel.createUser(null, mentor)
@@ -222,7 +221,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                                 )
                                 putString("title", "Hello ${viewModel.loggedInMentor?.full_name}, your inbox")
                             }
-                            findNavController().navigate(R.id.action_userProfileFormFragment_to_messagesListFragment, bundle)
+                            findNavController().navigate(R.id.action_global_to_messagesListFragment, bundle)
                         }
                     } else {
                         if (!input_fullname.text.toString().isNullOrEmpty()) {
@@ -254,7 +253,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                             )
                             putString("title", "Hello ${viewModel.loggedInMentor?.full_name}, your inbox")
                         }
-                        findNavController().navigate(R.id.action_userProfileFormFragment_to_messagesListFragment, bundle)
+                        findNavController().navigate(R.id.action_global_to_messagesListFragment, bundle)
                     } else {
                         val bundle = Bundle().apply {
                             putSerializable(
@@ -324,7 +323,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     }
 
     private fun submitUpdates() {
-        if (args.isMentor) {
+        if (viewModel.isLoggedInUserMentor) {
             val mentor = Mentor(input_fullname.text.toString(), input_email.text.toString(), locationSpinner.selectedItem.toString(), input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups, input_available_spots.text.toString().toInt(), input_total_spots.text.toString().toInt(), true)
             val hashMap = HashMap<String, Any>()
             hashMap["full_name"] = mentor.full_name

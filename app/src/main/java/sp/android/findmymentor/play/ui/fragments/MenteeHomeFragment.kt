@@ -75,7 +75,7 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
                 putString("title", "Inbox")
             }
 
-            findNavController().navigate(R.id.action_menteeHomeFragment_to_messagesListFragment, bundle)
+            findNavController().navigate(R.id.action_global_to_messagesListFragment, bundle)
         }
 
         addObservers()
@@ -102,12 +102,11 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.edit_profile) {
             val bundle = Bundle().apply {
-                putBoolean("isMentor", false)
                 putString("title", "Your Profile")
             }
 
             findNavController().navigate(
-                    R.id.action_menteeHomeFragment_to_userProfileFormFragment,
+                    R.id.action_global_to_userProfileFormFragment,
                     bundle
             )
 
@@ -123,10 +122,15 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
 
             loginViewModel.logout()
 
-            findNavController().navigate(R.id.action_menteeHomeFragment_to_loginFragment)
+            /*https://stackoverflow.com/a/54536427*/
+            val controller = findNavController()
+            controller.popBackStack(R.id.menteeHomeFragment, true)
+            controller.navigate(R.id.action_global_to_loginFragment)
             return true
         }
 
         return false
     }
+
+
 }

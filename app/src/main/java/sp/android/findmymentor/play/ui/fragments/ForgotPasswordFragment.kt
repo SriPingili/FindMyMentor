@@ -28,7 +28,7 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
                 viewModel.performPasswordReset(emailAddressInput.text.toString().trim())
                 resetPasswordButton.text = "Email Sent"
                 showSnackBar()
-                findNavController().navigate(R.id.action_forgotPasswordFragment_to_loginFragment)
+                findNavController().navigate(R.id.action_global_to_loginFragment)
             }
         }
     }

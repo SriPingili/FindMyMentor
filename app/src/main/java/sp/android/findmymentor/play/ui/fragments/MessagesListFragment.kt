@@ -85,11 +85,10 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.edit_profile) {
             val bundle = Bundle().apply {
-                putBoolean("isMentor", true)
                 putString("title", "Your Profile")
             }
             findNavController().navigate(
-                    R.id.action_messagesListFragment_to_userProfileFormFragment,
+                    R.id.action_global_to_userProfileFormFragment,
                     bundle
             )
 
@@ -104,14 +103,7 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
 
             loginViewModel.logout()
 
-            val bundle = Bundle().apply {
-                putString("title", getString(R.string.app_name))
-            }
-
-            findNavController().navigate(
-                    R.id.action_messagesListFragment_to_loginFragment,
-                    bundle
-            )
+            findNavController().navigate(R.id.action_global_to_loginFragment)
             return true
         }
 

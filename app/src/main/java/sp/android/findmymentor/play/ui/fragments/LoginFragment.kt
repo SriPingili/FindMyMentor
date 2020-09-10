@@ -1,8 +1,10 @@
 package sp.android.findmymentor.play.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -50,6 +52,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         input_password.doOnTextChanged { _, _, _, _ ->
             passwordLayout.isPasswordVisibilityToggleEnabled = true
         }
+
+        // This callback will only be called when MyFragment is at least Started.
+        // This callback will only be called when MyFragment is at least Started.
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(true /* enabled by default */) {
+            override fun handleOnBackPressed() {
+                val intent = Intent(Intent.ACTION_MAIN)
+                intent.addCategory(Intent.CATEGORY_HOME)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     private fun addObservers() {
@@ -75,7 +89,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     }
 
                     findNavController().navigate(
-                            R.id.action_loginFragment_to_messagesListFragment,
+                            R.id.action_global_to_messagesListFragment,
                             bundle
                     )
                 } else {
@@ -98,22 +112,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun registerMentor() {
         val bundle = Bundle().apply {
-            putBoolean("isMentor", true)
             putString("title", "Register your profile")
         }
         findNavController().navigate(
-                R.id.action_loginFragment_to_userProfileFormFragment,
+                R.id.action_global_to_userProfileFormFragment,
                 bundle
         )
     }
 
     private fun registerMentee() {
         val bundle = Bundle().apply {
-            putBoolean("isMentor", false)
             putString("title", "Register your profile")
         }
         findNavController().navigate(
-                R.id.action_loginFragment_to_userProfileFormFragment,
+                R.id.action_global_to_userProfileFormFragment,
                 bundle
         )
     }
@@ -132,4 +144,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         return areInputsValid
     }
+
+
 }
