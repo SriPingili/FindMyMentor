@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ramotion.foldingcell.FoldingCell
@@ -23,9 +22,9 @@ import sp.android.findmymentor.play.repository.MainRepository
 import sp.android.findmymentor.play.ui.viewmodels.LoginViewModel
 import sp.android.findmymentor.play.ui.viewmodels.MenteeViewModel
 import sp.android.findmymentor.play.ui.viewmodels.factories.MenteeViewModelFactory
+import sp.android.findmymentor.play.util.Constants
 
 class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
-    val args: MenteeHomeFragmentArgs by navArgs()
     lateinit var mentee: Mentee
     lateinit var menteeHomeAdapter: MenteeHomeAdapter
     lateinit var loginViewModel: LoginViewModel
@@ -34,20 +33,27 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-
-        mentee = args.menteeArg
         loginViewModel = (activity as MainActivity).viewModel
+        mentee = loginViewModel.loggedInMentee!!
 
         val mainRepository = MainRepository(FirebaseSource())
-
         loginViewModel.loggedInMentee?.let { mentee ->
             viewModel = ViewModelProvider(this, MenteeViewModelFactory(mainRepository, mentee)).get(MenteeViewModel::class.java)
         }
 
-        (activity as MainActivity).supportActionBar?.title = "Welcome ${loginViewModel.loggedInMentee?.full_name}"
-
         setUpRecyclerView()
+        setListeners()
+        addObservers()
+    }
 
+    private fun setUpRecyclerView() {
+        menteeHomeAdapter = MenteeHomeAdapter()
+        menteeHomeAdapter.setLoggedInUserEmail(loginViewModel.getLoggedInEmailAddress().toString())
+        mentorsRecyclerView.adapter = menteeHomeAdapter
+        mentorsRecyclerView.layoutManager = LinearLayoutManager(activity)
+    }
+
+    private fun setListeners() {
         menteeHomeAdapter.setOnItemClickListener { view, position ->
             // toggle clicked cell state
             (view as FoldingCell).toggle(false)
@@ -61,7 +67,6 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
         menteeHomeAdapter.setCommonGroupsClickListener {
             val commonInterestsMessage = viewModel.getCommonInterests(it)
 
-
             MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
                     .setTitle(String.format(getString(R.string.dear_user), loginViewModel.getLoggedInUserName()))
                     .setMessage(commonInterestsMessage)
@@ -72,20 +77,11 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
 
         messagesFab.setOnClickListener {
             val bundle = Bundle().apply {
-                putString("title", "Inbox")
+                putString(Constants.TITLE_ARG_KEY, getString(R.string.inbox))
             }
 
             findNavController().navigate(R.id.action_global_to_messagesListFragment, bundle)
         }
-
-        addObservers()
-    }
-
-    private fun setUpRecyclerView() {
-        menteeHomeAdapter = MenteeHomeAdapter()
-        menteeHomeAdapter.setLoggedInUserEmail(loginViewModel.getLoggedInEmailAddress().toString())
-        mentorsRecyclerView.adapter = menteeHomeAdapter
-        mentorsRecyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
     private fun addObservers() {
@@ -102,7 +98,7 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.edit_profile) {
             val bundle = Bundle().apply {
-                putString("title", "Your Profile")
+                putString(Constants.TITLE_ARG_KEY, getString(R.string.your_profile))
             }
 
             findNavController().navigate(
@@ -131,6 +127,4 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
 
         return false
     }
-
-
 }

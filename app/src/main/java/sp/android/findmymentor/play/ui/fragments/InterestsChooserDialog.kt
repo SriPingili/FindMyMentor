@@ -23,7 +23,7 @@ class InterestsChooserDialog() : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
-                .setTitle("Choose your Interests")
+                .setTitle(getString(R.string.your_interests))
                 .setMultiChoiceItems(list, checkedItems) { dialogInterface: DialogInterface, position: Int, status: Boolean ->
                     interestsListener?.let { interests ->
                         interests(position, status)

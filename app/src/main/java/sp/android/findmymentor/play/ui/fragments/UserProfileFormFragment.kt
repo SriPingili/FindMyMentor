@@ -10,12 +10,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_user_profile_form.*
 import sp.android.findmymentor.R
@@ -24,6 +22,7 @@ import sp.android.findmymentor.play.application.CustomApplication
 import sp.android.findmymentor.play.models.Mentee
 import sp.android.findmymentor.play.models.Mentor
 import sp.android.findmymentor.play.ui.viewmodels.LoginViewModel
+import sp.android.findmymentor.play.util.Constants
 import sp.android.findmymentor.play.util.UserInputValidator
 import java.util.ArrayList
 import java.util.HashMap
@@ -31,14 +30,11 @@ import java.util.regex.Pattern
 
 
 class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
-    var listOfGroups: MutableList<String> = mutableListOf()
+    var listOfInterests: MutableList<String> = mutableListOf()
     var location: String = ""
     lateinit var viewModel: LoginViewModel
     lateinit var userInputValidator: UserInputValidator
-
-    // Initialize a new array with elements
     val countries = CustomApplication.context?.resources?.getStringArray(R.array.countries_array)
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -85,7 +81,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             }.show(parentFragmentManager, "BMR_FRAGMENT_TAG")
         }
 
-        input_password.doOnTextChanged {  _, _, _, _ ->
+        inputPassword.doOnTextChanged { _, _, _, _ ->
             passwordLayout.isPasswordVisibilityToggleEnabled = true
         }
     }
@@ -105,58 +101,6 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
         }
     }
 
-    private fun showSnackBar() {
-        val parentLayout: View? = activity?.findViewById(android.R.id.content)
-
-        parentLayout?.let {
-            Snackbar.make(it, "Please choose your location", Snackbar.LENGTH_LONG)
-                    .show()
-        }
-    }
-
-    private fun areUserInputsValid(): Boolean {
-        var areInputsValid = true
-
-        if (!userInputValidator.isTextValid(input_fullname, Pattern.compile("[a-zA-Z ]+"), "only letters allowed")) {
-            areInputsValid = false
-        }
-        if (!userInputValidator.isEmailValid(input_email)) {
-            areInputsValid = false
-        }
-        if (!userInputValidator.isTextValid(input_password, Pattern.compile("[a-zA-Z0-9]+"), getString(R.string.invalid_password))) {
-            passwordLayout.isPasswordVisibilityToggleEnabled = false
-            areInputsValid = false
-        }
-
-        val defaultSelection = countries?.get(0)
-        if (location.equals(defaultSelection)) {
-            setSpinnerError(locationSpinner)
-            areInputsValid = false
-        }
-
-        if (!userInputValidator.isTextValid(input_organization, Pattern.compile("[a-zA-Z ]+"), "only letters allowed")) {
-            areInputsValid = false
-        }
-
-        if (!userInputValidator.isTextValid(input_role, Pattern.compile("[a-zA-Z ]+"), "only letters allowed")) {
-            areInputsValid = false
-        }
-
-        if (!userInputValidator.isTextValid(input_about_yourself, Pattern.compile("[a-zA-Z0-9\n ]+"), "only letters and numbers allowed")) {
-            areInputsValid = false
-        }
-
-        if (!userInputValidator.isTextValid(input_available_spots, Pattern.compile("[0-9]+"), "only numbers allowed")) {
-            areInputsValid = false
-        }
-
-        if (!userInputValidator.isTextValid(input_total_spots, Pattern.compile("[0-9]+"), "only numbers allowed")) {
-            areInputsValid = false
-        }
-
-        return areInputsValid
-    }
-
     private fun setSpinnerError(spinner: Spinner) {
         val selectedView = spinner.selectedView
         if (selectedView != null && selectedView is TextView) {
@@ -168,7 +112,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.save_profile_changes) {
             if (viewModel.loggedInMentee == null && viewModel.loggedInMentor == null) {
-                if (areUserInputsValid()) viewModel.registerUser(input_email.text.toString(), input_password.text.toString())
+                if (areUserInputsValid()) viewModel.registerUser(inputEmail.text.toString(), inputPassword.text.toString())
             } else {
                 submitUpdates()
             }
@@ -197,11 +141,11 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
         val interest = resources.getStringArray(R.array.interests_choice)?.get(pos).toString()
         if (bool) {
             InterestsChooserDialog.checkedItems?.set(pos, true)
-            if (!listOfGroups.contains(interest))
-                listOfGroups.add(interest)
+            if (!listOfInterests.contains(interest))
+                listOfInterests.add(interest)
         } else {
             InterestsChooserDialog.checkedItems?.set(pos, false)
-            listOfGroups.remove(interest)
+            listOfInterests.remove(interest)
         }
     }
 
@@ -210,30 +154,22 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             event.getContentIfNotHandled()?.let {
                 if (it.isSuccessful) {
                     if (viewModel.isLoggedInUserMentor) {
-                        if (!input_fullname.text.toString().isNullOrEmpty()) {
-                            val mentor = Mentor(input_fullname.text.toString(), input_email.text.toString(), location, input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups as ArrayList<String>, input_available_spots.text.toString().toInt(), input_total_spots.text.toString().toInt(), true)
+                        if (!inputFullName.text.toString().isNullOrEmpty()) {
+                            val mentor = Mentor(inputFullName.text.toString(), inputEmail.text.toString(), location, inputAboutYourself.text.toString(), inputOrganization.text.toString(), inputRole.text.toString(), listOfInterests as ArrayList<String>, inputAvailableSpots.text.toString().toInt(), inputTotalSpots.text.toString().toInt(), true)
                             viewModel.createUser(null, mentor)
 
                             val bundle = Bundle().apply {
-                                putSerializable(
-                                        "mentorArg",
-                                        viewModel.loggedInMentor
-                                )
-                                putString("title", "Hello ${viewModel.loggedInMentor?.full_name}, your inbox")
+                                putString(Constants.TITLE_ARG_KEY, String.format(getString(R.string.welcome_mentor), viewModel.loggedInMentor?.full_name))
                             }
                             findNavController().navigate(R.id.action_global_to_messagesListFragment, bundle)
                         }
                     } else {
-                        if (!input_fullname.text.toString().isNullOrEmpty()) {
-                            val mentee = Mentee(input_fullname.text.toString(), input_email.text.toString(), location, input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups as ArrayList<String>)
+                        if (!inputFullName.text.toString().isNullOrEmpty()) {
+                            val mentee = Mentee(inputFullName.text.toString(), inputEmail.text.toString(), location, inputAboutYourself.text.toString(), inputOrganization.text.toString(), inputRole.text.toString(), listOfInterests as ArrayList<String>)
                             viewModel.createUser(mentee)
 
                             val bundle = Bundle().apply {
-                                putSerializable(
-                                        "menteeArg",
-                                        viewModel.loggedInMentee
-                                )
-                                putString("title", "Hello ${viewModel.loggedInMentee?.full_name}")
+                                putString(Constants.TITLE_ARG_KEY, String.format(getString(R.string.welcome_mentee), viewModel.loggedInMentee?.full_name))
                             }
                             findNavController().navigate(R.id.action_userProfileFormFragment_to_menteeHomeFragment, bundle)
                         }
@@ -247,26 +183,18 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                 if (it) {
                     if (viewModel.isLoggedInUserMentor) {
                         val bundle = Bundle().apply {
-                            putSerializable(
-                                    "mentorArg",
-                                    viewModel.loggedInMentor
-                            )
-                            putString("title", "Hello ${viewModel.loggedInMentor?.full_name}, your inbox")
+                            putString(Constants.TITLE_ARG_KEY, String.format(getString(R.string.welcome_mentor), viewModel.loggedInMentor?.full_name))
                         }
                         findNavController().navigate(R.id.action_global_to_messagesListFragment, bundle)
                     } else {
                         val bundle = Bundle().apply {
-                            putSerializable(
-                                    "menteeArg",
-                                    viewModel.loggedInMentee
-                            )
-                            putString("title", "Hello ${viewModel.loggedInMentee?.full_name}")
+                            putString(Constants.TITLE_ARG_KEY, String.format(getString(R.string.welcome_mentee), viewModel.loggedInMentee?.full_name))
                         }
                         findNavController().navigate(R.id.action_userProfileFormFragment_to_menteeHomeFragment, bundle)
                     }
-                    Toast.makeText(context, "success", Toast.LENGTH_SHORT).show()
+                    Constants.showSnackBar(requireContext(), getString(R.string.profile_update_success), Snackbar.LENGTH_LONG)
                 } else {
-                    Toast.makeText(context, "failure", Toast.LENGTH_SHORT).show()
+                    Constants.showSnackBar(requireContext(), getString(R.string.profile_update_failure), Snackbar.LENGTH_LONG)
                 }
             }
         })
@@ -276,36 +204,36 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     private fun prepareEditProfileIfNeeded() {
         if (viewModel.loggedInMentee != null || viewModel.loggedInMentor != null) {
             passwordLayout.visibility = View.GONE
-            input_password.visibility = View.GONE
+            inputPassword.visibility = View.GONE
 
             val mentee = viewModel.loggedInMentee
             val mentor = viewModel.loggedInMentor
 
             val name = mentee?.full_name ?: mentor?.full_name
-            input_fullname.setText(name)
-            input_email.isEnabled = false
+            inputFullName.setText(name)
+            inputEmail.isEnabled = false
 
             val email = mentee?.email_address ?: mentor?.email_address
-            input_email.setText(email)
+            inputEmail.setText(email)
 
             val locationSelected = mentee?.location ?: mentor?.location
             countries?.indexOf(locationSelected)?.let { locationSpinner.setSelection(it) }
 
             val aboutYourself = mentee?.aboutYourself ?: mentor?.aboutYourself
-            input_about_yourself.setText(aboutYourself)
+            inputAboutYourself.setText(aboutYourself)
 
             val organization = mentee?.organization ?: mentor?.organization
-            input_organization.setText(organization)
+            inputOrganization.setText(organization)
 
             val role = mentee?.role ?: mentor?.role
-            input_role.setText(role)
+            inputRole.setText(role)
 
             //interests
             val interests = InterestsChooserDialog.list
             val selectedInterests = mentee?.interests ?: mentor?.interests
-            listOfGroups.clear()
+            listOfInterests.clear()
             if (selectedInterests != null) {
-                listOfGroups.addAll(selectedInterests)
+                listOfInterests.addAll(selectedInterests)
             }
 
             for (interest in interests!!) {
@@ -315,39 +243,82 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             }
 
             val availability = mentor?.availability
-            input_available_spots.setText(availability.toString())
+            inputAvailableSpots.setText(availability.toString())
 
             val totalSpots = mentor?.totalSpots
-            input_total_spots.setText(totalSpots.toString())
+            inputTotalSpots.setText(totalSpots.toString())
         }
     }
 
     private fun submitUpdates() {
         if (viewModel.isLoggedInUserMentor) {
-            val mentor = Mentor(input_fullname.text.toString(), input_email.text.toString(), locationSpinner.selectedItem.toString(), input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups, input_available_spots.text.toString().toInt(), input_total_spots.text.toString().toInt(), true)
+            val mentor = Mentor(inputFullName.text.toString(), inputEmail.text.toString(), locationSpinner.selectedItem.toString(), inputAboutYourself.text.toString(), inputOrganization.text.toString(), inputRole.text.toString(), listOfInterests, inputAvailableSpots.text.toString().toInt(), inputTotalSpots.text.toString().toInt(), true)
             val hashMap = HashMap<String, Any>()
-            hashMap["full_name"] = mentor.full_name
-            hashMap["email_address"] = mentor.email_address
-            hashMap["availability"] = mentor.availability
-            hashMap["totalSpots"] = mentor.totalSpots
-            hashMap["aboutYourself"] = mentor.aboutYourself ?: ""
-            hashMap["organization"] = mentor.organization ?: ""
-            hashMap["role"] = mentor.role ?: ""
-            hashMap["interests"] = listOfGroups
-            hashMap["location"] = mentor.location ?: ""
-            hashMap["mentor"] = true
+            hashMap[Constants.FULL_NAME_KEY] = mentor.full_name
+            hashMap[Constants.EMAIL_ADDRESS_KEY] = mentor.email_address
+            hashMap[Constants.AVAILABILITY_KEY] = mentor.availability
+            hashMap[Constants.TOTAL_SPOTS_KEY] = mentor.totalSpots
+            hashMap[Constants.ABOUT_YOURSELF_KEY] = mentor.aboutYourself ?: ""
+            hashMap[Constants.ORGANIZATION_KEY] = mentor.organization ?: ""
+            hashMap[Constants.ROLE_KEY] = mentor.role
+            hashMap[Constants.INTERESTS__KEY] = listOfInterests
+            hashMap[Constants.LOCATION__KEY] = mentor.location ?: ""
+            hashMap[Constants.MENTOR__KEY] = true
             viewModel.updateProfile(hashMap, null, mentor)
         } else {
-            val mentee = Mentee(input_fullname.text.toString(), input_email.text.toString(), locationSpinner.selectedItem.toString(), input_about_yourself.text.toString(), input_organization.text.toString(), input_role.text.toString(), listOfGroups)
+            val mentee = Mentee(inputFullName.text.toString(), inputEmail.text.toString(), locationSpinner.selectedItem.toString(), inputAboutYourself.text.toString(), inputOrganization.text.toString(), inputRole.text.toString(), listOfInterests)
             val hashMap = HashMap<String, Any>()
-            hashMap["full_name"] = mentee.full_name
-            hashMap["email_address"] = mentee.email_address
-            hashMap["aboutYourself"] = mentee.aboutYourself ?: ""
-            hashMap["organization"] = mentee.organization ?: ""
-            hashMap["role"] = mentee.role ?: ""
-            hashMap["interests"] = listOfGroups
-            hashMap["location"] = mentee.location ?: ""
+            hashMap[Constants.FULL_NAME_KEY] = mentee.full_name
+            hashMap[Constants.EMAIL_ADDRESS_KEY] = mentee.email_address
+            hashMap[Constants.ABOUT_YOURSELF_KEY] = mentee.aboutYourself ?: ""
+            hashMap[Constants.ORGANIZATION_KEY] = mentee.organization ?: ""
+            hashMap[Constants.ROLE_KEY] = mentee.role ?: ""
+            hashMap[Constants.INTERESTS__KEY] = listOfInterests
+            hashMap[Constants.LOCATION__KEY] = mentee.location ?: ""
             viewModel.updateProfile(hashMap, mentee)
         }
+    }
+
+    private fun areUserInputsValid(): Boolean {
+        var areInputsValid = true
+
+        if (!userInputValidator.isTextValid(inputFullName, Pattern.compile(Constants.ONLY_LETTERS), getString(R.string.only_letters_allowed))) {
+            areInputsValid = false
+        }
+        if (!userInputValidator.isEmailValid(inputEmail)) {
+            areInputsValid = false
+        }
+        if (!userInputValidator.isTextValid(inputPassword, Pattern.compile(Constants.ONLY_LETTERS_NUMBERS), getString(R.string.invalid_password))) {
+            passwordLayout.isPasswordVisibilityToggleEnabled = false
+            areInputsValid = false
+        }
+
+        val defaultSelection = countries?.get(0)
+        if (location.equals(defaultSelection)) {
+            setSpinnerError(locationSpinner)
+            areInputsValid = false
+        }
+
+        if (!userInputValidator.isTextValid(inputOrganization, Pattern.compile(Constants.ONLY_LETTERS), getString(R.string.only_letters_allowed))) {
+            areInputsValid = false
+        }
+
+        if (!userInputValidator.isTextValid(inputRole, Pattern.compile(Constants.ONLY_LETTERS), getString(R.string.only_letters_allowed))) {
+            areInputsValid = false
+        }
+
+        if (!userInputValidator.isTextValid(inputAboutYourself, Pattern.compile(Constants.ONLY_LETTERS_NUMBERS_NEW_LINES), getString(R.string.letters_and_numbers_allowed))) {
+            areInputsValid = false
+        }
+
+        if (!userInputValidator.isTextValid(inputAvailableSpots, Pattern.compile(Constants.ONLY_NUMBERS), getString(R.string.only_numbers_allowed))) {
+            areInputsValid = false
+        }
+
+        if (!userInputValidator.isTextValid(inputTotalSpots, Pattern.compile(Constants.ONLY_NUMBERS), getString(R.string.only_numbers_allowed))) {
+            areInputsValid = false
+        }
+
+        return areInputsValid
     }
 }

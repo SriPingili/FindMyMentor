@@ -6,12 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_forgot_password.*
-import kotlinx.android.synthetic.main.fragment_login.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.MainActivity
+import sp.android.findmymentor.play.extensions.showSnackBar
 import sp.android.findmymentor.play.ui.viewmodels.LoginViewModel
+import sp.android.findmymentor.play.util.Constants
 import sp.android.findmymentor.play.util.UserInputValidator
-import java.util.regex.Pattern
 
 
 class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
@@ -24,21 +24,12 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
         userInputValidator = UserInputValidator(requireContext())
 
         resetPasswordButton.setOnClickListener {
-            if (userInputValidator.isEmailValid(emailAddressInput)) {
-                viewModel.performPasswordReset(emailAddressInput.text.toString().trim())
-                resetPasswordButton.text = "Email Sent"
-                showSnackBar()
+            if (userInputValidator.isEmailValid(inputEmailAddress)) {
+                viewModel.performPasswordReset(inputEmailAddress.text.toString().trim())
+                resetPasswordButton.text = getString(R.string.email_sent)
+                Constants.showSnackBar(requireContext(), getString(R.string.pwd_reset_link_sent), Snackbar.LENGTH_LONG)
                 findNavController().navigate(R.id.action_global_to_loginFragment)
             }
-        }
-    }
-
-    private fun showSnackBar() {
-        val parentLayout: View? = activity?.findViewById(android.R.id.content)
-
-        parentLayout?.let {
-            Snackbar.make(it, "Password reset link sent. Please check your email and login", Snackbar.LENGTH_LONG)
-                    .show()
         }
     }
 }

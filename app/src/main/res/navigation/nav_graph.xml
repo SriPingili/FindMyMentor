@@ -91,11 +91,6 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <argument
-            android:name="mentorArg"
-            android:defaultValue="@null"
-            app:argType="sp.android.findmymentor.play.models.Mentor"
-            app:nullable="true" />
-        <argument
             android:name="title"
             app:argType="string" />
     </fragment>

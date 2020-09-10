@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import sp.android.findmymentor.play.models.Mentee
 import sp.android.findmymentor.play.models.Mentor
 import sp.android.findmymentor.play.repository.MainRepository
+import sp.android.findmymentor.play.util.Constants
 import sp.android.findmymentor.play.util.Event
 
 class LoginViewModel(private val repository: MainRepository) : ViewModel() {
@@ -39,7 +40,7 @@ class LoginViewModel(private val repository: MainRepository) : ViewModel() {
                 val map = snapshot.value as HashMap<String, String>?
 
                 map?.let {
-                    if (it.containsKey("mentor")) {
+                    if (it.containsKey(Constants.MENTOR__KEY)) {
                         loggedInMentor = snapshot.getValue(Mentor::class.java)
                         isLoggedInUserMentor = true
                         loggedInUserIsMentor.postValue(Event(true))

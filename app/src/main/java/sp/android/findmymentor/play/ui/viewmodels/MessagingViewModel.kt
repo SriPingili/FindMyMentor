@@ -18,7 +18,7 @@ class MessagingViewModel(private val repository: MainRepository, chatKeyValue: S
         getMessagesForTheUserChat(chatKeyValue)
     }
 
-    fun getMessagesForTheUserChat(chatKeyValue: String) {
+    private fun getMessagesForTheUserChat(chatKeyValue: String) {
         repository.getFirebaseMessagesDBReference().child(chatKeyValue).child(Constants.MESSAGES_KEY).addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 snapshot.value?.let { it ->

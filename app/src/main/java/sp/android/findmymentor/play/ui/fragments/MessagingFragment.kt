@@ -32,19 +32,18 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         message = args.messageArg
-        val mainRepository = MainRepository(FirebaseSource())
         loginViewModel = (activity as MainActivity).viewModel
+
         setUpRecylcerView()
+        setListeners()
+        addObservers()
+
+        val mainRepository = MainRepository(FirebaseSource())
         viewModel = ViewModelProvider(this, MessagingViewModelFactory(mainRepository, message.chatKeyValue.toString())).get(MessagingViewModel::class.java)
+    }
 
-        observer = Observer {
-            messagingAdapter.submitList(it)
-            messagesRecyclerView.scrollToPosition(messagingAdapter.currentList.size - 1)
-        }
-
-        viewModel.messagesLiveData.observe(viewLifecycleOwner, observer)
-
-        typeMessageEditText.addTextChangedListener(object : TextWatcher {
+    private fun setListeners() {
+        inputMessage.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 if (charSequence.toString().trim().length > 0) {
                     sendMessageImageView.setEnabled(true)
@@ -58,10 +57,19 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
         })
 
         sendMessageImageView.setOnClickListener {
-            val message = Message(loginViewModel.getLoggedInEmailAddress()!!, loginViewModel.getLoggedInUserName()!!, typeMessageEditText.text.toString(), System.currentTimeMillis())
+            val message = Message(loginViewModel.getLoggedInEmailAddress()!!, loginViewModel.getLoggedInUserName()!!, inputMessage.text.toString(), System.currentTimeMillis())
             this.message.chatKeyValue?.let { chatKeyValue -> viewModel.sendMessage(message, chatKeyValue) }
-            typeMessageEditText.setText("")
+            inputMessage.setText("")
         }
+    }
+
+    private fun addObservers() {
+        observer = Observer {
+            messagingAdapter.submitList(it)
+            messagesRecyclerView.scrollToPosition(messagingAdapter.currentList.size - 1)
+        }
+
+        viewModel.messagesLiveData.observe(viewLifecycleOwner, observer)
     }
 
     private fun setUpRecylcerView() {

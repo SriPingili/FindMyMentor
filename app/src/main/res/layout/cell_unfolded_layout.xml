@@ -1,85 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:background="@android:color/holo_orange_light"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
     android:orientation="vertical"
     android:visibility="gone">
 
     <!--TODO use constraint layout for a better performance-->
 
     <FrameLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/availabilityStatusTVUnfolded"
             style="@style/TextAppearance.AppCompat.Large"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:background="@color/colorAccent"
             android:gravity="center"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:padding="8dp"
             android:textColor="@android:color/white"
             tools:text="Available" />
 
         <ImageView
             android:id="@+id/commonInterestsImageView"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
             android:layout_gravity="right|center"
+            android:layout_height="24dp"
             android:layout_marginRight="16dp"
+            android:layout_width="24dp"
             android:src="@drawable/more_info_white" />
     </FrameLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:background="#538053"
         android:layout_height="wrap_content"
-        android:background="#538053">
+        android:layout_width="match_parent">
 
         <LinearLayout
             android:id="@+id/headerLinearLayout"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
 
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/roundedTextViewUnfolded"
                 style="@style/TextAppearance.AppCompat.Large"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
                 android:background="@drawable/custom_textview"
                 android:gravity="center"
-                android:text="S" />
+                android:layout_gravity="center"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="60dp"
+                tools:text="S" />
 
             <TextView
                 android:id="@+id/userNameTextViewUnfolded"
                 style="@style/TextAppearance.AppCompat.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:layout_below="@id/roundedTextViewUnfolded"
                 android:layout_gravity="center"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:gravity="center"
+                android:layout_width="wrap_content"
                 tools:text="Srijith Reddy Pingili " />
 
             <TextView
                 android:id="@+id/userRoleTextViewUnfolded"
                 style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_toRightOf="@id/headerLinearLayout"
-                android:gravity="center"
+                android:layout_width="match_parent"
                 tools:text="Associate Senior Software Engineer" />
 
         </LinearLayout>
@@ -87,119 +87,119 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/aboutUserLabelTextView"
                 style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
                 android:text="@string/description" />
 
             <TextView
                 android:id="@+id/aboutUserDescriptionTextView"
                 style="@style/TextAppearance.AppCompat.Small"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
                 android:lines="4"
                 android:textColor="@android:color/black"
                 tools:text="Working on Mobile apps Working on Mobile apps Working on Mobile apps  Working on Mobile apps Working on Mobile apps Working on Mobile apps Working on Mobile apps Working on Mobile apps" />
         </LinearLayout>
 
         <ImageView
-            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
             android:src="#e0e0e0" />
 
         <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:layout_width="0dp">
 
                 <TextView
                     android:id="@+id/organizationLabel"
                     style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
                     android:text="@string/organization" />
 
                 <TextView
                     android:id="@+id/organizationNameTextViewUnfolded"
                     style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_below="@id/organizationLabel"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:layout_width="wrap_content"
                     android:textColor="@android:color/black"
                     tools:text="Microsoft" />
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:layout_gravity="center"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:layout_width="0dp">
 
                 <TextView
                     android:id="@+id/locationLabel"
                     style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Location" />
+                    android:layout_width="wrap_content"
+                    android:text="@string/location" />
 
                 <TextView
                     android:id="@+id/locationTextViewUnfolded"
                     style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/locationLabel"
                     android:layout_alignParentStart="true"
+                    android:layout_below="@id/locationLabel"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="USA"
+                    android:layout_width="wrap_content"
+                    tools:text="USA"
                     android:textColor="@android:color/black" />
 
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:layout_width="0dp">
 
                 <TextView
                     android:id="@+id/availabilityLabel"
                     style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
                     android:text="@string/availability" />
 
                 <TextView
                     android:id="@+id/availabilityTextViewUnfolded"
                     style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/availabilityLabel"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="16dp"
+                    android:layout_below="@id/availabilityLabel"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="wrap_content"
                     android:textColor="@android:color/black"
                     tools:text="5" />
             </RelativeLayout>
@@ -210,25 +210,14 @@
         <TextView
             android:id="@+id/requestUserButton"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="match_parent"
+            android:background="@color/colorAccent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:background="@color/colorAccent"
+            android:layout_width="match_parent"
             android:padding="8dp"
             android:text="@string/request"
             android:textAlignment="center"
             android:textColor="#FFFFFF" />
-
-        <TextView
-            android:id="@+id/availableSpotsTextView"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            tools:text="4 spots left" />
 
     </LinearLayout>
 </LinearLayout>

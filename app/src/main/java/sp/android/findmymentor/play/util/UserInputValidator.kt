@@ -1,19 +1,12 @@
 package sp.android.findmymentor.play.util
 
 import android.content.Context
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.animation.CycleInterpolator
 import android.view.animation.TranslateAnimation
 import android.widget.EditText
 import sp.android.findmymentor.R
-
 import java.util.regex.Pattern
 
-
-/**
- * Created by sp051821 on 8/5/18.
- */
 class UserInputValidator(private val context: Context) {
     fun isTextValid(editText: EditText, inputPattern: Pattern, errorMessage: String?): Boolean {
         val matcher = inputPattern.matcher(editText.text.toString())
@@ -39,7 +32,7 @@ class UserInputValidator(private val context: Context) {
      * @return - true if email is valid
      */
     fun isEmailValid(editText: EditText): Boolean {
-        val VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE)
+        val VALID_EMAIL_ADDRESS_REGEX = Pattern.compile(Constants.EMAIL_REGEX, Pattern.CASE_INSENSITIVE)
         val matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(editText.text.toString())
         if (!matcher.matches()) {
             editText.error = context.getString(R.string.check_your_email_adrress)

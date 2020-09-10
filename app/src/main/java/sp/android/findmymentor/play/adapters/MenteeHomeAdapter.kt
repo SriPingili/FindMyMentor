@@ -79,13 +79,12 @@ class MenteeHomeAdapter : RecyclerView.Adapter<MenteeHomeAdapter.MentorViewHolde
             aboutUserDescriptionTextView.text = mentor.aboutYourself
             availabilityTextViewUnfolded.text = mentor.availability.toString()
             organizationNameTextViewUnfolded.text = mentor.organization
-            availableSpotsTextView.text = mentor.availability.toString()
             locationTextViewUnfolded.text = mentor.location
 
             if (mentor.availability < 1) {
-                availabilityStatusTVUnfolded.text = "Unavailable"
+                availabilityStatusTVUnfolded.text = context.getString(R.string.unavailable)
             } else {
-                availabilityStatusTVUnfolded.text = "Available"
+                availabilityStatusTVUnfolded.text = context.getText(R.string.available)
             }
 
             requestUserButton.setOnClickListener {
@@ -123,8 +122,8 @@ class MenteeHomeAdapter : RecyclerView.Adapter<MenteeHomeAdapter.MentorViewHolde
     }
 
     private fun requestUser(requestUserButton: TextView, availabilityStatusTVUnfolded: TextView) {
-        availabilityStatusTVUnfolded.text = "Requested"
-        requestUserButton.text = "Go to Messages"
+        availabilityStatusTVUnfolded.text = availabilityStatusTVUnfolded.context.getString(R.string.requested)
+        requestUserButton.text = requestUserButton.context.getString(R.string.go_to_messages)
         requestUserButton.alpha = 0.5f
         //TODO make it true and take to messages on click
         requestUserButton.isEnabled = false

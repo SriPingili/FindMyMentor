@@ -2,47 +2,50 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
 
     <TextView
         android:id="@+id/roundedTextView"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_margin="16dp"
+        style="@style/TextAppearance.AppCompat.Large"
         android:background="@drawable/rounded_textview"
         android:gravity="center"
+        android:layout_height="56dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_width="56dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/TextAppearance.AppCompat.Large"
         tools:text="S" />
 
     <TextView
         android:id="@+id/senderNameTextView"
-        android:layout_margin="8dp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        style="@style/TextAppearance.AppCompat.Medium"
         android:ellipsize="end"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_width="0dp"
         android:maxLines="2"
+        android:textColor="@android:color/black"
         app:layout_constraintLeft_toRightOf="@+id/roundedTextView"
         app:layout_constraintRight_toLeftOf="@+id/rightChevron"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintVertical_chainStyle="packed"
-        android:textColor="@android:color/black"
-        style="@style/TextAppearance.AppCompat.Medium"
-        tools:text="Srijith Reddy Pingili"/>
+        tools:text="Srijith Reddy Pingili" />
 
     <TextView
         android:id="@+id/messageContentTextView"
         style="@style/TextAppearance.AppCompat.Small"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
         android:ellipsize="end"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_width="0dp"
         android:lines="2"
         android:maxLines="2"
         android:padding="8dp"
@@ -55,31 +58,30 @@
 
     <ImageView
         android:id="@+id/rightChevron"
-        android:padding="8dp"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:padding="8dp"
+        android:src="@drawable/ic_baseline_chevron_right_24"
+        android:text=">"
         app:layout_constraintBaseline_toBaselineOf="@+id/senderNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:src="@drawable/ic_baseline_chevron_right_24"
-        android:text=">" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <ImageView
         android:id="@+id/itemDivider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:contentDescription="@string/view_separator"
         android:layout_below="@id/messageContentTextView"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:layout_toEndOf="@+id/staticImageView"
-        android:contentDescription="@string/view_separator"
+        android:layout_width="match_parent"
         android:src="#e0e0e0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/messageContentTextView" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

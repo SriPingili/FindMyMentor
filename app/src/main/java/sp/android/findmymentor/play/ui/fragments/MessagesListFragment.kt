@@ -19,6 +19,7 @@ import sp.android.findmymentor.play.repository.MainRepository
 import sp.android.findmymentor.play.ui.viewmodels.LoginViewModel
 import sp.android.findmymentor.play.ui.viewmodels.MessagesListViewModel
 import sp.android.findmymentor.play.ui.viewmodels.factories.MessagesListViewModelFactory
+import sp.android.findmymentor.play.util.Constants
 
 
 class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
@@ -31,7 +32,6 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
         loginViewModel = (activity as MainActivity).viewModel
 
         val mainRepository = MainRepository(FirebaseSource())
-
         loginViewModel.getLoggedInEmailAddress()?.let { email ->
             loginViewModel.getLoggedInUserName()?.let { userName ->
                 viewModel = ViewModelProvider(this, MessagesListViewModelFactory(mainRepository, email, userName)).get(MessagesListViewModel::class.java)
@@ -40,42 +40,46 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
 
         setUpRecyclerView()
         setHasOptionsMenu(true)
+        setListeners()
+        setObservers()
 
         if (loginViewModel.loggedInMentor == null) {
-            setHasOptionsMenu(true)
             (activity as MainActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
             (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
-
-        messagesListAdapter.setOnItemClickListener {
-            val bundle = Bundle().apply {
-                putSerializable("messageArg", it)
-                putString("title", it.sender_name)
-            }
-            findNavController().navigate(
-                    R.id.action_messagesListFragment_to_messagingFragment,
-                    bundle
-            )
-        }
-
-        viewModel.messageSendersLiveData.observe(viewLifecycleOwner, Observer {
-
-            if (it.size > 0) {
-                messagesListRecyclerView.visibility = View.VISIBLE
-                no_messages_text_view.visibility = View.GONE
-            } else {
-                messagesListRecyclerView.visibility = View.GONE
-                no_messages_text_view.visibility = View.VISIBLE
-            }
-            messagesListAdapter.submitList(it.toList()) //https://stackoverflow.com/questions/56881149/diffutil-is-not-updating-the-recyclerview
-        })
-
     }
 
     private fun setUpRecyclerView() {
         messagesListAdapter = MessagesListAdapter()
         messagesListRecyclerView.adapter = messagesListAdapter
         messagesListRecyclerView.layoutManager = LinearLayoutManager(activity)
+    }
+
+    private fun setListeners() {
+        messagesListAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putSerializable(Constants.MESSAGE_ARG__KEY, it)
+                putString(Constants.TITLE_ARG_KEY, it.sender_name)
+            }
+            findNavController().navigate(
+                    R.id.action_messagesListFragment_to_messagingFragment,
+                    bundle
+            )
+        }
+    }
+
+    private fun setObservers() {
+        viewModel.messageSendersLiveData.observe(viewLifecycleOwner, Observer {
+
+            if (it.size > 0) {
+                messagesListRecyclerView.visibility = View.VISIBLE
+                noMessagesTextView.visibility = View.GONE
+            } else {
+                messagesListRecyclerView.visibility = View.GONE
+                noMessagesTextView.visibility = View.VISIBLE
+            }
+            messagesListAdapter.submitList(it.toList()) //https://stackoverflow.com/questions/56881149/diffutil-is-not-updating-the-recyclerview
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -85,7 +89,7 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.edit_profile) {
             val bundle = Bundle().apply {
-                putString("title", "Your Profile")
+                putString(Constants.TITLE_ARG_KEY, getString(R.string.your_profile))
             }
             findNavController().navigate(
                     R.id.action_global_to_userProfileFormFragment,

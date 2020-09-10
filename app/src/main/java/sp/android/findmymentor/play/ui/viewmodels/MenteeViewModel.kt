@@ -6,6 +6,8 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import sp.android.findmymentor.R
+import sp.android.findmymentor.play.application.CustomApplication
 import sp.android.findmymentor.play.models.Mentee
 import sp.android.findmymentor.play.models.Mentor
 import sp.android.findmymentor.play.repository.MainRepository
@@ -22,7 +24,7 @@ class MenteeViewModel(private val repository: MainRepository, private val logged
         getUsersFromFirebase()
     }
 
-    private fun getUsersFromFirebase(){
+    private fun getUsersFromFirebase() {
         repository.getFirebaseUsersDBReference().addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val usersTableHashMap = snapshot.value as HashMap<String, Object>
@@ -77,10 +79,11 @@ class MenteeViewModel(private val repository: MainRepository, private val logged
         repository.getFirebaseMessagesDBReference().child(uuid).setValue(messagesMap)
 
         val adminMessage = HashMap<String, Any>()
-        adminMessage[Constants.TEXT] = "Welcome to your chat! Use this to find a time to talk, plan a meeting, or get to know each other and the goals you want to set in these meetings."
+        adminMessage[Constants.TEXT] = CustomApplication.context?.getString(R.string.welcome_to_chat)
+                ?: ""
         adminMessage[Constants.SENDER_NAME] = Constants.ADMIN_NAME
         adminMessage[Constants.SENDER_ID] = Constants.ADMIN_ID
-        adminMessage["dateInMillis"] = System.currentTimeMillis()
+        adminMessage[Constants.DATE_IN_MILLIS] = System.currentTimeMillis()
 
         repository.getFirebaseMessagesDBReference().child(uuid).child(Constants.MESSAGES_KEY).push().setValue(adminMessage)
     }
@@ -89,21 +92,20 @@ class MenteeViewModel(private val repository: MainRepository, private val logged
         val menteeInterests = loggedInMentee.interests?.toMutableList() //creates a copy
         val mentorInterests = mentor.interests
 
+        var message = CustomApplication.context?.getString(R.string.initial_common_interests_message)
+
         menteeInterests?.let {
             it.retainAll(mentorInterests)
 
-            var placeholder = "0"
-
             if (!it.isEmpty()) {
-                placeholder = it.toString().replace("[", "").replace("]", "")
+                val interests = it.toString().replace("[", "").replace("]", "")
+                message = CustomApplication.context?.let {
+                    String.format(it.getString(R.string.common_interests_message), interests)
+                }
             }
-
-            val message = "You have ${placeholder} interests in common with this mentor"
-
-            return message
         }
 
-        return "you don't have any common groups";
+        return message.toString()
     }
 
     private fun getChatKeysFromFirebase() {
