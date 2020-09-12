@@ -9,7 +9,7 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
-        android:dividerHeight="10dp"
+        android:dividerHeight="@dimen/mentors_rv_divider_height"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:scrollbars="none" />
@@ -17,12 +17,12 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/messagesFab"
         android:layout_gravity="bottom|end"
-        android:layout_height="56dp"
-        android:layout_marginBottom="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_width="56dp"
+        android:layout_height="@dimen/fab_height"
+        android:layout_marginBottom="@dimen/fab_margin_bottom"
+        android:layout_marginRight="@dimen/fab_margin_right"
+        android:layout_width="@dimen/fab_width"
         android:src="@drawable/ic_mail_outline_black_24dp"
-        app:elevation="6dp"
+        app:elevation="@dimen/fab_elevation"
         app:fabSize="normal"
-        app:pressedTranslationZ="12dp" />
+        app:pressedTranslationZ="@dimen/fab_pressed_translationz" />
 </FrameLayout>

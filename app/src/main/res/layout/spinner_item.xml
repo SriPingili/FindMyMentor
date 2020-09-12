@@ -3,8 +3,8 @@
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="8dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
+    android:paddingBottom="@dimen/spinner_tv_padding_bottom"
+    android:paddingLeft="@dimen/spinner_tv_padding_left"
+    android:paddingRight="@dimen/spinner_tv_padding_right"
     android:textColor="@android:color/black"
-    android:textSize="16sp" />
+    android:textSize="@dimen/spinner_tv_text_size" />

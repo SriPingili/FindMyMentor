@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--cell-->
+    <dimen name="folding_cell_margin">8dp</dimen>
+    <integer name="folding_cell_flip_count">2</integer>
+    <integer name="animation_duration">800</integer>
+    <integer name="camera_height">30</integer>
+
+    <!--cell folded layout-->
+    <dimen name="layout_height">160dp</dimen>
+    <integer name="layout_weight">3</integer>
+    <dimen name="rounded_tv_height">56dp</dimen>
+    <dimen name="rounded_tv_width">56dp</dimen>
+    <dimen name="rounded_tv_margin_top">40dp</dimen>
+    <dimen name="availability_tv_margin_top">8dp</dimen>
+    <dimen name="availability_tv_margin_left">16dp</dimen>
+    <dimen name="static_image_view_margin">16dp</dimen>
+    <dimen name="user_name_tv_margin_top">16dp</dimen>
+    <dimen name="divider_margin_top">6dp</dimen>
+    <dimen name="divider_margin_bottom">6dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="org_label_margin_left">16dp</dimen>
+    <dimen name="org_label_margin_top">8dp</dimen>
+    <dimen name="org_name_margin_left">16dp</dimen>
+    <dimen name="org_name_margin_top">8dp</dimen>
+    <dimen name="location_label_margin_left">16dp</dimen>
+    <dimen name="location_label_margin_top">8dp</dimen>
+    <dimen name="location_name_margin_left">16dp</dimen>
+    <dimen name="location_name_margin_top">8dp</dimen>
+    <dimen name="rel_layout_width">0dp</dimen>
+    <integer name="rel_layout_weight">1</integer>
+
+    <!--cell unfolded layout-->
+    <dimen name="availability_tv_padding">8dp</dimen>
+    <dimen name="common_interests_iv_width">32dp</dimen>
+    <dimen name="common_interests_iv_height">32dp</dimen>
+    <dimen name="common_interests_iv_margin_right">16dp</dimen>
+    <dimen name="rounded_tv_margin_top_unfolded">16dp</dimen>
+    <dimen name="role_tv_margin_top">8dp</dimen>
+    <dimen name="role_tv_margin_bottom">16dp</dimen>
+    <dimen name="about_tv_margin_top">16dp</dimen>
+    <dimen name="about_user_desc_tv_margin_top">16dp</dimen>
+    <dimen name="divider_iv_height">1dp</dimen>
+    <dimen name="divider_iv_margin_top">16dp</dimen>
+    <dimen name="layout_margin_top">16dp</dimen>
+    <dimen name="org_name_margin_top_unfolded">16dp</dimen>
+    <dimen name="location_name_margin_top_unfolded">16dp</dimen>
+    <dimen name="availability_tv_margin_top_unfolded">16dp</dimen>
+    <dimen name="availability_tv_margin_right">32dp</dimen>
+    <dimen name="request_button_margin_top">32dp</dimen>
+    <dimen name="request_button_padding">8dp</dimen>
+
+    <!--forgot password layout-->
+    <dimen name="forgot_password_label_margin_top">160dp</dimen>
+    <fraction name="horizontal_bias">0.5</fraction>
+    <dimen name="reset_password_label_margin_top">60dp</dimen>
+    <dimen name="text_input_layout_margin">32dp</dimen>
+    <dimen name="reset_password_button_margin_top">40dp</dimen>
+
+    <!--login fragment layout-->
+    <dimen name="logo_image_view_margin_top">108dp</dimen>
+    <dimen name="logo_image_view_height">72dp</dimen>
+    <dimen name="email_layout_margin">32dp</dimen>
+    <dimen name="password_layout_margin">32dp</dimen>
+    <dimen name="login_button_margin">32dp</dimen>
+    <dimen name="forgot_password_margin">32dp</dimen>
+    <dimen name="looking_for_mentor_margin_bottom">8dp</dimen>
+    <dimen name="looking_for_mentor_margin_left">16dp</dimen>
+    <dimen name="looking_to_mentor_margin_bottom">8dp</dimen>
+    <dimen name="looking_to_mentor_margin_right">16dp</dimen>
+    <fraction name="login_layout_vertical_bias">0.92</fraction>
+    <dimen name="login_layout_padding">2dp</dimen>
+
+    <!--mentee home layout-->
+    <dimen name="fab_height">56dp</dimen>
+    <dimen name="fab_width">56dp</dimen>
+    <dimen name="fab_margin_bottom">24dp</dimen>
+    <dimen name="fab_margin_right">24dp</dimen>
+    <dimen name="fab_elevation">8dp</dimen>
+    <dimen name="fab_pressed_translationz">8dp</dimen>
+    <dimen name="mentors_rv_divider_height">8dp</dimen>
+
+    <!--messaging layout-->
+    <dimen name="messages_rv_margin">16dp</dimen>
+    <dimen name="input_message_tv_height">48dp</dimen>
+    <dimen name="input_message_tv_margin_left">16dp</dimen>
+    <dimen name="send_message_iv_height">48dp</dimen>
+    <dimen name="send_message_iv_width">48dp</dimen>
+    <dimen name="send_message_iv_margin_right">16dp</dimen>
+    <dimen name="layout_height_match_parent">0dp</dimen>
+
+    <!--messaging item-->
+    <dimen name="tv_padding_bottom">3dp</dimen>
+    <dimen name="tv_padding_top">3dp</dimen>
+
+    <!--messages list layout item-->
+    <dimen name="rounded_tv_margin_left">8dp</dimen>
+    <dimen name="rounded_tv_margin_right">8dp</dimen>
+    <dimen name="rounded_tv_margin_top_item">16dp</dimen>
+    <dimen name="rounded_tv_margin_bottom">16dp</dimen>
+    <dimen name="sender_name_tv_margin">8dp</dimen>
+    <dimen name="sender_name_tv_margin_end">8dp</dimen>
+    <dimen name="sender_name_tv_width">0dp</dimen>
+    <dimen name="message_content_tv_width">0dp</dimen>
+    <dimen name="message_content_tv_margin_end">16dp</dimen>
+    <dimen name="message_content_tv_margin_bottom">8dp</dimen>
+    <dimen name="message_content_tv_padding">8dp</dimen>
+    <integer name="message_content_tv_lines_count">2</integer>
+    <dimen name="chevron_iv_padding">8dp</dimen>
+    <dimen name="item_divider_iv_height">1dp</dimen>
+    <dimen name="item_divider_iv_margin_start">16dp</dimen>
+    <dimen name="item_divider_iv_margin_top">8dp</dimen>
+    <dimen name="item_divider_iv_margin_bottom">8dp</dimen>
+
+    <!--user profile-->
+    <dimen name="user_profile_layout_margin">16dp</dimen>
+    <dimen name="user_profile_view_margin_top">16dp</dimen>
+    <dimen name="layout_width_location">0dp</dimen>
+    <integer name="about_yourself_max_lines">4</integer>
+
+    <!--spinner item-->
+    <dimen name="spinner_tv_padding_bottom">8dp</dimen>
+    <dimen name="spinner_tv_padding_left">8dp</dimen>
+    <dimen name="spinner_tv_padding_right">8dp</dimen>
+    <dimen name="spinner_tv_text_size">16sp</dimen>
+    
+</resources>

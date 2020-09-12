@@ -6,8 +6,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messagesRecyclerView"
-        android:layout_height="0dp"
-        android:layout_margin="16dp"
+        android:layout_height="@dimen/layout_height_match_parent"
+        android:layout_margin="@dimen/messages_rv_margin"
         android:layout_width="match_parent"
         app:layout_constraintBottom_toTopOf="@+id/inputMessage"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,23 +16,22 @@
 
     <EditText
         android:id="@+id/inputMessage"
-        android:layout_height="48dp"
-        android:layout_marginLeft="16dp"
-        android:layout_width="0dp"
         android:hint="@string/text_message"
+        android:layout_height="@dimen/input_message_tv_height"
+        android:layout_marginLeft="@dimen/input_message_tv_margin_left"
+        android:layout_width="@dimen/layout_height_match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sendMessageImageView"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/sendMessageImageView"
-        android:layout_height="48dp"
-        android:layout_marginRight="16dp"
-        android:layout_width="48dp"
+        android:layout_height="@dimen/send_message_iv_height"
+        android:layout_marginRight="@dimen/send_message_iv_margin_right"
+        android:layout_width="@dimen/send_message_iv_width"
         android:scaleType="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/inputMessage"
         app:srcCompat="@drawable/ic_baseline_send_24" />
 

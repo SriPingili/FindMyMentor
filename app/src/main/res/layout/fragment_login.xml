@@ -10,23 +10,24 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_gravity="center_horizontal"
-        android:layout_height="72dp"
-        android:layout_marginTop="108dp"
+        android:layout_height="@dimen/logo_image_view_height"
+        android:layout_marginTop="@dimen/logo_image_view_margin_top"
         android:layout_width="wrap_content"
         android:src="@drawable/google_play_badge"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="@fraction/horizontal_bias"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailLayout"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginLeft="@dimen/email_layout_margin"
+        android:layout_marginRight="@dimen/email_layout_margin"
+        android:layout_marginTop="@dimen/email_layout_margin"
         android:layout_width="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="@fraction/horizontal_bias"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView">
 
@@ -37,18 +38,19 @@
             android:inputType="textEmailAddress"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:paddingEnd="2dp"
-            android:paddingStart="2dp" />
+            android:paddingEnd="@dimen/login_layout_padding"
+            android:paddingStart="@dimen/login_layout_padding" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordLayout"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="@dimen/password_layout_margin"
+        android:layout_marginRight="@dimen/password_layout_margin"
+        android:layout_marginTop="@dimen/password_layout_margin"
         android:layout_width="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="@fraction/horizontal_bias"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailLayout"
         app:passwordToggleEnabled="true">
@@ -60,20 +62,20 @@
             android:inputType="textPassword"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:paddingEnd="2dp"
-            android:paddingStart="2dp" />
+            android:paddingEnd="@dimen/login_layout_padding"
+            android:paddingStart="@dimen/login_layout_padding" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginButton"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginLeft="@dimen/login_button_margin"
+        android:layout_marginRight="@dimen/login_button_margin"
+        android:layout_marginTop="@dimen/login_button_margin"
         android:layout_width="fill_parent"
-        android:padding="12dp"
         android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="@fraction/horizontal_bias"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
 
@@ -82,12 +84,13 @@
         style="@style/TextAppearance.AppCompat.Medium"
         android:gravity="center"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginLeft="@dimen/forgot_password_margin"
+        android:layout_marginRight="@dimen/forgot_password_margin"
+        android:layout_marginTop="@dimen/forgot_password_margin"
         android:layout_width="fill_parent"
         android:text="@string/forgot_my_password"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="@fraction/horizontal_bias"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
@@ -96,27 +99,27 @@
         style="@style/TextAppearance.AppCompat.Medium"
         android:gravity="left"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="@dimen/looking_for_mentor_margin_bottom"
+        android:layout_marginLeft="@dimen/looking_for_mentor_margin_left"
         android:layout_width="wrap_content"
         android:text="@string/looking_for_mentor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forgotPasswordTextView"
-        app:layout_constraintVertical_bias="0.92" />
+        app:layout_constraintVertical_bias="@fraction/login_layout_vertical_bias" />
 
     <TextView
         android:id="@+id/mentorRegisterTextView"
         style="@style/TextAppearance.AppCompat.Medium"
         android:gravity="right"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginBottom="@dimen/looking_to_mentor_margin_bottom"
+        android:layout_marginRight="@dimen/looking_to_mentor_margin_right"
         android:layout_width="wrap_content"
         android:text="@string/looking_to_mentor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forgotPasswordTextView"
-        app:layout_constraintVertical_bias="0.92" />
+        app:layout_constraintVertical_bias="@fraction/login_layout_vertical_bias" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
