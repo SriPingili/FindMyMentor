@@ -10,6 +10,9 @@ import kotlinx.android.synthetic.main.message_list_layout_item.view.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.models.Message
 
+/*
+Adapter class for populating the recycler view with list of messages from different senders obtained from firebase
+* */
 class MessagesListAdapter : ListAdapter<Message, MessagesListAdapter.MessagesViewHolder>(MessageListDiffCallback()) {
     private var onItemClickListener: ((Message) -> Unit)? = null
 

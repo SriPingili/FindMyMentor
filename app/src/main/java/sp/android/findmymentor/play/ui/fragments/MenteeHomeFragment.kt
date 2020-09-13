@@ -25,14 +25,22 @@ import sp.android.findmymentor.play.ui.viewmodels.factories.MenteeViewModelFacto
 import sp.android.findmymentor.play.util.Constants
 
 class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
-    lateinit var mentee: Mentee
-    lateinit var menteeHomeAdapter: MenteeHomeAdapter
-    lateinit var loginViewModel: LoginViewModel
-    lateinit var viewModel: MenteeViewModel
+    private lateinit var mentee: Mentee
+    private lateinit var menteeHomeAdapter: MenteeHomeAdapter
+    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var viewModel: MenteeViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+
+        initViewModel()
+        setUpRecyclerView()
+        setListeners()
+        addObservers()
+    }
+
+    private fun initViewModel() {
         loginViewModel = (activity as MainActivity).viewModel
         mentee = loginViewModel.loggedInMentee!!
 
@@ -40,10 +48,6 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
         loginViewModel.loggedInMentee?.let { mentee ->
             viewModel = ViewModelProvider(this, MenteeViewModelFactory(mainRepository, mentee)).get(MenteeViewModel::class.java)
         }
-
-        setUpRecyclerView()
-        setListeners()
-        addObservers()
     }
 
     private fun setUpRecyclerView() {
@@ -105,17 +109,12 @@ class MenteeHomeFragment : Fragment(R.layout.fragment_mentee_home) {
                     R.id.action_global_to_userProfileFormFragment,
                     bundle
             )
-
             return true
         }
 
         if (item.itemId == R.id.logout) {
-            loginViewModel.isLoggedInUserMentor = false
-            loginViewModel.loggedInMentee = null
-            loginViewModel.loggedInMentor = null
             viewModel.firbaseMentorResponse.clear()
             viewModel.chatsKey.clear()
-
             loginViewModel.logout()
 
             /*https://stackoverflow.com/a/54536427*/

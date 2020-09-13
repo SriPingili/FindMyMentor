@@ -67,10 +67,10 @@
 
     <!--login fragment layout-->
     <dimen name="logo_image_view_margin_top">108dp</dimen>
-    <dimen name="logo_image_view_height">184dp</dimen>
+    <dimen name="logo_image_view_height">160dp</dimen>
     <dimen name="email_layout_margin">32dp</dimen>
     <dimen name="password_layout_margin">32dp</dimen>
-    <dimen name="login_button_margin">32dp</dimen>
+    <dimen name="login_button_margin">40dp</dimen>
     <dimen name="forgot_password_margin">32dp</dimen>
     <dimen name="looking_for_mentor_margin_bottom">8dp</dimen>
     <dimen name="looking_for_mentor_margin_left">16dp</dimen>
@@ -123,6 +123,7 @@
     <!--user profile-->
     <dimen name="user_profile_layout_margin">16dp</dimen>
     <dimen name="user_profile_view_margin_top">16dp</dimen>
+    <dimen name="user_profile_view_margin_bottom">64dp</dimen>
     <dimen name="layout_width_location">0dp</dimen>
     <integer name="text_area_max_lines">4</integer>
 

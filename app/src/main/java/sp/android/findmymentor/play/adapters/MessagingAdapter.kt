@@ -12,7 +12,9 @@ import sp.android.findmymentor.R
 import sp.android.findmymentor.play.models.Message
 import sp.android.findmymentor.play.util.Constants.Companion.loggedInUserName
 
-
+/*
+Adapter class for populating the chatting recycler view with list of messages from firebase
+* */
 class MessagingAdapter : ListAdapter<Message, MessagingAdapter.ViewHolder>(MessageDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,7 +27,6 @@ class MessagingAdapter : ListAdapter<Message, MessagingAdapter.ViewHolder>(Messa
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         fun bind(message: Message) {
             itemView.apply {
                 if (message.sender_name.equals(loggedInUserName)) {
@@ -38,7 +39,6 @@ class MessagingAdapter : ListAdapter<Message, MessagingAdapter.ViewHolder>(Messa
         }
     }
 }
-
 
 class MessageDiffCallback : DiffUtil.ItemCallback<Message>() {
     override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {

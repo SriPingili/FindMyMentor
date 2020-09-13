@@ -16,7 +16,7 @@ import sp.android.findmymentor.play.util.Constants
 import java.util.HashSet
 
 /*
-Adapter class for the recycler view
+Adapter class for populating the recycler view with Mentors response from firebase
 * */
 class MenteeHomeAdapter : RecyclerView.Adapter<MenteeHomeAdapter.MentorViewHolder>() {
     private var unfoldedIndexes = HashSet<Int>()
@@ -38,7 +38,7 @@ class MenteeHomeAdapter : RecyclerView.Adapter<MenteeHomeAdapter.MentorViewHolde
         }
     }
 
-    val differ = AsyncListDiffer(this, differCallback)
+    private val differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -106,8 +106,11 @@ class MenteeHomeAdapter : RecyclerView.Adapter<MenteeHomeAdapter.MentorViewHolde
                     it(mentor)
                 }
             }
-            // for existing cell set valid valid state(without animation todo revisit this logic
-            /*if (unfoldedIndexes.contains(position)) {
+
+            /*
+            for existing cell set valid valid state(without animation todo revisit this logic
+
+            if (unfoldedIndexes.contains(position)) {
                 cell.unfold(true)
             } else {
                 cell.fold(true)
@@ -134,11 +137,11 @@ class MenteeHomeAdapter : RecyclerView.Adapter<MenteeHomeAdapter.MentorViewHolde
         if (unfoldedIndexes.contains(position)) registerFold(position) else registerUnfold(position)
     }
 
-    fun registerFold(position: Int) {
+    private fun registerFold(position: Int) {
         unfoldedIndexes.remove(position)
     }
 
-    fun registerUnfold(position: Int) {
+    private fun registerUnfold(position: Int) {
         unfoldedIndexes.add(position)
     }
 
@@ -162,8 +165,7 @@ class MenteeHomeAdapter : RecyclerView.Adapter<MenteeHomeAdapter.MentorViewHolde
     }
 
     /*
-    submits the hacker news response to the differ util, also saves
-    the response to fullList (used by search)
+    submits the mentors response to the differ util
      */
     fun submitList(stores: List<Mentor>) {
         differ.submitList(stores)

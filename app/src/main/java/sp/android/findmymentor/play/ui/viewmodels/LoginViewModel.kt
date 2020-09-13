@@ -15,6 +15,10 @@ import sp.android.findmymentor.play.repository.MainRepository
 import sp.android.findmymentor.play.util.Constants
 import sp.android.findmymentor.play.util.Event
 
+/*
+*  This ViewModel is responsible for login, logout, registering user profile
+*  and updating user profile
+* */
 class LoginViewModel(private val repository: MainRepository) : ViewModel() {
     var isLoggedInUserMentor = false
     var loggedInMentor: Mentor? = null
@@ -72,7 +76,6 @@ class LoginViewModel(private val repository: MainRepository) : ViewModel() {
         }
     }
 
-
     fun updateProfile(map: HashMap<String, Any>, mentee: Mentee?, mentor: Mentor? = null) {
         repository.getChildUserReference()?.updateChildren(map) { error, _ ->
             if (error == null) {
@@ -109,5 +112,10 @@ class LoginViewModel(private val repository: MainRepository) : ViewModel() {
         repository.getFirebaseAuthInstance().sendPasswordResetEmail(email)
     }
 
-    fun logout() = repository.logout()
+    fun logout() {
+        isLoggedInUserMentor = false
+        loggedInMentee = null
+        loggedInMentor = null
+        repository.logout()
+    }
 }

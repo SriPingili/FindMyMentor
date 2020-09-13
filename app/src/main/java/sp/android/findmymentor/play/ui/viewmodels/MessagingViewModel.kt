@@ -9,8 +9,11 @@ import sp.android.findmymentor.play.models.Message
 import sp.android.findmymentor.play.repository.MainRepository
 import sp.android.findmymentor.play.util.Constants
 
+/*
+* This ViewModel is responsible for actual messaging with sender which includes
+* retrieving messages from firebase and sending message
+* */
 class MessagingViewModel(private val repository: MainRepository, chatKeyValue: String) : ViewModel() {
-
     val messagesLiveData: MutableLiveData<MutableList<Message>> = MutableLiveData()
     val messagesResponse = mutableListOf<Message>()
 
@@ -23,7 +26,6 @@ class MessagingViewModel(private val repository: MainRepository, chatKeyValue: S
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 snapshot.value?.let { it ->
                     val message = snapshot.getValue(Message::class.java)
-
                     message?.let {
                         messagesResponse.add(it)
                         messagesLiveData.postValue(messagesResponse)
@@ -31,23 +33,14 @@ class MessagingViewModel(private val repository: MainRepository, chatKeyValue: S
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) {
-            }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-            }
-
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-            }
-
+            override fun onCancelled(error: DatabaseError) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
         })
     }
 
     fun sendMessage(message: Message, chatKeyValue: String) {
         repository.getFirebaseMessagesDBReference().child(chatKeyValue).child(Constants.MESSAGES_KEY).push().setValue(message)
     }
-
 }

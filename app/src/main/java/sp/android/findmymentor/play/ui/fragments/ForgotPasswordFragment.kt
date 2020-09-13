@@ -8,11 +8,9 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_forgot_password.*
 import sp.android.findmymentor.R
 import sp.android.findmymentor.play.MainActivity
-import sp.android.findmymentor.play.extensions.showSnackBar
 import sp.android.findmymentor.play.ui.viewmodels.LoginViewModel
 import sp.android.findmymentor.play.util.Constants
 import sp.android.findmymentor.play.util.UserInputValidator
-
 
 class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
     lateinit var viewModel: LoginViewModel

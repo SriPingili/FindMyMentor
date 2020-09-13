@@ -96,7 +96,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             passwordLayout.isPasswordVisibilityToggleEnabled = true
         }
 
-        // This callback will only be called when MyFragment is at least Started.
+        // This callback will only be called when this fragment is at least Started.
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(true /* enabled by default */) {
             override fun handleOnBackPressed() {
                 val intent = Intent(Intent.ACTION_MAIN)

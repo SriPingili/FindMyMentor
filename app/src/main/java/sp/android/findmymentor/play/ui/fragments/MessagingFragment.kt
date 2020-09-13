@@ -21,19 +21,23 @@ import sp.android.findmymentor.play.ui.viewmodels.MessagingViewModel
 import sp.android.findmymentor.play.ui.viewmodels.factories.MessagingViewModelFactory
 import sp.android.findmymentor.play.util.Constants.Companion.loggedInUserName
 
+/*
+* This Fragment is responsible for the actual chatting between logged in user
+* and the other party
+* */
 class MessagingFragment : Fragment(R.layout.fragment_messaging) {
-    val args: MessagingFragmentArgs by navArgs()
-    lateinit var viewModel: MessagingViewModel
-    lateinit var loginViewModel: LoginViewModel
-    lateinit var messagingAdapter: MessagingAdapter
-    var message: Message = Message()
-    lateinit var observer: Observer<MutableList<Message>>
+    private val args: MessagingFragmentArgs by navArgs()
+    private lateinit var viewModel: MessagingViewModel
+    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var messagingAdapter: MessagingAdapter
+    private var message: Message = Message()
+    private lateinit var observer: Observer<MutableList<Message>>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         message = args.messageArg
         initViewModel()
-        setUpRecylcerView()
+        setUpRecyclerView()
         setListeners()
         addObservers()
     }
@@ -44,7 +48,7 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
         viewModel = ViewModelProvider(this, MessagingViewModelFactory(mainRepository, message.chatKeyValue.toString())).get(MessagingViewModel::class.java)
     }
 
-    private fun setUpRecylcerView() {
+    private fun setUpRecyclerView() {
         messagingAdapter = MessagingAdapter()
         loggedInUserName = loginViewModel.getLoggedInUserName()!!
         messagesRecyclerView.adapter = messagingAdapter

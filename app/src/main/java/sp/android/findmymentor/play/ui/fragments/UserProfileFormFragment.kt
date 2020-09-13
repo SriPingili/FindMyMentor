@@ -29,15 +29,18 @@ import java.util.ArrayList
 import java.util.HashMap
 import java.util.regex.Pattern
 
-
+/*
+* This Fragment is responsible for handling profile registration and profile
+* updation for both Mentors and Mentees
+* */
 class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
-    var listOfInterests: MutableList<String> = mutableListOf()
-    var location: String = ""
-    lateinit var viewModel: LoginViewModel
-    lateinit var userInputValidator: UserInputValidator
+    private var listOfInterests: MutableList<String> = mutableListOf()
+    private var location: String = ""
+    private lateinit var viewModel: LoginViewModel
+    private lateinit var userInputValidator: UserInputValidator
     private val countries = CustomApplication.context?.resources?.getStringArray(R.array.countries_array)
     private val args: UserProfileFormFragmentArgs by navArgs()
-    private val FRAGMENT_TAG = "BMR_FRAGMENT_TAG"
+    private val FRAGMENT_TAG = "USER_PROFILE_FORM_FRAGMENT"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,6 +66,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             ArrayAdapter(requireContext(),
                     R.layout.spinner_item, it)
         }
+
         locationSpinner.adapter = adapter
 
         val listener = object : AdapterView.OnItemSelectedListener {
@@ -76,6 +80,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
 
         locationSpinner.onItemSelectedListener = listener
 
+        //setup interests dialog
         chooseInterests.setOnClickListener {
             InterestsChooserDialog().apply {
                 setActivityLevelListener { pos, bool ->
@@ -86,69 +91,6 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
 
         inputPassword.doOnTextChanged { _, _, _, _ ->
             passwordLayout.isPasswordVisibilityToggleEnabled = true
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu, menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-        menu.findItem(R.id.save_profile_changes).isVisible = true
-        menu.findItem(R.id.edit_profile).isVisible = false
-
-
-        if (viewModel.loggedInMentor == null && viewModel.loggedInMentee == null) {
-            menu.findItem(R.id.logout).isVisible = false
-        }
-    }
-
-    private fun setSpinnerError(spinner: Spinner) {
-        val selectedView = spinner.selectedView
-        if (selectedView != null && selectedView is TextView) {
-            spinner.requestFocus()
-            selectedView.setTextColor(Color.RED) //text color in which you want your error message to be displayed
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.save_profile_changes) {
-            if (viewModel.loggedInMentee == null && viewModel.loggedInMentor == null) {
-                if (areUserInputsValid()) viewModel.registerUser(inputEmail.text.toString(), inputPassword.text.toString())
-            } else {
-                submitUpdates()
-            }
-
-            return true
-        }
-
-        if (item.itemId == R.id.logout) {
-            viewModel.isLoggedInUserMentor = false
-            viewModel.loggedInMentee = null
-            viewModel.loggedInMentor = null
-
-            viewModel.logout()
-
-            findNavController().navigate(
-                    R.id.action_global_to_loginFragment
-            )
-
-            return true
-        }
-
-        return false
-    }
-
-    private fun updateInterests(pos: Int, bool: Boolean) {
-        val interest = resources.getStringArray(R.array.interests_choice)?.get(pos).toString()
-        if (bool) {
-            InterestsChooserDialog.checkedItems?.set(pos, true)
-            if (!listOfInterests.contains(interest))
-                listOfInterests.add(interest)
-        } else {
-            InterestsChooserDialog.checkedItems?.set(pos, false)
-            listOfInterests.remove(interest)
         }
     }
 
@@ -331,5 +273,63 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
         }
 
         return areInputsValid
+    }
+
+    private fun updateInterests(pos: Int, bool: Boolean) {
+        val interest = resources.getStringArray(R.array.interests_choice)?.get(pos).toString()
+        if (bool) {
+            InterestsChooserDialog.checkedItems?.set(pos, true)
+            if (!listOfInterests.contains(interest))
+                listOfInterests.add(interest)
+        } else {
+            InterestsChooserDialog.checkedItems?.set(pos, false)
+            listOfInterests.remove(interest)
+        }
+    }
+
+    private fun setSpinnerError(spinner: Spinner) {
+        val selectedView = spinner.selectedView
+        if (selectedView != null && selectedView is TextView) {
+            spinner.requestFocus()
+            selectedView.setTextColor(Color.RED) //text color in which you want your error message to be displayed
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.findItem(R.id.save_profile_changes).isVisible = true
+        menu.findItem(R.id.edit_profile).isVisible = false
+
+        if (viewModel.loggedInMentor == null && viewModel.loggedInMentee == null) {
+            menu.findItem(R.id.logout).isVisible = false
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.save_profile_changes) {
+            if (viewModel.loggedInMentee == null && viewModel.loggedInMentor == null) {
+                if (areUserInputsValid()) viewModel.registerUser(inputEmail.text.toString(), inputPassword.text.toString())
+            } else {
+                submitUpdates()
+            }
+
+            return true
+        }
+
+        if (item.itemId == R.id.logout) {
+            viewModel.logout()
+
+            findNavController().navigate(
+                    R.id.action_global_to_loginFragment
+            )
+
+            return true
+        }
+
+        return false
     }
 }

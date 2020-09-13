@@ -11,8 +11,13 @@ import sp.android.findmymentor.play.repository.MainRepository
 import sp.android.findmymentor.play.util.Constants.Companion.MESSAGES_KEY
 import sp.android.findmymentor.play.util.Constants.Companion.PARTICIPANTS_KEY
 
+/*
+* This ViewModel is responsible for pulling list of messages from different senders
+* from firebase.
+*
+* This ViewModel is used by both mentees and mentors.
+* */
 class MessagesListViewModel(private val repository: MainRepository, email: String, userName: String) : ViewModel() {
-
     val messageSendersResponse = mutableListOf<Message>()
     val messageSendersLiveData: MutableLiveData<MutableList<Message>> = MutableLiveData()
 
@@ -20,17 +25,14 @@ class MessagesListViewModel(private val repository: MainRepository, email: Strin
         getMessagesFromDifferentSenders(email, userName)
     }
 
-    private fun getMessagesFromDifferentSenders(loggedInemailAddress: String, loggedInUserName: String) {
-        //todo improve this, may be refactor data model for message in firebase
+    private fun getMessagesFromDifferentSenders(loggedInEmailAddress: String, loggedInUserName: String) {
+
         repository.getFirebaseChatsDBReference().addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-
                 snapshot.key?.let { key ->
                     snapshot.value?.let { value ->
-                        if (key.contains(loggedInemailAddress.replace("""[$#.\[\]]""".toRegex(), ""))) {
+                        if (key.contains(loggedInEmailAddress.replace("""[$#.\[\]]""".toRegex(), ""))) {
                             val valueEventListener = object : ValueEventListener {
-                                override fun onCancelled(error: DatabaseError) {
-                                }
 
                                 override fun onDataChange(snapshot: DataSnapshot) {
                                     for (dataSnapshot in snapshot.children) {
@@ -41,18 +43,16 @@ class MessagesListViewModel(private val repository: MainRepository, email: Strin
                                             message.chatKeyValue = value.toString()
                                             message.text = it.text
                                             message.dateInMillis = it.dateInMillis
-
                                             repository.getFirebaseMessagesDBReference()
                                                     .child(value.toString())
                                                     .child(PARTICIPANTS_KEY)
                                                     .addListenerForSingleValueEvent(object : ValueEventListener {
-                                                        override fun onCancelled(error: DatabaseError) {
-                                                        }
 
                                                         override fun onDataChange(snapshot: DataSnapshot) {
                                                             for (dataSnapshot in snapshot.children) {
                                                                 val participantName = dataSnapshot.value.toString()
-                                                                if (!participantName.equals(loggedInUserName)) { //todo this is bug when user updates their user name, it's not updated under participants
+                                                                if (participantName != loggedInUserName) {
+                                                                    /*todo this is bug when user updates their user name, it's not updated under participants*/
                                                                     message.sender_name = participantName
                                                                     messageSendersResponse.apply {
                                                                         val message = filter {
@@ -66,12 +66,14 @@ class MessagesListViewModel(private val repository: MainRepository, email: Strin
                                                                 }
                                                             }
                                                         }
+
+                                                        override fun onCancelled(error: DatabaseError) {}
                                                     })
-
-
                                         }
                                     }
                                 }
+
+                                override fun onCancelled(error: DatabaseError) {}
                             }
 
                             repository.getFirebaseMessagesDBReference()
@@ -81,20 +83,13 @@ class MessagesListViewModel(private val repository: MainRepository, email: Strin
                                     .limitToLast(1)
                                     .addValueEventListener(valueEventListener)
                         }
-
-
                     }
                 }
-
-
             }
 
             override fun onCancelled(error: DatabaseError) {}
-
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-
             override fun onChildRemoved(snapshot: DataSnapshot) {}
         })
     }

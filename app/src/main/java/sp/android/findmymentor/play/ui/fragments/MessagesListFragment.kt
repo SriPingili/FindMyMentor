@@ -21,23 +21,19 @@ import sp.android.findmymentor.play.ui.viewmodels.MessagesListViewModel
 import sp.android.findmymentor.play.ui.viewmodels.factories.MessagesListViewModelFactory
 import sp.android.findmymentor.play.util.Constants
 
-
+/*
+* This Fragment is responsible for displaying the list of messages from different senders
+* in a single page.
+* */
 class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
-    lateinit var loginViewModel: LoginViewModel
-    lateinit var viewModel: MessagesListViewModel
-    lateinit var messagesListAdapter: MessagesListAdapter
+    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var viewModel: MessagesListViewModel
+    private lateinit var messagesListAdapter: MessagesListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginViewModel = (activity as MainActivity).viewModel
 
-        val mainRepository = MainRepository(FirebaseSource())
-        loginViewModel.getLoggedInEmailAddress()?.let { email ->
-            loginViewModel.getLoggedInUserName()?.let { userName ->
-                viewModel = ViewModelProvider(this, MessagesListViewModelFactory(mainRepository, email, userName)).get(MessagesListViewModel::class.java)
-            }
-        }
-
+        initViewModel()
         setUpRecyclerView()
         setHasOptionsMenu(true)
         setListeners()
@@ -46,6 +42,17 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
         if (loginViewModel.loggedInMentor == null) {
             (activity as MainActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
             (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
+    private fun initViewModel() {
+        loginViewModel = (activity as MainActivity).viewModel
+
+        val mainRepository = MainRepository(FirebaseSource())
+        loginViewModel.getLoggedInEmailAddress()?.let { email ->
+            loginViewModel.getLoggedInUserName()?.let { userName ->
+                viewModel = ViewModelProvider(this, MessagesListViewModelFactory(mainRepository, email, userName)).get(MessagesListViewModel::class.java)
+            }
         }
     }
 
@@ -95,16 +102,11 @@ class MessagesListFragment : Fragment(R.layout.fragment_messages_list) {
                     R.id.action_global_to_userProfileFormFragment,
                     bundle
             )
-
             return true
         }
 
         if (item.itemId == R.id.logout) {
-            loginViewModel.isLoggedInUserMentor = false
-            loginViewModel.loggedInMentee = null
-            loginViewModel.loggedInMentor = null
             viewModel.messageSendersResponse.clear()
-
             loginViewModel.logout()
 
             findNavController().navigate(R.id.action_global_to_loginFragment)

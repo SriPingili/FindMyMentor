@@ -14,6 +14,10 @@ import sp.android.findmymentor.play.repository.MainRepository
 import sp.android.findmymentor.play.util.Constants
 import java.util.UUID
 
+/*
+* This ViewModel is responsible for handling Mentee operations which includes pulling mentor data
+* from firebase, displaying common interests and pulling chat keys from firebase
+* */
 class MenteeViewModel(private val repository: MainRepository, private val loggedInMentee: Mentee) : ViewModel() {
     val firbaseMentorResponse: HashMap<String, Mentor> = hashMapOf()
     val mentorsLiveData: MutableLiveData<MutableList<Mentor>> = MutableLiveData()
@@ -30,10 +34,9 @@ class MenteeViewModel(private val repository: MainRepository, private val logged
                 val usersTableHashMap = snapshot.value as HashMap<String, Object>
                 val keySet = usersTableHashMap.keys
 
-                if (keySet.contains("mentor")) {
+                if (keySet.contains(Constants.MENTOR__KEY)) {
                     val mentor = snapshot.getValue(Mentor::class.java)
                     mentor?.let {
-                        //todo think about array list for this case, below line possess high time complexity, looping through collection for every time
                         snapshot.key?.let { key -> firbaseMentorResponse.put(key, it) }
                         val list = ArrayList<Mentor>(firbaseMentorResponse.values)
                         mentorsLiveData.postValue(list)
@@ -45,59 +48,47 @@ class MenteeViewModel(private val repository: MainRepository, private val logged
                 val usersTableHashMap = snapshot.value as HashMap<String, Object>
                 val keySet = usersTableHashMap.keys
 
-                if (keySet.contains("mentor")) {
+                if (keySet.contains(Constants.MENTOR__KEY)) {
                     val mentor = snapshot.getValue(Mentor::class.java)
                     mentor?.let {
-
                         snapshot.key?.let { key -> firbaseMentorResponse.put(key, it) }
                         mentorsLiveData.postValue(ArrayList(firbaseMentorResponse.values))
                     }
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) {
-            }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-            }
+            override fun onCancelled(error: DatabaseError) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
         })
     }
 
     fun requestSelectedMentor(mentor: Mentor) {
         val uuid = UUID.randomUUID().toString()
         val chatKey = Constants.getKey(loggedInMentee.email_address, mentor.email_address)
-
         repository.getFirebaseChatsDBReference().child(chatKey).setValue(uuid)
 
         val messagesMap = HashMap<String, Any>()
         messagesMap.put(Constants.PARTICIPANTS_KEY, mutableListOf(loggedInMentee.full_name, mentor.full_name))
         messagesMap[Constants.MESSAGES_KEY] = mutableMapOf<String, String>()
-
         repository.getFirebaseMessagesDBReference().child(uuid).setValue(messagesMap)
 
         val adminMessage = HashMap<String, Any>()
-        adminMessage[Constants.TEXT] = CustomApplication.context?.getString(R.string.welcome_to_chat)
-                ?: ""
+        adminMessage[Constants.TEXT] = CustomApplication.context?.getString(R.string.welcome_to_chat).toString()
         adminMessage[Constants.SENDER_NAME] = Constants.ADMIN_NAME
         adminMessage[Constants.SENDER_ID] = Constants.ADMIN_ID
         adminMessage[Constants.DATE_IN_MILLIS] = System.currentTimeMillis()
-
         repository.getFirebaseMessagesDBReference().child(uuid).child(Constants.MESSAGES_KEY).push().setValue(adminMessage)
     }
 
     fun getCommonInterests(mentor: Mentor): String {
         val menteeInterests = loggedInMentee.interests?.toMutableList() //creates a copy
         val mentorInterests = mentor.interests
-
         var message = CustomApplication.context?.getString(R.string.initial_common_interests_message)
 
         menteeInterests?.let {
             it.retainAll(mentorInterests)
-
-            if (!it.isEmpty()) {
+            if (it.isNotEmpty()) {
                 val interests = it.toString().replace("[", "").replace("]", "")
                 message = CustomApplication.context?.let {
                     String.format(it.getString(R.string.common_interests_message), interests)
