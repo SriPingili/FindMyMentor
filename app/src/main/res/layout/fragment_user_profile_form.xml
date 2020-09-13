@@ -12,6 +12,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fullNameLayout"
+            style="@style/TextInputLayoutAppearance"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,6 +29,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailLayout"
+            style="@style/TextInputLayoutAppearance"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/user_profile_view_margin_top"
             android:layout_width="match_parent"
@@ -45,6 +47,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/passwordLayout"
+            style="@style/TextInputLayoutAppearance"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/user_profile_view_margin_top"
             android:layout_width="match_parent"
@@ -86,6 +89,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/organizationLayout"
+            style="@style/TextInputLayoutAppearance"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/user_profile_view_margin_top"
             android:layout_width="match_parent"
@@ -104,6 +108,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/roleLayout"
+            style="@style/TextInputLayoutAppearance"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/user_profile_view_margin_top"
             android:layout_width="match_parent"
@@ -121,6 +126,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/aboutYourselfLayout"
+            style="@style/TextInputLayoutAppearance"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/user_profile_view_margin_top"
             android:layout_width="match_parent"
@@ -135,7 +141,7 @@
                 android:inputType="textMultiLine"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:lines="@integer/about_yourself_max_lines"
+                android:lines="@integer/text_area_max_lines"
                 android:textCursorDrawable="@null" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -154,6 +160,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/availableSpotsLayout"
+            style="@style/TextInputLayoutAppearance"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/user_profile_view_margin_top"
             android:layout_width="match_parent"
@@ -172,6 +179,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/totalSpotsLayout"
+            style="@style/TextInputLayoutAppearance"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/user_profile_view_margin_top"
             android:layout_width="match_parent"

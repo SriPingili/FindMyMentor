@@ -3,15 +3,12 @@ package sp.android.findmymentor.play.util
 import android.app.Activity
 import android.content.Context
 import android.view.View
-import com.google.android.material.snackbar.Snackbar
-import sp.android.findmymentor.R
 import sp.android.findmymentor.play.extensions.showSnackBar
-import sp.android.findmymentor.play.models.Mentee
-import sp.android.findmymentor.play.models.Mentor
 
 class Constants {
 
     companion object {
+        const val IS_MENTOR: String = "isMentor"
         const val USERS = "Users"
         const val CHATS = "Chats"
         const val MESSAGES = "Messages"
@@ -39,8 +36,6 @@ class Constants {
         const val INTERESTS__KEY = "interests"
         const val LOCATION__KEY = "location"
         const val MENTOR__KEY = "mentor"
-
-        //messaging
 
         //regex
         const val ONLY_LETTERS = "[a-zA-Z ]+"

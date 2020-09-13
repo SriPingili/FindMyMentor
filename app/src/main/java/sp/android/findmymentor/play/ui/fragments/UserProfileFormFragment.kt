@@ -14,6 +14,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_user_profile_form.*
 import sp.android.findmymentor.R
@@ -34,7 +35,9 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     var location: String = ""
     lateinit var viewModel: LoginViewModel
     lateinit var userInputValidator: UserInputValidator
-    val countries = CustomApplication.context?.resources?.getStringArray(R.array.countries_array)
+    private val countries = CustomApplication.context?.resources?.getStringArray(R.array.countries_array)
+    private val args: UserProfileFormFragmentArgs by navArgs()
+    private val FRAGMENT_TAG = "BMR_FRAGMENT_TAG"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,7 +50,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
     }
 
     private fun initializeUI() {
-        if (viewModel.isLoggedInUserMentor) {
+        if (args.isMentor) {
             availableSpotsLayout.visibility = View.VISIBLE
             totalSpotsLayout.visibility = View.VISIBLE
         } else {
@@ -78,7 +81,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                 setActivityLevelListener { pos, bool ->
                     updateInterests(pos, bool)
                 }
-            }.show(parentFragmentManager, "BMR_FRAGMENT_TAG")
+            }.show(parentFragmentManager, FRAGMENT_TAG)
         }
 
         inputPassword.doOnTextChanged { _, _, _, _ ->
@@ -153,7 +156,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
         viewModel.registerResult.observe(viewLifecycleOwner, Observer { event ->
             event.getContentIfNotHandled()?.let {
                 if (it.isSuccessful) {
-                    if (viewModel.isLoggedInUserMentor) {
+                    if (args.isMentor) {
                         if (!inputFullName.text.toString().isNullOrEmpty()) {
                             val mentor = Mentor(inputFullName.text.toString(), inputEmail.text.toString(), location, inputAboutYourself.text.toString(), inputOrganization.text.toString(), inputRole.text.toString(), listOfInterests as ArrayList<String>, inputAvailableSpots.text.toString().toInt(), inputTotalSpots.text.toString().toInt(), true)
                             viewModel.createUser(null, mentor)
@@ -161,6 +164,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                             val bundle = Bundle().apply {
                                 putString(Constants.TITLE_ARG_KEY, String.format(getString(R.string.welcome_mentor), viewModel.loggedInMentor?.full_name))
                             }
+
                             findNavController().navigate(R.id.action_global_to_messagesListFragment, bundle)
                         }
                     } else {
@@ -171,6 +175,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                             val bundle = Bundle().apply {
                                 putString(Constants.TITLE_ARG_KEY, String.format(getString(R.string.welcome_mentee), viewModel.loggedInMentee?.full_name))
                             }
+
                             findNavController().navigate(R.id.action_userProfileFormFragment_to_menteeHomeFragment, bundle)
                         }
                     }
@@ -185,11 +190,13 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
                         val bundle = Bundle().apply {
                             putString(Constants.TITLE_ARG_KEY, String.format(getString(R.string.welcome_mentor), viewModel.loggedInMentor?.full_name))
                         }
+
                         findNavController().navigate(R.id.action_global_to_messagesListFragment, bundle)
                     } else {
                         val bundle = Bundle().apply {
                             putString(Constants.TITLE_ARG_KEY, String.format(getString(R.string.welcome_mentee), viewModel.loggedInMentee?.full_name))
                         }
+
                         findNavController().navigate(R.id.action_userProfileFormFragment_to_menteeHomeFragment, bundle)
                     }
                     Constants.showSnackBar(requireContext(), getString(R.string.profile_update_success), Snackbar.LENGTH_LONG)
@@ -272,7 +279,7 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             hashMap[Constants.EMAIL_ADDRESS_KEY] = mentee.email_address
             hashMap[Constants.ABOUT_YOURSELF_KEY] = mentee.aboutYourself ?: ""
             hashMap[Constants.ORGANIZATION_KEY] = mentee.organization ?: ""
-            hashMap[Constants.ROLE_KEY] = mentee.role ?: ""
+            hashMap[Constants.ROLE_KEY] = mentee.role
             hashMap[Constants.INTERESTS__KEY] = listOfInterests
             hashMap[Constants.LOCATION__KEY] = mentee.location ?: ""
             viewModel.updateProfile(hashMap, mentee)
@@ -311,12 +318,16 @@ class UserProfileFormFragment : Fragment(R.layout.fragment_user_profile_form) {
             areInputsValid = false
         }
 
-        if (!userInputValidator.isTextValid(inputAvailableSpots, Pattern.compile(Constants.ONLY_NUMBERS), getString(R.string.only_numbers_allowed))) {
-            areInputsValid = false
+        if (availableSpotsLayout.visibility == View.VISIBLE) {
+            if (!userInputValidator.isTextValid(inputAvailableSpots, Pattern.compile(Constants.ONLY_NUMBERS), getString(R.string.only_numbers_allowed))) {
+                areInputsValid = false
+            }
         }
 
-        if (!userInputValidator.isTextValid(inputTotalSpots, Pattern.compile(Constants.ONLY_NUMBERS), getString(R.string.only_numbers_allowed))) {
-            areInputsValid = false
+        if (totalSpotsLayout.visibility == View.VISIBLE) {
+            if (!userInputValidator.isTextValid(inputTotalSpots, Pattern.compile(Constants.ONLY_NUMBERS), getString(R.string.only_numbers_allowed))) {
+                areInputsValid = false
+            }
         }
 
         return areInputsValid

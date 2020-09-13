@@ -44,7 +44,12 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
-            app:destination="@id/forgotPasswordFragment" />
+            app:destination="@id/forgotPasswordFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -64,6 +69,10 @@
         <argument
             android:name="title"
             app:argType="string" />
+        <argument
+            android:name="isMentor"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
     <fragment

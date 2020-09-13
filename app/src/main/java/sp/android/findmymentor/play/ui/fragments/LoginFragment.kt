@@ -111,6 +111,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun registerMentor() {
         val bundle = Bundle().apply {
+            putBoolean(Constants.IS_MENTOR, true)
             putString(Constants.TITLE_ARG_KEY, getString(R.string.register_profile))
         }
         findNavController().navigate(
@@ -121,6 +122,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun registerMentee() {
         val bundle = Bundle().apply {
+            putBoolean(Constants.IS_MENTOR, false)
             putString(Constants.TITLE_ARG_KEY, getString(R.string.register_profile))
         }
         findNavController().navigate(

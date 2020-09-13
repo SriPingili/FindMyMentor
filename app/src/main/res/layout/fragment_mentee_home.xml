@@ -22,7 +22,10 @@
         android:layout_marginRight="@dimen/fab_margin_right"
         android:layout_width="@dimen/fab_width"
         android:src="@drawable/ic_mail_outline_black_24dp"
+        app:backgroundTint="@color/color_accent"
         app:elevation="@dimen/fab_elevation"
         app:fabSize="normal"
-        app:pressedTranslationZ="@dimen/fab_pressed_translationz" />
+        app:pressedTranslationZ="@dimen/fab_pressed_translationz"
+        app:rippleColor="@android:color/darker_gray"
+        app:tint="@color/white" />
 </FrameLayout>

@@ -32,20 +32,35 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         message = args.messageArg
-        loginViewModel = (activity as MainActivity).viewModel
-
+        initViewModel()
         setUpRecylcerView()
         setListeners()
         addObservers()
+    }
 
+    private fun initViewModel() {
+        loginViewModel = (activity as MainActivity).viewModel
         val mainRepository = MainRepository(FirebaseSource())
         viewModel = ViewModelProvider(this, MessagingViewModelFactory(mainRepository, message.chatKeyValue.toString())).get(MessagingViewModel::class.java)
+    }
+
+    private fun setUpRecylcerView() {
+        messagingAdapter = MessagingAdapter()
+        loggedInUserName = loginViewModel.getLoggedInUserName()!!
+        messagesRecyclerView.adapter = messagingAdapter
+
+        val layoutManager = LinearLayoutManager(activity)
+        messagesRecyclerView.layoutManager = layoutManager
+
+        messagesRecyclerView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            messagesRecyclerView.scrollToPosition(messagingAdapter.currentList.size - 1)
+        }
     }
 
     private fun setListeners() {
         inputMessage.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                if (charSequence.toString().trim().length > 0) {
+                if (charSequence.toString().trim().isNotEmpty()) {
                     sendMessageImageView.setEnabled(true)
                 } else {
                     sendMessageImageView.setEnabled(false)
@@ -70,20 +85,5 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
         }
 
         viewModel.messagesLiveData.observe(viewLifecycleOwner, observer)
-    }
-
-    private fun setUpRecylcerView() {
-        messagingAdapter = MessagingAdapter()
-        loggedInUserName = loginViewModel.getLoggedInUserName()!!
-        messagesRecyclerView.adapter = messagingAdapter
-
-        val layoutManager = LinearLayoutManager(activity)
-        messagesRecyclerView.layoutManager = layoutManager
-
-        messagesRecyclerView.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
-            override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
-                messagesRecyclerView.scrollToPosition(messagingAdapter.currentList.size - 1)
-            }
-        })
     }
 }

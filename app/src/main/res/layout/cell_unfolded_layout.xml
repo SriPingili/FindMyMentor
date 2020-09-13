@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/holo_orange_light"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -10,6 +9,7 @@
     <!--TODO use constraint layout for a better performance-->
 
     <FrameLayout
+        android:elevation="@dimen/frame_layout_elevation"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="horizontal">
@@ -17,13 +17,13 @@
         <TextView
             android:id="@+id/availabilityStatusTVUnfolded"
             style="@style/TextAppearance.AppCompat.Large"
-            android:background="@color/colorAccent"
+            android:background="@color/color_secondary"
             android:gravity="center"
             android:layout_centerInParent="true"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:padding="@dimen/availability_tv_padding"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             tools:text="Available" />
 
         <ImageView
@@ -36,7 +36,7 @@
     </FrameLayout>
 
     <RelativeLayout
-        android:background="#538053"
+        android:background="@color/color_primary"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
 
@@ -86,9 +86,12 @@
 
 
     <LinearLayout
+        android:background="@color/orange_100"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/layout_padding"
+        android:paddingRight="@dimen/layout_padding">
 
         <LinearLayout
             android:layout_height="wrap_content"
@@ -109,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/about_user_desc_tv_margin_top"
                 android:layout_width="wrap_content"
-                android:lines="4"
+                android:lines="@integer/text_area_max_lines"
                 android:textColor="@android:color/black"
                 tools:text="Working on Mobile apps Working on Mobile apps Working on Mobile apps  Working on Mobile apps Working on Mobile apps Working on Mobile apps Working on Mobile apps Working on Mobile apps" />
         </LinearLayout>
@@ -118,7 +121,7 @@
             android:layout_height="@dimen/divider_iv_height"
             android:layout_marginTop="@dimen/divider_iv_margin_top"
             android:layout_width="match_parent"
-            android:src="#e0e0e0" />
+            android:src="@android:color/darker_gray" />
 
         <LinearLayout
             android:layout_height="wrap_content"
@@ -209,13 +212,14 @@
         <TextView
             android:id="@+id/requestUserButton"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:background="@color/colorAccent"
+            android:background="@color/color_accent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/request_button_margin_bottom"
             android:layout_marginTop="@dimen/request_button_margin_top"
             android:layout_width="match_parent"
             android:padding="@dimen/request_button_padding"
             android:text="@string/request"
             android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </LinearLayout>

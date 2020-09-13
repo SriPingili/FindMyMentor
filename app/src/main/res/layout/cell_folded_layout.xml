@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/holo_orange_light"
     android:baselineAligned="false"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
@@ -9,7 +8,7 @@
 
     <!--TODO use constraint layout for a better performance-->
     <RelativeLayout
-        android:background="#538053"
+        android:background="@color/color_primary"
         android:gravity="center_horizontal"
         android:layout_height="@dimen/layout_height"
         android:layout_weight="@integer/layout_weight"
@@ -25,6 +24,7 @@
             android:layout_marginTop="@dimen/rounded_tv_margin_top"
             android:layout_width="@dimen/rounded_tv_width"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/black"
             tools:text="S" />
 
         <TextView
@@ -37,11 +37,12 @@
             android:layout_marginTop="@dimen/availability_tv_margin_top"
             android:layout_width="wrap_content"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             tools:text="1/5" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:background="@color/orange_100"
         android:layout_height="match_parent"
         android:layout_weight="@integer/rel_layout_weight"
         android:layout_width="match_parent">
@@ -72,10 +73,11 @@
             android:layout_below="@id/userNameTextViewFolded"
             android:layout_height="@dimen/divider_height"
             android:layout_marginBottom="@dimen/divider_margin_bottom"
+            android:layout_marginRight="@dimen/divider_margin_right"
             android:layout_marginTop="@dimen/divider_margin_top"
             android:layout_toEndOf="@+id/staticImageView"
             android:layout_width="match_parent"
-            android:src="#e0e0e0" />
+            android:src="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/userRoleTextViewFolded"
@@ -91,6 +93,7 @@
         <LinearLayout
             android:layout_below="@id/staticImageView"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/layout_margin_bottom"
             android:layout_width="match_parent"
             android:orientation="horizontal">
 
@@ -108,7 +111,7 @@
                     android:layout_marginTop="@dimen/org_label_margin_top"
                     android:layout_width="wrap_content"
                     android:text="@string/organization"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="@android:color/black"
                     android:textStyle="bold" />
 
                 <TextView
@@ -119,7 +122,7 @@
                     android:layout_marginLeft="@dimen/org_name_margin_left"
                     android:layout_marginTop="@dimen/org_name_margin_top"
                     android:layout_width="wrap_content"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="@android:color/black"
                     tools:text="Microsoft" />
 
             </RelativeLayout>
@@ -139,7 +142,7 @@
                     android:layout_marginTop="@dimen/location_label_margin_top"
                     android:layout_width="wrap_content"
                     android:text="@string/location"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="@android:color/black"
                     android:textStyle="bold" />
 
                 <TextView
@@ -150,7 +153,7 @@
                     android:layout_marginLeft="@dimen/location_name_margin_left"
                     android:layout_marginTop="@dimen/location_name_margin_top"
                     android:layout_width="wrap_content"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="@android:color/black"
                     tools:text="USA" />
             </RelativeLayout>
         </LinearLayout>
