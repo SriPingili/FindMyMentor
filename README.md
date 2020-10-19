@@ -7,7 +7,7 @@ Features:
 * App allows Mentees and Mentors to register their profiles and start using the app.
 * Mentees can browse through Mentors profiles and send request to the interested Mentors.
 * Mentors can review the requests and respond to them if interested.
-* App allows real time texting between mentees and Mentors
+* App allows real time texting between Mentees and Mentors
 
 ### Setup
 **Requirements**
